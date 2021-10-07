@@ -30,24 +30,12 @@ const store =
         ? createStore(
               createReducer(),
               {},
-              composeWithDevTools(
-                  applyMiddleware(
-                      routerMiddleware(history),
-                      promiseMiddleware,
-                      sagaMiddleware,
-                  ),
-              ),
+              composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware)),
           )
         : createStore(
               createReducer(),
               {},
-              compose(
-                  applyMiddleware(
-                      routerMiddleware(history),
-                      promiseMiddleware,
-                      sagaMiddleware,
-                  ),
-              ),
+              compose(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware)),
           );
 
 store.asyncReducers = {};

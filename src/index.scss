@@ -1,48 +1,18 @@
-@import 'assets/scss/variable.scss';
-
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-        'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+        'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Roboto', helvetica, arial, sans-serif;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 a {
     text-decoration: none;
-}
-
-.super-center {
-    display: grid !important;
-    place-items: center !important;
-}
-
-.maybe-super-center {
-    display: grid;
-    place-items: center;
-}
-
-.icon-menu {
-    position: absolute;
-    font-size: 20px !important;
-    color: #fff;
-}
-
-.flex-center {
-    display: flex;
-    align-items: center;
-}
-
-.flex-jcenter {
-    display: flex;
-    justify-content: center;
 }
 
 .flex-col-between {
@@ -51,167 +21,10 @@ a {
     flex-direction: column;
 }
 
-.template-modal .ant-card-actions {
-    border-radius: 7px;
-}
-
-.custom-button:hover {
-    background-color: $background-hover;
-}
-
-.ant-tree-switcher-noop {
-    display: none;
-}
-
-.ant-tree-node-content-wrapper-normal {
-    border-radius: 8px !important;
-}
-.ant-tree-node-content-wrapper-open {
-    border-radius: 8px !important;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-}
-.ant-tree-title {
-    width: 100%;
-}
-
-/* .project{
-  background-color: none;
-} */
-
-.ant-tree-node-content-wrapper-normal:hover {
-    background-color: $background-hover !important;
-}
-
-.ant-tree-node-content-wrapper-open:hover {
-    background-color: $background-hover !important;
-}
-
-.ant-tree-node-selected:hover {
-    background-color: #bae7ff !important;
-}
-
-.ant-tree-node-selected {
-    background-color: #cde5fe !important;
-}
-
-.btn-add-view:hover {
-    background-color: $background-hover;
-}
-
-.btn-tab:hover {
-    background-color: #cde5fe !important;
-}
-
-.btn-add-view {
-    box-shadow: none !important;
-}
-
-.btn-hover {
-    margin-right: 5px;
-}
-.btn-hover:hover {
-    background-color: $background-hover;
-}
-
 .menu-hover {
     height: 100px;
 }
+
 .menu-hover:hover {
     background-color: rgb(28, 27, 27) !important;
-}
-
-.popover-menu-project-folder {
-    width: 100px;
-}
-
-/* .ant-tree-node-selected:hover {
-  background-color: #bae7ff !important;
-} */
-
-.flex-super-center {
-    justify-content: center;
-    display: flex;
-    align-items: center;
-}
-
-.ant-btn {
-    border-radius: 5px;
-}
-
-.btn-radius {
-    border-radius: 10px;
-}
-
-.ant-modal-content {
-    border-radius: 10px;
-}
-.ant-modal-header {
-    border-radius: 10px 10px 0 0;
-}
-
-.ant-popover-inner-content {
-    padding: 5px !important;
-}
-
-.hover-custom:hover {
-    background-color: $background-hover;
-}
-
-.not-hover:hover {
-    background-color: '';
-}
-
-.icon-font15 {
-    font-size: 15px;
-}
-
-.icon-font20 {
-    font-size: 20px;
-}
-
-.icon-font25 {
-    font-size: 25px;
-}
-
-.q_hidden {
-    display: none;
-}
-
-.q_visible {
-    display: block;
-}
-
-.text-too-long {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-#calculate-size-text {
-    position: absolute;
-    visibility: hidden;
-    height: auto;
-    width: auto;
-    white-space: nowrap;
-}
-
-.__hightlight-text {
-    font-style: italic;
-    background-color: $background-focus;
-}
-
-input.name-cell-text:focus {
-    outline: 1px solid transparent;
-    background-color: #fff;
-    border: 1px dashed $background-field !important;
-}
-
-input.add-pulse-input:focus,
-input.add-pulse-input:hover {
-    outline: 1px solid transparent;
-    background-color: #fff;
-    border: 1px dashed $background-field !important;
 }

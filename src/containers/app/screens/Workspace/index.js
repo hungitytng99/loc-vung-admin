@@ -1,7 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
 
-import 'assets/scss/Workspace.scss';
 import { useTranslation } from 'react-i18next';
 
 const { Content } = Layout;

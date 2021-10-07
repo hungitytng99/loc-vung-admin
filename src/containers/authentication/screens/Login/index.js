@@ -10,9 +10,7 @@ import { select } from 'helpers/reselect';
 const LoginRegister = (props) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
-    const { isLoginRequesting } = useSelector((state) =>
-        select(state, 'login', { isLoginRequesting: false }),
-    );
+    const { isLoginRequesting } = useSelector((state) => select(state, 'login', { isLoginRequesting: false }));
     const { isAuthenticated } = useSelector((state) => state.user);
     const onFinish = (values) => {
         if (tab == 'Login') {
@@ -76,8 +74,7 @@ const LoginRegister = (props) => {
                         {
                             type: 'string',
                             required: true,
-                            message:
-                                'Please enter your name 6 to 30 charaters!',
+                            message: 'Please enter your name 6 to 30 charaters!',
                         },
                     ]}
                 >
@@ -127,10 +124,7 @@ const LoginRegister = (props) => {
                         },
                         ({ getFieldValue }) => ({
                             validator(rule, value) {
-                                if (
-                                    !value ||
-                                    getFieldValue('password') === value
-                                ) {
+                                if (!value || getFieldValue('password') === value) {
                                     return Promise.resolve();
                                 }
                                 return Promise.reject('Passwords not match!');

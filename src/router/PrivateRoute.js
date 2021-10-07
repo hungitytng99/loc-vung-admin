@@ -5,9 +5,7 @@ import { select } from 'helpers/reselect';
 
 function PrivateRoute({ component: Component, ...rest }) {
     const history = useHistory();
-    const isAuthenticated = useSelector((state) =>
-        select(state, 'user.isAuthenticated', false),
-    );
+    const isAuthenticated = useSelector((state) => select(state, 'user.isAuthenticated', false));
 
     return (
         <Route

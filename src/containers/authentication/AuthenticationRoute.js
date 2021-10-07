@@ -10,36 +10,11 @@ function AppRoute() {
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
-                {authenticationRoutes.map(
-                    ({
-                        component: Component,
-                        exact = true,
-                        path,
-                        isPrivate,
-                        ...rest
-                    }) => {
-                        if (isPrivate) {
-                            return (
-                                <PrivateRoute
-                                    key={path}
-                                    component={Component}
-                                    exact={exact}
-                                    path={path}
-                                    {...rest}
-                                />
-                            );
-                        } else
-                            return (
-                                <PublicRoute
-                                    key={path}
-                                    exact={exact}
-                                    path={path}
-                                    component={Component}
-                                    {...rest}
-                                />
-                            );
-                    },
-                )}
+                {authenticationRoutes.map(({ component: Component, exact = true, path, isPrivate, ...rest }) => {
+                    if (isPrivate) {
+                        return <PrivateRoute key={path} component={Component} exact={exact} path={path} {...rest} />;
+                    } else return <PublicRoute key={path} exact={exact} path={path} component={Component} {...rest} />;
+                })}
             </Switch>
         </Suspense>
     );

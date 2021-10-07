@@ -50,10 +50,7 @@ const InputBlock = React.memo(function ({
                         ...styleInput,
                         width:
                             type === 'title-header'
-                                ? `${
-                                      calculateTextSize(valueInput, styleInput)
-                                          .width + 10
-                                  }px`
+                                ? `${calculateTextSize(valueInput, styleInput).width + 10}px`
                                 : '100%',
                     }}
                     value={valueInput}

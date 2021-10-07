@@ -1,10 +1,6 @@
 import React, { Fragment, useEffect, useRef } from 'react';
 
-const WithClickOutSide = ({
-    children,
-    onClickOutSide = function () {},
-    ...props
-}) => {
+const WithClickOutSide = ({ children, onClickOutSide = function () {}, ...props }) => {
     const wrapperRef = useRef();
 
     const handleClick = (event) => {

@@ -6,10 +6,7 @@ export const mainCategoryService = {
             response.data = {
                 id: response.data?.id,
                 name: response.data?.name,
-                href:
-                    '/category/' +
-                    String(response.data?.main_category_id) +
-                    String(response.data?.id),
+                href: '/category/' + String(response.data?.main_category_id) + String(response.data?.id),
             };
             return response;
         });

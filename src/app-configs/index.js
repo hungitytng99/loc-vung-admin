@@ -1,11 +1,6 @@
 // List icon for routes
 import React from 'react';
-import {
-    UserOutlined,
-    ShopOutlined,
-    EditOutlined,
-    ShoppingCartOutlined
-  } from '@ant-design/icons';
+import { UserOutlined, ShopOutlined, EditOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 export const Configs = {
     BASE_API: '',
@@ -24,33 +19,33 @@ export const REQUEST_STATE = {
 };
 export const ROUTES = [
     {
-        href: "/",
-        label: "product",
+        href: '/',
+        label: 'product',
         icon: <ShopOutlined />,
         displayOnSidebar: true,
-        childs: []
+        childs: [],
     },
     {
-        href: "/post",
-        label: "post",
+        href: '/post',
+        label: 'post',
         icon: <EditOutlined />,
         displayOnSidebar: true,
-        childs: []
+        childs: [],
     },
     {
-        href: "/user",
-        label: "userManagement",
+        href: '/user',
+        label: 'userManagement',
         icon: <UserOutlined />,
         displayOnSidebar: true,
-        childs: []
+        childs: [],
     },
     {
-        href: "/order",
-        label: "order",
+        href: '/order',
+        label: 'order',
         icon: <ShoppingCartOutlined />,
         displayOnSidebar: true,
-        childs: []
+        childs: [],
     },
-]
+];
 
-export const I18LANGUAGE = "i18nextLng";
+export const I18LANGUAGE = 'i18nextLng';

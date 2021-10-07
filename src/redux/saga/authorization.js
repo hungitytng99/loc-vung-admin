@@ -8,6 +8,4 @@ function* getUserInProjectSaga({ projectId, page = 1, perPage = 20 }) {
     }
 }
 
-export default [
-    takeLatest(actionTypes.GET_USERS_IN_PROJECT, getUserInProjectSaga),
-];
+export default [takeLatest(actionTypes.GET_USERS_IN_PROJECT, getUserInProjectSaga)];

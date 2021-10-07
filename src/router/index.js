@@ -14,16 +14,10 @@ export function getRoutesFromContainer(context) {
 }
 
 const appContext = require.context('../containers/app', true, /route.js$/);
-const authenticationContext = require.context(
-    '../containers/authentication',
-    true,
-    /route.js$/,
-);
+const authenticationContext = require.context('../containers/authentication', true, /route.js$/);
 
 export const appRoutes = getRoutesFromContainer(appContext);
-export const authenticationRoutes = getRoutesFromContainer(
-    authenticationContext,
-);
+export const authenticationRoutes = getRoutesFromContainer(authenticationContext);
 
 export const listAppRoutes = appRoutes.map((item) => {
     return {
@@ -43,9 +37,7 @@ export const initModules = async (modules = [], container = 'app') => {
     await Promise.all([
         modules.map(async (item) => {
             const [reducer, saga] = await Promise.all([
-                import(
-                    `../containers/${container}/screens/${item.path}/reducer`
-                ),
+                import(`../containers/${container}/screens/${item.path}/reducer`),
                 import(`../containers/${container}/screens/${item.path}/saga`),
             ]);
             store.injectReducer(item.key, reducer.default);

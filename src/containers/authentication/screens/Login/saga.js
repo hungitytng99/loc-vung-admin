@@ -1,10 +1,5 @@
 import { take, fork, delay, put, takeEvery, call } from 'redux-saga/effects';
-import {
-    actionTypes,
-    loginSuccess,
-    registerSuccess,
-    registerFailure,
-} from './action';
+import { actionTypes, loginSuccess, registerSuccess, registerFailure } from './action';
 import { authSuccess, authFailure } from '../../../../redux/actions/user';
 
 // import { push } from 'connected-react-router';

@@ -1,7 +1,4 @@
-import {
-    REQUEST_STATE,
-    Configs,
-} from 'containers/app/screens/Kanban/configs/configs.js';
+import { REQUEST_STATE, Configs } from 'containers/app/screens/Kanban/configs/configs.js';
 import { GET, POST } from 'containers/app/screens/Kanban/data-source/fetch.js';
 
 // phaseId = "asd7asda"

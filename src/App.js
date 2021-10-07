@@ -1,11 +1,5 @@
 import React, { lazy } from 'react';
-import {
-    Switch,
-    Route,
-    Router,
-    Redirect,
-    useRouteMatch,
-} from 'react-router-dom';
+import { Switch, Route, Router, Redirect, useRouteMatch } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { useDispatch, useSelector } from 'react-redux';
 import AppRoute from './containers/app/AppRoute';
@@ -35,23 +29,11 @@ function App() {
             <React.Suspense fallback={<Spin></Spin>}>
                 <Switch>
                     {listAppRoutes.map(({ path, exactContainer = true }) => (
-                        <Route
-                            path={path}
-                            render={() => <AppRoute />}
-                            key={path}
-                            exact={exactContainer}
-                        />
+                        <Route path={path} render={() => <AppRoute />} key={path} exact={exactContainer} />
                     ))}
-                    {listAuthenticationRoutes.map(
-                        ({ path, exactContainer = true }) => (
-                            <Route
-                                path={path}
-                                render={() => <AuthenticationRoute />}
-                                key={path}
-                                exact={exactContainer}
-                            />
-                        ),
-                    )}
+                    {listAuthenticationRoutes.map(({ path, exactContainer = true }) => (
+                        <Route path={path} render={() => <AuthenticationRoute />} key={path} exact={exactContainer} />
+                    ))}
                     <Route path="*">
                         <NotFound />
                     </Route>
@@ -61,6 +43,4 @@ function App() {
     );
 }
 
-export default process.env.NODE_ENV === 'development'
-    ? require('react-hot-loader/root').hot(App)
-    : App;
+export default process.env.NODE_ENV === 'development' ? require('react-hot-loader/root').hot(App) : App;

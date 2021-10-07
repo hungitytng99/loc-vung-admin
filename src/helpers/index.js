@@ -15,10 +15,7 @@ export function momentLocale(time) {
     }
 }
 
-export function calculateTextSize(
-    text = 'x',
-    style = { fontSize: '14px', fontWeight: 'normal' },
-) {
+export function calculateTextSize(text = 'x', style = { fontSize: '14px', fontWeight: 'normal' }) {
     const container = document.getElementById('calculate-size-text');
     if (container) {
         container.innerText = text;
@@ -74,10 +71,7 @@ export const searchAndfilterProjectDetail = (
     if (searchResult.hasSearch) {
         if (searchResult?.task?.length != 0) {
             resultPhases = resultPhases.map((phase) => {
-                const searchTasks =
-                    phase.tasks.filter((task) =>
-                        searchResult.task.includes(task?._id),
-                    ) ?? [];
+                const searchTasks = phase.tasks.filter((task) => searchResult.task.includes(task?._id)) ?? [];
                 return {
                     ...phase,
                     tasks: searchTasks,
@@ -89,17 +83,12 @@ export const searchAndfilterProjectDetail = (
     //filter
     if (filterResult.hasFilter) {
         if (filterResult.phases.length != 0) {
-            resultPhases = resultPhases.filter((phase) =>
-                filterResult.phases.includes(phase?._id),
-            );
+            resultPhases = resultPhases.filter((phase) => filterResult.phases.includes(phase?._id));
         }
 
         if (filterResult.tasks.length != 0) {
             resultPhases = resultPhases.map((phase) => {
-                const filterTasks =
-                    phase.tasks.filter((task) =>
-                        filterResult.tasks.includes(task?._id),
-                    ) ?? [];
+                const filterTasks = phase.tasks.filter((task) => filterResult.tasks.includes(task?._id)) ?? [];
                 return {
                     ...phase,
                     tasks: filterTasks,
