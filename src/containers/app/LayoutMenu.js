@@ -5,17 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import 'assets/scss/LayoutMenu.scss';
 const { Sider, Content, Header } = Layout;
-
+import { useHistory } from 'react-router-dom';
 import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
   UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  AppstoreOutlined,
-  SearchOutlined
 } from '@ant-design/icons';
 import { LOCAL_STORAGE } from 'helpers/localStorage';
+import { ROUTES } from 'app-configs';
+import { I18LANGUAGE } from 'app-configs';
 
 export const sliderWidth = {
   normal: 250,
@@ -27,6 +23,8 @@ function LayoutMenu(props) {
   const [collapseSider, setCollapseSider] = useState(
     localStorage.getItem(LOCAL_STORAGE.collapseSider) === 'true',
   );
+  const history = useHistory();
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider
@@ -45,7 +43,7 @@ function LayoutMenu(props) {
         collapsedWidth={sliderWidth.collapse}
       >
         <div className="flex-col-between" style={{ height: 'calc( 100vh - 45px )' }}>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
             <Link to={'/'} style={{ display: 'block', padding: '8px' }}>
               <Image
                 className="icon-home-page"
@@ -54,12 +52,19 @@ function LayoutMenu(props) {
                 preview={false}
               />
             </Link>
-            <Menu.Item key="1" className="menu-hover" icon={<UserOutlined />}>
-              {!collapseSider && <div>nav 1</div>}
-            </Menu.Item>
-            <Menu.Item key="2" className="menu-hover" icon={<UploadOutlined />}>
-              {!collapseSider && <div>nav 2</div>}
-            </Menu.Item>
+            {
+              ROUTES.map(route => {
+                if (route.displayOnSidebar) {
+                  return (
+                    <Menu.Item key={route.href} className="menu-hover" icon={route.icon}>
+                      <Link to={route.href} style={{ color: "#fff" }}>
+                        {t(route.label)}
+                      </Link>
+                    </Menu.Item>
+                  )
+                }
+              })
+            }
           </Menu>
 
           <Menu
@@ -73,15 +78,15 @@ function LayoutMenu(props) {
             defaultSelectedKeys={['nothing']}
           >
             <Menu.Item
-              key={localStorage.getItem('i18nextLng')}
+              key={localStorage.getItem(I18LANGUAGE)}
             >
               <Link
                 to={'#'}
                 style={{ display: 'block', textAlign: 'center' }}
                 onClick={(e) => {
                   e.preventDefault();
-                  const lng = localStorage.getItem('i18nextLng') === 'vi' ? 'en' : 'vi';
-                  localStorage.setItem('i18nextLng', lng);
+                  const lng = localStorage.getItem(I18LANGUAGE) === 'vi' ? 'en' : 'vi';
+                  localStorage.setItem(I18LANGUAGE, lng);
                   i18n.changeLanguage(lng);
                 }}
               >

@@ -1,9 +1,4 @@
 {
-    "content": "Nội dung",
-    "inviteMembers": "inviteMembers",
-    "key": "vi",
-    "notification": "notification",
-    "search": "search",
-    "settings": "settings",
-    "workspace": "workspace"
+  "content": "Nội dung",
+  "key": "vi"
 }

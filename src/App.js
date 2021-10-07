@@ -34,13 +34,6 @@ function App() {
         <ConnectedRouter history={history}>
             <React.Suspense fallback={<Spin></Spin>}>
                 <Switch>
-                    <Route path="/" exact>
-                        <Redirect
-                            to={{
-                                pathname: '/workspace',
-                            }}
-                        />
-                    </Route>
                     {listAppRoutes.map(({ path, exactContainer = true }) => (
                         <Route
                             path={path}

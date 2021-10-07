@@ -1,13 +1,12 @@
 import { lazy } from 'react';
-import { initModules } from '../../../../router/index';
-import { kanbanModule } from '../Kanban/route';
+import { initModules } from 'router/index';
 export const workspaceModule = { key: 'workspace', path: 'Workspace' };
 
 export default {
-    path: '/admin',
+    path: '/',
     exact: true,
     component: lazy(async () => {
-        await initModules([workspaceModule, kanbanModule], 'app');
+        await initModules([workspaceModule], 'app');
         return import('.');
     }),
 };

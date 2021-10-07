@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
 import { Switch } from 'react-router-dom';
-// import ErrorNotFound from '../components/common/ErrorNotFound';
 import LayoutMenu from './LayoutMenu';
 import { Spin } from 'antd';
 import PrivateRoute from '../../router/PrivateRoute';

@@ -1,9 +1,4 @@
 {
-    "content": "Content",
-    "inviteMembers": "Invite Members",
-    "key": "en",
-    "notification": "Notification",
-    "search": "Search",
-    "settings": "Settings",
-    "workspace": "Workspace"
+  "content": "Content",
+  "key": "en"
 }

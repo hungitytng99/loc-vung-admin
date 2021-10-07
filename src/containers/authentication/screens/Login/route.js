@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { initModules } from '../../../../router';
+import { initModules } from 'router';
 export const loginModule = { key: 'login', path: 'Login' };
 
 const container = 'authentication';
