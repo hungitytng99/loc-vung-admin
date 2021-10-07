@@ -7,7 +7,7 @@ npm i
 npm run dev
 ```
 
-Open [http://localhost:npm run dev](http://localhost:7502) with your browser to see the result.
+Open [http://localhost:2999](http://localhost:2999) with your browser to see the result.
 
 ## Developer
 - Nguyen Phuc Co
