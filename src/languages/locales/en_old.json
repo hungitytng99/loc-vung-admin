@@ -1,4 +1,8 @@
 {
-    "post": "Post",
-    "product": "Product"
+  "content": "Content",
+  "post": "Post",
+  "product": "Product",
+  "searchProduct": {
+    "": "searchProduct..."
+  }
 }

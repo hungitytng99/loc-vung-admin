@@ -1,16 +1,23 @@
-import React from 'react';
-import { Layout } from 'antd';
-
-import { useTranslation } from 'react-i18next';
-
-const { Content } = Layout;
-
+import { Spin } from 'antd';
+import React, { Suspense } from 'react';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import CreateProduct from './components/CreateProduct/CreateProduct';
+import ListProduct from './components/ListProduct/ListProduct';
+import { childRoutes } from './route';
 const Product = (props) => {
-    const { t } = useTranslation();
     return (
-        <div>
-            Product
-        </div>
+        <Suspense fallback={<Spin />}>
+            <Switch>
+                <Route exact path="/product">
+                    <ListProduct />
+                </Route>
+                {childRoutes.map(route =>
+                    <Route exact={route.exact} path={route.path}>
+                        {route.childComponent}
+                    </Route>)
+                }
+            </Switch>
+        </Suspense>
     );
 };
 

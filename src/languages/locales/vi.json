@@ -1,4 +1,19 @@
 {
-    "content": "Nội dung",
-    "key": "vi"
+    "accountSetting": "accountSetting",
+    "action": "action",
+    "addHotProduct": "addHotProduct",
+    "addProduct": "addProduct",
+    "back": "back",
+    "changePassword": "changePassword",
+    "deleteProduct": "deleteProduct",
+    "discount": "discount",
+    "editProduct": "editProduct",
+    "id": "ID",
+    "key": "vi",
+    "listProduct": "listProduct",
+    "logout": "logout",
+    "name": "name",
+    "newPrice": "newPrice",
+    "price": "price",
+    "searchProduct": "Tìm kiếm sản phẩm"
 }

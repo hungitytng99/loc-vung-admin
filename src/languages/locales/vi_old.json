@@ -1,4 +1,8 @@
 {
-    "post": "Bài đăng",
-    "product": "Sản phẩm"
+  "content": "Nội dung",
+  "post": "Bài đăng",
+  "product": "Sản phẩm",
+  "searchProduct": {
+    "": "Tìm kiếm sản phẩm..."
+  }
 }

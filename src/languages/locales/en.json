@@ -1,4 +1,19 @@
 {
-    "content": "Content",
-    "key": "en"
+  "accountSetting": "accountSetting",
+  "action": "action",
+  "addHotProduct": "addHotProduct",
+  "addProduct": "addProduct",
+  "back": "back",
+  "changePassword": "changePassword",
+  "deleteProduct": "deleteProduct",
+  "discount": "discount",
+  "editProduct": "editProduct",
+  "id": "ID",
+  "key": "en",
+  "listProduct": "listProduct",
+  "logout": "logout",
+  "name": "name",
+  "newPrice": "newPrice",
+  "price": "price",
+  "searchProduct": "searchProduct"
 }

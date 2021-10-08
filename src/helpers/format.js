@@ -58,3 +58,7 @@ String.prototype.formatDate = function () {
     let date = new Date(this);
     return date.formatddMMyyyy();
 };
+
+export function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

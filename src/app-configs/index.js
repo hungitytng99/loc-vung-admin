@@ -41,5 +41,12 @@ export const MODULES = {
         route: '/product',
         icon: <EditOutlined />,
         displayOnSidebar: true,
+    },
+    orderModule: {
+        key: 'order',
+        path: 'Order',
+        route: '/order',
+        icon: <ShoppingCartOutlined />,
+        displayOnSidebar: true,
     }
 }
