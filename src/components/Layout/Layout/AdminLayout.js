@@ -5,21 +5,27 @@ import { Layout, Menu, Image } from 'antd';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import 'components/Layout/Layout/LayoutMenu.sass';
+import 'components/Layout/Layout/AdminLayout.sass';
 import { LOCAL_STORAGE } from 'helpers/localStorage';
 import { ROUTES } from 'app-configs';
 import { I18LANGUAGE } from 'app-configs';
-const { Sider, Content, Header } = Layout;
+import AdminHeader from 'components/Layout/Header/AdminHeader';
+const { Sider, Content } = Layout;
 
 export const sliderWidth = {
     normal: 250,
     collapse: 65,
 };
-function LayoutMenu(props) {
+function AdminLayout(props) {
     const { children } = props;
     const { t } = useTranslation();
     const [collapseSider, setCollapseSider] = useState(localStorage.getItem(LOCAL_STORAGE.collapseSider) === 'true');
     const history = useHistory();
+
+    function handleCollapse() {
+        localStorage.setItem(LOCAL_STORAGE.collapseSider, !collapseSider);
+        setCollapseSider(!collapseSider);
+    }
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -27,10 +33,7 @@ function LayoutMenu(props) {
                 // trigger={null}
                 collapsible
                 collapsed={collapseSider}
-                onCollapse={() => {
-                    localStorage.setItem(LOCAL_STORAGE.collapseSider, !collapseSider);
-                    setCollapseSider(!collapseSider);
-                }}
+                onCollapse={handleCollapse}
                 style={{ position: 'fixed', top: '0', minHeight: '100vh' }}
                 width={sliderWidth.normal}
                 collapsedWidth={sliderWidth.collapse}
@@ -97,7 +100,7 @@ function LayoutMenu(props) {
                         : { marginLeft: `${sliderWidth.normal}px` }
                 }
             >
-                <Header className="header"></Header>
+                <AdminHeader collapseSider={collapseSider} handleCollapse={handleCollapse} />
                 <Content
                     className="site-layout-background"
                     style={{
@@ -112,6 +115,6 @@ function LayoutMenu(props) {
     );
 }
 
-LayoutMenu.propTypes = {};
+AdminLayout.propTypes = {};
 
-export default LayoutMenu;
+export default AdminLayout;

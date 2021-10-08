@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Switch } from 'react-router-dom';
-import LayoutMenu from 'components/Layout/Layout/LayoutMenu';
+import AdminLayout from 'components/Layout/Layout/AdminLayout';
 import { Spin } from 'antd';
 import PrivateRoute from 'router/PrivateRoute';
 import PublicRoute from 'router/PublicRoute';
@@ -9,7 +9,7 @@ console.log('appRoutes', appRoutes);
 
 function AppRoute() {
     return (
-        <LayoutMenu>
+        <AdminLayout>
             <Suspense fallback={<Spin />}>
                 <Switch>
                     {appRoutes.map(({ component: Component, exact = true, path, isPrivate, ...rest }) => {
@@ -22,7 +22,7 @@ function AppRoute() {
                     })}
                 </Switch>
             </Suspense>
-        </LayoutMenu>
+        </AdminLayout>
     );
 }
 

@@ -1,0 +1,46 @@
+.header
+    padding: 0
+    background-color: #fff
+    position: fixed
+    top: 0
+    right: 0
+    z-index: 1000
+    border-bottom: 1px solid #eeeeee
+    display: flex
+    justify-content: space-between
+    padding: 0px 28px 0px 10px
+    transition: all 0.25s
+    &__bars
+        font-size: 26px
+        display: flex
+        align-items: center
+        color: #646464
+        &:hover
+            cursor: pointer
+            color: #000000
+    &__right
+        display: flex
+        align-items: center
+        &-avatar
+            &:hover
+                cursor: pointer
+        &-notify
+            margin-right: 30px
+            & .notify__icon
+                font-size: 22px
+                color: #646464
+                &:hover
+                    cursor: pointer
+
+.username
+    display: flex
+    align-items: center
+    padding: 2px 12px 6px 12px
+    &:hover
+        cursor: pointer
+.active
+    width: 8px
+    height: 8px
+    background-color: #1ec31e
+    border-radius: 50%
+    margin-left: 4px
