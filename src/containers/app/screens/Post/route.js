@@ -1,12 +1,12 @@
+import { MODULES } from 'app-configs';
 import { lazy } from 'react';
 import { initModules } from 'router/index';
-export const workspaceModule = { key: 'workspace', path: 'Workspace' };
 
 export default {
-    path: '/',
+    path: MODULES.postModule.route,
     exact: true,
     component: lazy(async () => {
-        await initModules([workspaceModule], 'app');
+        await initModules([MODULES.postModule], 'app');
         return import('.');
     }),
 };

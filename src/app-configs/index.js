@@ -17,35 +17,29 @@ export const REQUEST_STATE = {
     REQUEST: 'REQUEST',
     SUCCESS: 'SUCCESS',
 };
-export const ROUTES = [
-    {
-        href: '/',
-        label: 'product',
+export const I18LANGUAGE = 'i18nextLng';
+
+// 1. UI flow: add router
+export const MODULES = {
+    dashboardModule: {
+        key: 'dashboard',
+        path: 'Dashboard',
+        route: '/',
         icon: <ShopOutlined />,
         displayOnSidebar: true,
-        childs: [],
     },
-    {
-        href: '/post',
-        label: 'post',
+    postModule: {
+        key: 'post',
+        path: 'Post',
+        route: '/post',
+        icon: <ShopOutlined />,
+        displayOnSidebar: true,
+    },
+    productModule: {
+        key: 'product',
+        path: 'Product',
+        route: '/product',
         icon: <EditOutlined />,
         displayOnSidebar: true,
-        childs: [],
-    },
-    {
-        href: '/user',
-        label: 'userManagement',
-        icon: <UserOutlined />,
-        displayOnSidebar: true,
-        childs: [],
-    },
-    {
-        href: '/order',
-        label: 'order',
-        icon: <ShoppingCartOutlined />,
-        displayOnSidebar: true,
-        childs: [],
-    },
-];
-
-export const I18LANGUAGE = 'i18nextLng';
+    }
+}

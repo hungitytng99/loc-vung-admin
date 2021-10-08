@@ -1,12 +1,12 @@
+import { MODULES } from 'app-configs';
 import { lazy } from 'react';
 import { initModules } from 'router/index';
-export const kanbanModule = { key: 'kanban', path: 'Kanban' };
 
 export default {
-    path: '/post',
+    path: MODULES.productModule.route,
     exact: true,
     component: lazy(async () => {
-        await initModules([kanbanModule], 'app');
+        await initModules([MODULES.productModule], 'app');
         return import('.');
     }),
 };

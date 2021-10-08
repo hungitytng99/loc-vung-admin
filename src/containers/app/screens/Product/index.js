@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 const { Content } = Layout;
 
-const Workspace = (props) => {
+const Product = (props) => {
     const { t } = useTranslation();
     return (
         <Layout style={{ height: '100vh' }}>
@@ -14,4 +14,4 @@ const Workspace = (props) => {
     );
 };
 
-export default Workspace;
+export default Product;

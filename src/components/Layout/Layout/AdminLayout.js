@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import 'components/Layout/Layout/AdminLayout.sass';
 import { LOCAL_STORAGE } from 'helpers/localStorage';
-import { ROUTES } from 'app-configs';
 import { I18LANGUAGE } from 'app-configs';
 import AdminHeader from 'components/Layout/Header/AdminHeader';
+import { MODULES } from 'app-configs';
 const { Sider, Content } = Layout;
 
 export const sliderWidth = {
@@ -30,7 +30,6 @@ function AdminLayout(props) {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider
-                // trigger={null}
                 collapsible
                 collapsed={collapseSider}
                 onCollapse={handleCollapse}
@@ -52,18 +51,18 @@ function AdminLayout(props) {
                                 preview={false}
                             />
                         </Link>
-                        {ROUTES.map((route) => {
-                            if (route.displayOnSidebar) {
-                                return (
-                                    <Menu.Item key={route.href} className="menu-hover" icon={route.icon}>
-                                        <Link to={route.href} style={{ color: '#fff' }}>
-                                            {t(route.label)}
+                        {
+                            Object.keys(MODULES).map((key) => {
+                                if (MODULES[key].displayOnSidebar) {
+                                    return <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
+                                        <Link to={MODULES[key].route} style={{ color: '#fff' }}>
+                                            {t(MODULES[key].key)}
                                         </Link>
                                     </Menu.Item>
-                                );
-                            }
-                            return <></>;
-                        })}
+                                }
+                                return <></>
+                            })
+                        }
                     </Menu>
                     <Menu
                         theme="dark"
