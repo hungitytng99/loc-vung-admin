@@ -6,7 +6,6 @@ export const LOCAL_STORAGE = {
 export function initLocalStorage(value) {
     localStorage.getItem(LOCAL_STORAGE.collapseSider) === null &&
         localStorage.setItem(LOCAL_STORAGE.collapseSider, value);
-    console.log('localStorage: ', localStorage);
 }
 
 function getValue(key = '', type = '') {

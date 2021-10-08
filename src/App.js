@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppRoute from './containers/app/AppRoute';
 import AuthenticationRoute from './containers/authentication/AuthenticationRoute';
 import { Spin } from 'antd';
-import './App.css';
 import history from './helpers/history';
 import NotFound from './components/NotFound';
 import { listAppRoutes, listAuthenticationRoutes } from 'router';

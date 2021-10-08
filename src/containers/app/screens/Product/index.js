@@ -8,9 +8,9 @@ const { Content } = Layout;
 const Product = (props) => {
     const { t } = useTranslation();
     return (
-        <Layout style={{ height: '100vh' }}>
-            <Content id="workspace-content-container">{t('content')}</Content>
-        </Layout>
+        <div>
+            Product
+        </div>
     );
 };
 

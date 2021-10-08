@@ -101,7 +101,7 @@ function AdminLayout(props) {
             >
                 <AdminHeader collapseSider={collapseSider} handleCollapse={handleCollapse} />
                 <Content
-                    className="site-layout-background"
+                    className="admin-layout__content"
                     style={{
                         margin: '90px 30px 24px 30px',
                         minHeight: 280,

@@ -4,7 +4,6 @@ import { Spin } from 'antd';
 import PrivateRoute from '../../router/PrivateRoute';
 import PublicRoute from '../../router/PublicRoute';
 import { authenticationRoutes } from 'router/index';
-console.log('authenticationRoutes', authenticationRoutes);
 
 function AppRoute() {
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Product = (props) => {
-    return <>Product List</>;
+    return <>Post</>;
 };
 
 export default Product;

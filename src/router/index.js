@@ -1,4 +1,4 @@
-import store from '../redux/index';
+import store from 'redux/index';
 
 export function getRoutesFromContainer(context) {
     let routes = [];
@@ -13,8 +13,8 @@ export function getRoutesFromContainer(context) {
     return routes;
 }
 
-const appContext = require.context('../containers/app', true, /route.js$/);
-const authenticationContext = require.context('../containers/authentication', true, /route.js$/);
+const appContext = require.context('containers/app', true, /route.js$/);
+const authenticationContext = require.context('containers/authentication', true, /route.js$/);
 
 export const appRoutes = getRoutesFromContainer(appContext);
 export const authenticationRoutes = getRoutesFromContainer(authenticationContext);
@@ -37,8 +37,8 @@ export const initModules = async (modules = [], container = 'app') => {
     await Promise.all([
         modules.map(async (item) => {
             const [reducer, saga] = await Promise.all([
-                import(`../containers/${container}/screens/${item.path}/reducer`),
-                import(`../containers/${container}/screens/${item.path}/saga`),
+                import(`containers/${container}/screens/${item.path}/reducer`),
+                import(`containers/${container}/screens/${item.path}/saga`),
             ]);
             store.injectReducer(item.key, reducer.default);
             store.injectSaga(item.key, saga.default);
@@ -47,5 +47,3 @@ export const initModules = async (modules = [], container = 'app') => {
 
     return true;
 };
-
-// export const initModule
