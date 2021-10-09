@@ -1,6 +1,14 @@
 // List icon for routes
 import React from 'react';
-import { UserOutlined, ShopOutlined, EditOutlined, ShoppingCartOutlined, DashboardOutlined } from '@ant-design/icons';
+import {
+    ProfileOutlined,
+    UserOutlined,
+    ShopOutlined,
+    CreditCardOutlined,
+    EditOutlined,
+    ShoppingCartOutlined,
+    DashboardOutlined,
+} from '@ant-design/icons';
 
 export const Configs = {
     BASE_API: '',
@@ -26,6 +34,13 @@ export const MODULES = {
         path: 'Dashboard', // Folder name in `src/containers/app/screens`
         route: '/', // Route defined
         icon: <DashboardOutlined />, // Icon
+        displayOnSidebar: true,
+    },
+    categoryModule: {
+        key: 'category',
+        path: 'Category',
+        route: '/category',
+        icon: <ProfileOutlined />,
         displayOnSidebar: true,
     },
     productModule: {
@@ -56,12 +71,11 @@ export const MODULES = {
         icon: <UserOutlined />,
         displayOnSidebar: true,
     },
-    userModule: {
+    paymnetModule: {
         key: 'payment',
         path: 'Payment',
         route: '/payment',
-        icon: <UserOutlined />,
+        icon: <CreditCardOutlined />,
         displayOnSidebar: true,
     },
-    
 };
