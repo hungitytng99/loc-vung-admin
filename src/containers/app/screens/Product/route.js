@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import { initModules } from 'router/index';
 import CreateProduct from './components/CreateProduct/CreateProduct';
 import EditProduct from './components/EditProduct/EditProduct';
+import AddHotProduct from './components/AddHotProduct/AddHotProduct';
 
 export default {
     path: MODULES.productModule.route,
@@ -29,7 +30,7 @@ export const childRoutes = [
         path: '/product/add-hot-product',
         exact: true,
         isPrivate: true,
-        childComponent: <CreateProduct />,
+        childComponent: <AddHotProduct />,
         component: lazy(async () => {
             await initModules([MODULES.productModule], 'app');
             return import('.');

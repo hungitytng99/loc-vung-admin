@@ -159,4 +159,4 @@ function ListProduct(props) {
     );
 }
 
-export default ListProduct;
+export default React.memo(ListProduct);

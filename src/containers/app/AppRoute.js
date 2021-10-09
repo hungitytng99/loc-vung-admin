@@ -5,11 +5,12 @@ import { Spin } from 'antd';
 import PrivateRoute from 'router/PrivateRoute';
 import PublicRoute from 'router/PublicRoute';
 import { appRoutes } from 'router/index';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 
 function AppRoute() {
     return (
         <AdminLayout>
-            <Suspense fallback={<Spin />}>
+            <Suspense fallback={<FullPageLoading/>}>
                 <Switch>
                     {appRoutes.map(({ component: Component, exact = true, path, isPrivate, ...rest }) => {
                         if (isPrivate) {

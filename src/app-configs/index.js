@@ -1,6 +1,6 @@
 // List icon for routes
 import React from 'react';
-import { UserOutlined, ShopOutlined, EditOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { UserOutlined, ShopOutlined, EditOutlined, ShoppingCartOutlined, DashboardOutlined } from '@ant-design/icons';
 
 export const Configs = {
     BASE_API: '',
@@ -22,24 +22,17 @@ export const I18LANGUAGE = 'i18nextLng';
 // 1. UI flow: add router
 export const MODULES = {
     dashboardModule: {
-        key: 'dashboard',
-        path: 'Dashboard',
-        route: '/',
-        icon: <ShopOutlined />,
-        displayOnSidebar: true,
-    },
-    postModule: {
-        key: 'post',
-        path: 'Post',
-        route: '/post',
-        icon: <ShopOutlined />,
+        key: 'dashboard', // Unique
+        path: 'Dashboard', // Folder name in `src/containers/app/screens`
+        route: '/', // Route defined
+        icon: <DashboardOutlined />, // Icon
         displayOnSidebar: true,
     },
     productModule: {
         key: 'product',
         path: 'Product',
         route: '/product',
-        icon: <EditOutlined />,
+        icon: <ShopOutlined />,
         displayOnSidebar: true,
     },
     orderModule: {
@@ -49,4 +42,26 @@ export const MODULES = {
         icon: <ShoppingCartOutlined />,
         displayOnSidebar: true,
     },
+    postModule: {
+        key: 'post',
+        path: 'Post',
+        route: '/post',
+        icon: <EditOutlined />,
+        displayOnSidebar: true,
+    },
+    userModule: {
+        key: 'user',
+        path: 'User',
+        route: '/user',
+        icon: <UserOutlined />,
+        displayOnSidebar: true,
+    },
+    userModule: {
+        key: 'payment',
+        path: 'Payment',
+        route: '/payment',
+        icon: <UserOutlined />,
+        displayOnSidebar: true,
+    },
+    
 };

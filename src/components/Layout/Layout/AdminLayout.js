@@ -51,18 +51,20 @@ function AdminLayout(props) {
                                 preview={false}
                             />
                         </Link>
-                        {Object.keys(MODULES).map((key) => {
-                            if (MODULES[key].displayOnSidebar) {
-                                return (
-                                    <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
-                                        <Link to={MODULES[key].route} style={{ color: '#fff' }}>
-                                            {t(MODULES[key].key)}
-                                        </Link>
-                                    </Menu.Item>
-                                );
-                            }
-                            return <></>;
-                        })}
+                        {
+                            Object.keys(MODULES).map((key) => {
+                                if (MODULES[key].displayOnSidebar) {
+                                    return (
+                                        <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
+                                            <Link to={MODULES[key].route} style={{ color: '#fff' }}>
+                                                {t(MODULES[key].key)}
+                                            </Link>
+                                        </Menu.Item>
+                                    );
+                                }
+                                return <></>;
+                            })
+                        }
                     </Menu>
                     <Menu
                         theme="dark"
@@ -113,7 +115,5 @@ function AdminLayout(props) {
         </Layout>
     );
 }
-
-AdminLayout.propTypes = {};
 
 export default AdminLayout;
