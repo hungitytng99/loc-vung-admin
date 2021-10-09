@@ -1,8 +1,8 @@
 {
-  "content": "Content",
-  "post": "Post",
-  "product": "Product",
-  "searchProduct": {
-    "": "searchProduct..."
-  }
+    "content": "Content",
+    "post": "Post",
+    "product": "Product",
+    "searchProduct": {
+        "": "searchProduct..."
+    }
 }

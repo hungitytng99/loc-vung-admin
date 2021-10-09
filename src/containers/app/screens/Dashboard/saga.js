@@ -6,5 +6,4 @@ function* getKanbanBoard({ type, payload }) {
         console.error('we got error in saga.js', e);
     }
 }
-export default function* () {
-}
+export default function* () {}

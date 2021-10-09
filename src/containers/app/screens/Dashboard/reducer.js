@@ -5,6 +5,4 @@ const d = {
     data: [],
     error: null,
 };
-export default combineReducers({
-   
-});
+export default combineReducers({});

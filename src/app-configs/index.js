@@ -48,5 +48,5 @@ export const MODULES = {
         route: '/order',
         icon: <ShoppingCartOutlined />,
         displayOnSidebar: true,
-    }
-}
+    },
+};

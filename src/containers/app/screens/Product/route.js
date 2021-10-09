@@ -21,12 +21,7 @@ export const childRoutes = [
         isPrivate: true,
         childComponent: <CreateProduct />,
         component: lazy(async () => {
-            await initModules(
-                [
-                    MODULES.productModule
-                ],
-                'app',
-            );
+            await initModules([MODULES.productModule], 'app');
             return import('.');
         }),
     },
@@ -36,12 +31,7 @@ export const childRoutes = [
         isPrivate: true,
         childComponent: <CreateProduct />,
         component: lazy(async () => {
-            await initModules(
-                [
-                    MODULES.productModule
-                ],
-                'app',
-            );
+            await initModules([MODULES.productModule], 'app');
             return import('.');
         }),
     },
@@ -51,14 +41,8 @@ export const childRoutes = [
         isPrivate: true,
         childComponent: <EditProduct />,
         component: lazy(async () => {
-            await initModules(
-                [
-                    MODULES.productModule
-                ],
-                'app',
-            );
+            await initModules([MODULES.productModule], 'app');
             return import('.');
         }),
     },
 ];
-

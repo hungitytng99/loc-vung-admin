@@ -11,11 +11,11 @@ const Product = (props) => {
                 <Route exact path="/product">
                     <ListProduct />
                 </Route>
-                {childRoutes.map(route =>
+                {childRoutes.map((route) => (
                     <Route exact={route.exact} path={route.path}>
                         {route.childComponent}
-                    </Route>)
-                }
+                    </Route>
+                ))}
             </Switch>
         </Suspense>
     );

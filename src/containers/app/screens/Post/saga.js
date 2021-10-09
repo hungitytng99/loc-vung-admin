@@ -6,5 +6,4 @@ export const board = {
     columnOrder: [],
 };
 
-export default function* () {
-}
+export default function* () {}

@@ -21,7 +21,7 @@ function AdminHeader({ collapseSider, handleCollapse }) {
             <div className="header__right">
                 <div className="header__right-notify">
                     <Badge dot={true}>
-                        <BellOutlined className="notify__icon" style={{ fontSize: '20px', color: '#646464'}} />
+                        <BellOutlined className="notify__icon" style={{ fontSize: '20px', color: '#646464' }} />
                     </Badge>
                 </div>
                 <Dropdown
