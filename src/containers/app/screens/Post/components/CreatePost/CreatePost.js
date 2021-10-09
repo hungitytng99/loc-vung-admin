@@ -14,7 +14,7 @@ function CreatePost(props) {
         <div className="create-post">
             <ListHeader title={t('createPost')}>
                 <Button type="primary">
-                    <Link to="/product">{t('back')}</Link>
+                    <Link to="/post">{t('back')}</Link>
                 </Button>
             </ListHeader>
             <CKEditor onTextChange={setContent} initContent={content} items={items} />

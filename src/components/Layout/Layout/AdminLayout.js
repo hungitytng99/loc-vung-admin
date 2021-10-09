@@ -22,6 +22,14 @@ function AdminLayout(props) {
     const [collapseSider, setCollapseSider] = useState(localStorage.getItem(LOCAL_STORAGE.collapseSider) === 'true');
     const history = useHistory();
 
+    function getMainPathName(history) {
+        let pathname = history.location.pathname;
+        if (pathname.indexOf('/', 1) > 1) {
+            return pathname.substring(0, pathname.indexOf('/', 1));
+        }
+        return pathname;
+    }
+
     function handleCollapse() {
         localStorage.setItem(LOCAL_STORAGE.collapseSider, !collapseSider);
         setCollapseSider(!collapseSider);
@@ -38,7 +46,7 @@ function AdminLayout(props) {
                 collapsedWidth={sliderWidth.collapse}
             >
                 <div className="flex-col-between" style={{ height: 'calc( 100vh - 45px )' }}>
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
+                    <Menu theme="dark" mode="inline" defaultSelectedKeys={[getMainPathName(history)]}>
                         <Link to={'/'} style={{ display: 'block', padding: '8px' }}>
                             <Image
                                 className="icon-home-page"
@@ -51,20 +59,18 @@ function AdminLayout(props) {
                                 preview={false}
                             />
                         </Link>
-                        {
-                            Object.keys(MODULES).map((key) => {
-                                if (MODULES[key].displayOnSidebar) {
-                                    return (
-                                        <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
-                                            <Link to={MODULES[key].route} style={{ color: '#fff' }}>
-                                                {t(MODULES[key].key)}
-                                            </Link>
-                                        </Menu.Item>
-                                    );
-                                }
-                                return <></>;
-                            })
-                        }
+                        {Object.keys(MODULES).map((key) => {
+                            if (MODULES[key].displayOnSidebar) {
+                                return (
+                                    <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
+                                        <Link to={MODULES[key].route} style={{ color: '#fff' }}>
+                                            {t(MODULES[key].key)}
+                                        </Link>
+                                    </Menu.Item>
+                                );
+                            }
+                            return <></>;
+                        })}
                     </Menu>
                     <Menu
                         theme="dark"

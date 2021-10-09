@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import EditorType from 'ckeditor5-custom-build/build/ckeditor.js';
+import CKEditorVi from 'utils/ckeditor5/build/ckeditor';
+
 import './editor.css';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import UploadAdapterPlugin from './UploadAdapterPlugin';
 // import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
 // import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials';
@@ -46,7 +48,8 @@ export default function EditorBase({ type = 'classic', placeholder = '', onTextC
     return (
         <div className={(type == 'inline' && !showTool ? 'hidden-toolbar' : '') + ` ${type}` + ' compose-editor'}>
             <CKEditor
-                editor={EditorType}
+                editor={CKEditorVi}
+                key="ckeditor"
                 config={{
                     placeholder: placeholder,
                     // extraPlugins: [
