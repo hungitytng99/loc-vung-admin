@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Layout, Space, Table, Tooltip } from 'antd';
+import { Button, Layout, Popconfirm, Space, Table, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 import reqwest from 'reqwest';
 import { numberWithCommas } from 'helpers/format';
-import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined } from '@ant-design/icons';
+import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
 import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
@@ -71,91 +71,110 @@ function ListProduct(props) {
     useEffect(() => {
         fetchData({ pagination });
     }, []);
+
     return (
-        <Table
-            columns={[
-                {
-                    title: t('id'),
-                    dataIndex: 'id',
-                    width: '2%',
-                },
-                {
-                    title: t('name'),
-                    dataIndex: 'name',
-                    width: '65%',
-                },
-                {
-                    title: t('price'),
-                    dataIndex: 'price',
-                    width: '10%',
-                    render: (price) => numberWithCommas(price),
-                },
-                {
-                    title: t('discount') + '%',
-                    dataIndex: 'discount',
-                    width: '10%',
-                },
-                {
-                    title: t('newPrice'),
-                    dataIndex: 'new_price',
-                    width: '10%',
-                    render: (price) => numberWithCommas(price),
-                },
-                {
-                    title: t('action'),
-                    key: 'action',
-                    dataIndex: 'action',
-                    width: '3%',
-                    render: (_, record) => {
-                        return (
-                            <div className="list-product__action">
-                                <Tooltip className="list-product__action-edit text-grey-300" title={t('editProduct')}>
-                                    <Link style={{ display: 'block' }} to={`/product/edit-product/${record.id}`}>
-                                        <FormOutlined />
-                                    </Link>
-                                </Tooltip>
-                                <div style={{ width: '4px' }}></div>
-                                <Tooltip
-                                    className="list-product__action-delete text-grey-300"
-                                    title={t('deleteProduct')}
-                                >
-                                    <DeleteOutlined
-                                        onClick={() => {
+        <div className="list-product">
+            <Table
+                columns={[
+                    {
+                        title: t('id'),
+                        dataIndex: 'id',
+                        width: '2%',
+                    },
+                    {
+                        title: t('name'),
+                        dataIndex: 'name',
+                        width: '65%',
+                    },
+                    {
+                        title: t('price'),
+                        dataIndex: 'price',
+                        width: '10%',
+                        render: (price) => numberWithCommas(price),
+                    },
+                    {
+                        title: t('discount') + '%',
+                        dataIndex: 'discount',
+                        width: '10%',
+                    },
+                    {
+                        title: t('newPrice'),
+                        dataIndex: 'new_price',
+                        width: '10%',
+                        render: (price) => numberWithCommas(price),
+                    },
+                    {
+                        title: t('action'),
+                        key: 'action',
+                        dataIndex: 'action',
+                        width: '3%',
+                        render: (_, record) => {
+                            return (
+                                <div className="list-product__action">
+                                    <Tooltip
+                                        className="list-product__action-edit text-grey-300"
+                                        title={t('editProduct')}
+                                    >
+                                        <Link style={{ display: 'block' }} to={`/product/edit-product/${record.id}`}>
+                                            <FormOutlined />
+                                        </Link>
+                                    </Tooltip>
+                                    <div style={{ width: '4px' }}></div>
+                                    <Popconfirm
+                                        title={`${t('areYouSureToDeleteThisProduct')}?`}
+                                        okText={t('yes')}
+                                        cancelText={t('cancel')}
+                                        onConfirm={() => {
+                                            console.log('record: ', record);
                                             handleDeleteProduct(record);
                                         }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        );
+                                    >
+                                        <Tooltip
+                                            className="list-product__action-delete text-grey-300"
+                                            title={t('deleteProduct')}
+                                        >
+                                            <DeleteOutlined style={{ paddingTop: '6px' }} />
+                                        </Tooltip>
+                                    </Popconfirm>
+                                    <div style={{ width: '4px' }}></div>
+                                    <Tooltip
+                                        className="list-product__action-set text-grey-300"
+                                        title={t('setAsHotProduct')}
+                                    >
+                                        <RiseOutlined style={{ paddingTop: '6px' }} />
+                                    </Tooltip>
+                                </div>
+                            );
+                        },
                     },
-                },
-            ]}
-            title={() => (
-                <ListHeader title={t('listProduct')}>
-                    <Space size="small">
-                        <Input
-                            size="middle"
-                            placeholder={`${t('searchProduct')}...`}
-                            prefix={isSearch ? <LoadingOutlined /> : <SearchOutlined />}
-                            onChange={onSearch}
-                        />
-                        <Button type="ghost">
-                            <Link to="/product/add-hot-product">{t('addHotProduct')}</Link>
-                        </Button>
-                        <Button type="primary">
-                            <Link to="/product/create">{t('addProduct')}</Link>
-                        </Button>
-                    </Space>
-                </ListHeader>
-            )}
-            rowKey={(record) => record.id}
-            dataSource={data}
-            pagination={pagination}
-            loading={loading}
-            onChange={handleTableChange}
-            bordered
-            scroll={{ x: 1500 }}
-        />
+                ]}
+                title={() => (
+                    <ListHeader title={t('listProduct')}>
+                        <Space size="small">
+                            <Input
+                                size="middle"
+                                placeholder={`${t('searchProduct')}...`}
+                                prefix={isSearch ? <LoadingOutlined /> : <SearchOutlined />}
+                                onChange={onSearch}
+                            />
+                            <Button type="ghost">
+                                <Link to="/product/add-hot-product">{t('addHotProduct')}</Link>
+                            </Button>
+                            <Button type="primary">
+                                <Link to="/product/create">{t('addProduct')}</Link>
+                            </Button>
+                        </Space>
+                    </ListHeader>
+                )}
+                rowKey={(record) => record.id}
+                dataSource={data}
+                pagination={pagination}
+                loading={loading}
+                onChange={handleTableChange}
+                bordered
+                scroll={{ x: 1500 }}
+            />
+        </div>
     );
 }
 

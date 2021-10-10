@@ -10,7 +10,7 @@ import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading'
 function AppRoute() {
     return (
         <AdminLayout>
-            <Suspense fallback={<FullPageLoading/>}>
+            <Suspense fallback={<FullPageLoading />}>
                 <Switch>
                     {appRoutes.map(({ component: Component, exact = true, path, isPrivate, ...rest }) => {
                         if (isPrivate) {

@@ -10,6 +10,7 @@ import { LOCAL_STORAGE } from 'helpers/localStorage';
 import { I18LANGUAGE } from 'app-configs';
 import AdminHeader from 'components/Layout/Header/AdminHeader';
 import { MODULES } from 'app-configs';
+import { REQUEST_STATE } from 'app-configs';
 const { Sider, Content } = Layout;
 
 export const sliderWidth = {
