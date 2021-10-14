@@ -1,2 +1,16 @@
-.add-product
-    padding: 16px 16px
+.create-product
+  padding: 16px
+  &__form
+    padding: 16px 0px
+  &__item
+    width: 31%
+    margin-bottom: 15px !important
+  &__submit
+    display: flex
+    width: 100%
+    justify-content: flex-end
+
+@media only screen and (max-width: 1200px)
+  .create-product
+    &__item
+      width: 47%

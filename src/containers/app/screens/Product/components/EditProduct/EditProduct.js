@@ -4,6 +4,7 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './EditProduct.sass';
+import { DiAndroid } from 'react-icons/di';
 
 function EditProduct(props) {
     const { t } = useTranslation();

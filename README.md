@@ -4,7 +4,7 @@ How to run:
 
 ```bash
 npm i
-npm run dev
+npm start
 ```
 
 Open [http://localhost:2999](http://localhost:2999) with your browser to see the result.
@@ -18,3 +18,6 @@ Open [http://localhost:2999](http://localhost:2999) with your browser to see the
 ## Commit
 - Create a branch: feature/{branch-name}
 - Commit: {content}
+
+## Responsive
+- Only for screen > 992px

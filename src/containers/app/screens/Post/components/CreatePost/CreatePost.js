@@ -4,7 +4,7 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './CreatePost.sass';
-import CKEditor from 'components/Editor/CKEditor';
+// import CKEditor from 'components/Editor/CKEditor';
 
 function CreatePost(props) {
     const { t } = useTranslation();
@@ -14,10 +14,10 @@ function CreatePost(props) {
         <div className="create-post">
             <ListHeader title={t('createPost')}>
                 <Button type="primary">
-                    <Link to="/product">{t('back')}</Link>
+                    <Link to="/post">{t('back')}</Link>
                 </Button>
             </ListHeader>
-            <CKEditor onTextChange={setContent} initContent={content} items={items} />
+            {/* <CKEditor onTextChange={setContent} initContent={content} items={items} /> */}
         </div>
     );
 }
