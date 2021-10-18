@@ -1,6 +1,5 @@
 import M from 'moment';
 import viLocalization from 'moment/locale/vi';
-import enLocalization from 'moment/locale/en-au';
 import i18 from 'languages/index';
 
 export const getLanguage = () => i18.language ?? window.localStorage.i18nextLng;
@@ -59,43 +58,3 @@ export function toLowerCaseFirstLetter(string) {
     if (!string) return string;
     return string.charAt(0).toLowerCase() + string.slice(1);
 }
-
-export const searchAndfilterProjectDetail = (
-    projectDetail,
-    filterResult = { hasFilter: false, phases: [], tasks: [] },
-    searchResult = { hasSearch: false, task: [] },
-) => {
-    const initialPhases = projectDetail?.phases ?? [];
-    let resultPhases = initialPhases;
-    //search
-    if (searchResult.hasSearch) {
-        if (searchResult?.task?.length != 0) {
-            resultPhases = resultPhases.map((phase) => {
-                const searchTasks = phase.tasks.filter((task) => searchResult.task.includes(task?._id)) ?? [];
-                return {
-                    ...phase,
-                    tasks: searchTasks,
-                };
-            });
-        }
-    }
-
-    //filter
-    if (filterResult.hasFilter) {
-        if (filterResult.phases.length != 0) {
-            resultPhases = resultPhases.filter((phase) => filterResult.phases.includes(phase?._id));
-        }
-
-        if (filterResult.tasks.length != 0) {
-            resultPhases = resultPhases.map((phase) => {
-                const filterTasks = phase.tasks.filter((task) => filterResult.tasks.includes(task?._id)) ?? [];
-                return {
-                    ...phase,
-                    tasks: filterTasks,
-                };
-            });
-        }
-    }
-
-    return resultPhases;
-};
