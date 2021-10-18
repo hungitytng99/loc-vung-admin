@@ -1,11 +1,10 @@
 import React from 'react';
 import { Redirect, Route, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { select } from 'helpers/reselect';
 
 function PrivateRoute({ component: Component, ...rest }) {
     const history = useHistory();
-    const isAuthenticated = useSelector((state) => select(state, 'user.isAuthenticated', false));
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
     return (
         <Route
