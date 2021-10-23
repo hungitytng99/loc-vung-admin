@@ -8,6 +8,8 @@ import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
+import Moment from 'react-moment';
+import moment from 'moment';
 const { Search } = Input;
 
 function ListProduct(props) {
@@ -21,6 +23,7 @@ function ListProduct(props) {
     const [isSearch, setIsSearch] = useState(false);
 
     function getRandomuserParams(params) {
+        console.log('params: ', params);
         return {
             results: params.pagination.pageSize,
             page: params.pagination.current,
@@ -31,7 +34,7 @@ function ListProduct(props) {
     function fetchData(params) {
         setLoading(true);
         reqwest({
-            url: 'http://103.163.118.206:1236/api/product',
+            url: 'http://103.163.118.206:1236/api/category',
             method: 'get',
             type: 'json',
             data: getRandomuserParams(params),
@@ -41,7 +44,7 @@ function ListProduct(props) {
             setData(response.data);
             setPagination({
                 ...params.pagination,
-                total: 100,
+                total: data.length,
             });
         });
     }
@@ -69,8 +72,13 @@ function ListProduct(props) {
     }
 
     useEffect(() => {
+        console.log('pagination: ', pagination);
         fetchData({ pagination });
     }, []);
+
+    useEffect(() => {
+        console.log('pagination: ', pagination);
+    }, [pagination]);
 
     return (
         <div className="list-product">
@@ -84,67 +92,36 @@ function ListProduct(props) {
                     {
                         title: t('name'),
                         dataIndex: 'name',
-                        width: '65%',
+                        width: '55%',
                     },
                     {
-                        title: t('price'),
-                        dataIndex: 'price',
-                        width: '10%',
-                        render: (price) => numberWithCommas(price),
-                    },
-                    {
-                        title: t('discount') + '%',
-                        dataIndex: 'discount',
+                        title: t('description'),
+                        dataIndex: 'description',
                         width: '10%',
                     },
                     {
-                        title: t('newPrice'),
-                        dataIndex: 'new_price',
-                        width: '10%',
-                        render: (price) => numberWithCommas(price),
+                        title: t('slug'),
+                        dataIndex: 'slug',
+                        width: '11%',
                     },
                     {
-                        title: t('action'),
-                        key: 'action',
-                        dataIndex: 'action',
-                        width: '3%',
-                        render: (_, record) => {
-                            return (
-                                <div className="list-product__action">
-                                    <Tooltip
-                                        className="list-product__action-edit text-grey-300"
-                                        title={t('editProduct')}
-                                    >
-                                        <Link style={{ display: 'block' }} to={`/category/edit-product/${record.id}`}>
-                                            <FormOutlined />
-                                        </Link>
-                                    </Tooltip>
-                                    <div style={{ width: '4px' }}></div>
-                                    <Popconfirm
-                                        title={`${t('areYouSureToDeleteThisProduct')}?`}
-                                        okText={t('yes')}
-                                        cancelText={t('cancel')}
-                                        onConfirm={() => {
-                                            console.log('record: ', record);
-                                            handleDeleteProduct(record);
-                                        }}
-                                    >
-                                        <Tooltip
-                                            className="list-product__action-delete text-grey-300"
-                                            title={t('deleteProduct')}
-                                        >
-                                            <DeleteOutlined style={{ paddingTop: '6px' }} />
-                                        </Tooltip>
-                                    </Popconfirm>
-                                    <div style={{ width: '4px' }}></div>
-                                    <Tooltip
-                                        className="list-product__action-set text-grey-300"
-                                        title={t('setAsHotProduct')}
-                                    >
-                                        <RiseOutlined style={{ paddingTop: '6px' }} />
-                                    </Tooltip>
-                                </div>
-                            );
+                        title: t('create_at'),
+                        dataIndex: 'create_at',
+                        width: '11%',
+                        render: (create_at) => {
+                            console.log('create_at: ', create_at);
+                            const date = new Date(create_at);
+                            return <div>{moment(create_at).format('MM-DD-YYYY hh:mm:ss')}</div>;
+                        },
+                    },
+                    {
+                        title: t('update_at'),
+                        dataIndex: 'update_at',
+                        width: '11%',
+                        render: (create_at) => {
+                            console.log('update_at: ', create_at);
+                            const date = new Date(create_at);
+                            return <div>{moment(create_at).format('MM-DD-YYYY hh:mm:ss')}</div>;
                         },
                     },
                 ]}
@@ -166,6 +143,16 @@ function ListProduct(props) {
                         </Space>
                     </ListHeader>
                 )}
+                // [
+                //     {
+                //         id: 1.
+                //         name: "product 1"
+                //     },
+                //     {
+                //         id: 2.
+                //         name: "product 1"
+                //     },
+                // ]
                 rowKey={(record) => record.id}
                 dataSource={data}
                 pagination={pagination}

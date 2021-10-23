@@ -4,7 +4,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import CreateProduct from './components/CreateProduct/CreateProduct';
 import ListProduct from './components/ListProduct/ListProduct';
 import { childRoutes } from './route';
-const Product = (props) => {
+const Category = (props) => {
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
