@@ -8,10 +8,10 @@ import './AddHotProduct.sass';
 function AddHotProduct(props) {
     const { t } = useTranslation();
     return (
-        <div className="add-product">
-            <ListHeader title={t('addHotProduct')}>
+        <div className="add-category">
+            <ListHeader title={t('addHotCategory')}>
                 <Button type="primary">
-                    <Link to="/product">{t('back')}</Link>
+                    <Link to="/category">{t('back')}</Link>
                 </Button>
             </ListHeader>
         </div>

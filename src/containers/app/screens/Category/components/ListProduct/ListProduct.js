@@ -81,7 +81,7 @@ function ListProduct(props) {
     }, [pagination]);
 
     return (
-        <div className="list-product">
+        <div className="list-category">
             <Table
                 columns={[
                     {
@@ -126,19 +126,19 @@ function ListProduct(props) {
                     },
                 ]}
                 title={() => (
-                    <ListHeader title={t('listProduct')}>
+                    <ListHeader title={t('listCategory')}>
                         <Space size="small">
                             <Input
                                 size="middle"
-                                placeholder={`${t('searchProduct')}...`}
+                                placeholder={`${t('searchcategory')}...`}
                                 prefix={isSearch ? <LoadingOutlined /> : <SearchOutlined />}
                                 onChange={onSearch}
                             />
                             <Button type="ghost">
-                                <Link to="/category/add-hot-product">{t('addHotProduct')}</Link>
+                                <Link to="/category/add-hot-category">{t('Add HotCategory')}</Link>
                             </Button>
                             <Button type="primary">
-                                <Link to="/category/create">{t('addProduct')}</Link>
+                                <Link to="/category/create">{t('Add Category')}</Link>
                             </Button>
                         </Space>
                     </ListHeader>
