@@ -3,9 +3,9 @@ import { Button } from 'antd';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import './AddHotProduct.sass';
+import './AddHotCategory.sass';
 
-function AddHotProduct(props) {
+function AddHotCategory(props) {
     const { t } = useTranslation();
     return (
         <div className="add-category">
@@ -18,4 +18,4 @@ function AddHotProduct(props) {
     );
 }
 
-export default AddHotProduct;
+export default AddHotCategory;

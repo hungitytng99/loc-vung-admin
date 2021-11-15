@@ -1,8 +1,8 @@
 import { Spin } from 'antd';
 import React, { Suspense } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import CreateProduct from './components/CreateProduct/CreateProduct';
-import ListProduct from './components/ListProduct/ListProduct';
+import CreateProduct from './components/CreateCategory/CreateCategory';
+import ListProduct from './components/ListCategory/ListCategory';
 import { childRoutes } from './route';
 const Category = (props) => {
     return (

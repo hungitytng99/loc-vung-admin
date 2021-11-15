@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import reqwest from 'reqwest';
 import { numberWithCommas } from 'helpers/format';
 import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
-import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
+import 'containers/app/screens/Category/components/ListCategory/ListCategory.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
@@ -12,13 +12,13 @@ import Moment from 'react-moment';
 import moment from 'moment';
 const { Search } = Input;
 
-function ListProduct(props) {
+function ListCategory(props) {
     const { t } = useTranslation();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
         pageNumber: 1,
-        productsPerPage: 10,
+        categorysPerPage: 10,
     });
     const [isSearch, setIsSearch] = useState(false);
 
@@ -62,8 +62,8 @@ function ListProduct(props) {
         });
     }
 
-    function handleDeleteProduct(product) {
-        console.log('product: ', product);
+    function handleDeleteCategory(category) {
+        console.log('category: ', category);
     }
 
     function onSearch(e) {
@@ -146,11 +146,11 @@ function ListProduct(props) {
                 // [
                 //     {
                 //         id: 1.
-                //         name: "product 1"
+                //         name: "category 1"
                 //     },
                 //     {
                 //         id: 2.
-                //         name: "product 1"
+                //         name: "category 1"
                 //     },
                 // ]
                 rowKey={(record) => record.id}
@@ -165,4 +165,4 @@ function ListProduct(props) {
     );
 }
 
-export default React.memo(ListProduct);
+export default React.memo(ListCategory);

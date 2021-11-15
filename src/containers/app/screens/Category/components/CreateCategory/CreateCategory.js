@@ -2,10 +2,10 @@ import React from 'react';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import './CreateProduct.sass';
+import './CreateCategory.sass';
 import { Form, Input, Button, Checkbox } from 'antd';
 
-function CreateProduct(props) {
+function CreateCategory(props) {
     const { t } = useTranslation();
     const [form] = Form.useForm();
 
@@ -17,13 +17,13 @@ function CreateProduct(props) {
         console.log('Failed:', errorInfo);
     };
     return (
-        <div className="create-product">
-            <ListHeader title={t('addProduct')}>
+        <div className="create-category">
+            <ListHeader title={t('addCategory')}>
                 <Button type="primary">
-                    <Link to="/product">{t('back')}</Link>
+                    <Link to="/category">{t('back')}</Link>
                 </Button>
             </ListHeader>
-            <div className="create-product__form">
+            <div className="create-category__form">
                 <Form
                     name="basic"
                     form={form}
@@ -43,7 +43,7 @@ function CreateProduct(props) {
                     size="large"
                 >
                     <Form.Item
-                        className="create-product__item"
+                        className="create-category__item"
                         label="Username"
                         name="username"
                         rules={[
@@ -56,7 +56,7 @@ function CreateProduct(props) {
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        className="create-product__item"
+                        className="create-category__item"
                         label="Username"
                         name="email"
                         rules={[
@@ -69,7 +69,7 @@ function CreateProduct(props) {
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        className="create-product__item"
+                        className="create-category__item"
                         label="Username"
                         name="xxx"
                         rules={[
@@ -83,7 +83,7 @@ function CreateProduct(props) {
                     </Form.Item>
 
                     <Form.Item
-                        className="create-product__item"
+                        className="create-category__item"
                         label="Username"
                         name="xxx"
                         rules={[
@@ -95,7 +95,7 @@ function CreateProduct(props) {
                     >
                         <Input />
                     </Form.Item>
-                    <div className="create-product__submit">
+                    <div className="create-category__submit">
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
                                 {t('submit')}
@@ -108,4 +108,4 @@ function CreateProduct(props) {
     );
 }
 
-export default CreateProduct;
+export default CreateCategory;

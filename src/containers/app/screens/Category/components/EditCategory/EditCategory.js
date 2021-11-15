@@ -3,20 +3,20 @@ import { Button } from 'antd';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import './EditProduct.sass';
+import './EditCategory.sass';
 import { DiAndroid } from 'react-icons/di';
 
-function EditProduct(props) {
+function EditCategory(props) {
     const { t } = useTranslation();
     return (
-        <div className="edit-product">
-            <ListHeader title={t('editProduct')}>
+        <div className="edit-category">
+            <ListHeader title={t('editCategory')}>
                 <Button type="primary">
-                    <Link to="/product">{t('back')}</Link>
+                    <Link to="/category">{t('back')}</Link>
                 </Button>
             </ListHeader>
         </div>
     );
 }
 
-export default EditProduct;
+export default EditCategory;
