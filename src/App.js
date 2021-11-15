@@ -34,4 +34,4 @@ function App() {
     );
 }
 
-export default process.env.NODE_ENV === 'development' ? require('react-hot-loader/root').hot(App) : App;
+export default App;

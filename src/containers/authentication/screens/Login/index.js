@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import { login } from 'redux/actions/user';
 import './Login.sass';
 
-export default function index() {
+export default function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
     const authState = useSelector((state) => state.user);
