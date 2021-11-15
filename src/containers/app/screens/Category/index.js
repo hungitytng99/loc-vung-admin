@@ -9,7 +9,7 @@ const Category = (props) => {
         <Suspense fallback={<Spin />}>
             <Switch>
                 <Route exact path="/category">
-                    <ListProduct />
+                    <Listcategory />
                 </Route>
                 {childRoutes.map((route) => (
                     <Route exact={route.exact} path={route.path}>
