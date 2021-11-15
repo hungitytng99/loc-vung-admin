@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, Layout, Menu, Dropdown, Divider, Badge } from 'antd';
 import 'components/Layout/Header/AdminHeader.sass';
 import { sliderWidth } from 'components/Layout/Layout/AdminLayout';
 import { BarsOutlined, BellOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from 'redux/actions/user';
+import { isEmptyValue } from 'helpers/check';
+import { useHistory } from 'react-router';
 
 const { Header } = Layout;
 
 function AdminHeader({ collapseSider, handleCollapse }) {
+    const authState = useSelector((state) => state.user);
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    function handleLogout() {
+        dispatch(logout());
+        history.push('/auth/login');
+    }
+
+    // useEffect(() => {
+    //     if (isEmptyValue(authState.profile?.email)) {
+    //         console.log('authState.profile?.email: ', authState.profile?.email);
+    //         history.push('/auth/login');
+    //     }
+    // }, [authState.profile, history]);
+
     return (
         <Header
             className="header"
@@ -39,7 +59,7 @@ function AdminHeader({ collapseSider, handleCollapse }) {
                                 <div>{t('accountSetting')}</div>
                             </Menu.Item>
                             <Divider style={{ margin: '2px' }} />
-                            <Menu.Item>
+                            <Menu.Item onClick={handleLogout}>
                                 <div style={{ fontWeight: '550', color: '#666' }}>{t('logout')}</div>
                             </Menu.Item>
                         </Menu>

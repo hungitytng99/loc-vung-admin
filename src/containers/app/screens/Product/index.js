@@ -1,10 +1,21 @@
 import { Spin } from 'antd';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { login } from 'redux/actions/user';
 import CreateProduct from './components/CreateProduct/CreateProduct';
 import ListProduct from './components/ListProduct/ListProduct';
 import { childRoutes } from './route';
 const Product = (props) => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(
+            login({
+                email: 'admin@locvung.com',
+                password: 'admin',
+            }),
+        );
+    }, []);
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
@@ -12,7 +23,7 @@ const Product = (props) => {
                     <ListProduct />
                 </Route>
                 {childRoutes.map((route) => (
-                    <Route exact={route.exact} path={route.path}>
+                    <Route key={route.path} exact={route.exact} path={route.path}>
                         {route.childComponent}
                     </Route>
                 ))}

@@ -7,6 +7,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import history from 'helpers/history';
 import rootSaga from './saga';
 import createReducer from './reducers';
+import logger from 'redux-logger';
+import { logout } from './actions/user';
 
 const sagaMiddleware = createSagaMiddleware();
 // const _routerMiddleware = routerMiddleware(history);
@@ -25,23 +27,22 @@ function createSagaInjector(runSaga, rootSaga) {
     return injectSaga;
 }
 
-const store =
-    process.env.NODE_ENV === 'development'
-        ? createStore(
-              createReducer(),
-              {},
-              composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware)),
-          )
-        : createStore(
-              createReducer(),
-              {},
-              compose(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware)),
-          );
+const store = createStore(
+    createReducer(),
+    {},
+    composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger)),
+);
 
 store.asyncReducers = {};
+const rootReducer = (state, action) => {
+    if (action.type === logout().type) {
+        state = undefined;
+    }
+    return createReducer(store.asyncReducers)(state, action);
+};
 store.injectReducer = (key, reducer) => {
     store.asyncReducers[key] = reducer;
-    store.replaceReducer(createReducer(store.asyncReducers));
+    store.replaceReducer(rootReducer);
     return store;
 };
 

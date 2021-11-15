@@ -1,8 +1,11 @@
 import { combineReducers } from 'redux';
 
-const d = {
-    loading: true,
+const defaultState = {
     data: [],
-    error: null,
 };
-export default combineReducers({});
+export default (state = defaultState, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+};
