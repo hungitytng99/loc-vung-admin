@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Switch, Route, Router, Redirect, useRouteMatch } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,22 +10,16 @@ import NotFound from './components/NotFound';
 import { listAppRoutes, listAuthenticationRoutes } from 'router';
 import { initLocalStorage } from 'helpers/localStorage';
 import { ConnectedRouter } from 'connected-react-router';
-import { auth } from 'redux/actions/user';
+import { login } from 'redux/actions/user';
 
 console.log('listAppRoutes =>', listAppRoutes);
 console.log('listAuthenticationRoutes =>', listAuthenticationRoutes);
 
-initLocalStorage(false);
-
 function App() {
-    const dispatch = useDispatch();
-    // useEffect(() => {
-    //   dispatch(auth());
-    // }, [dispatch]);
-
+    const userProfile = useSelector((state) => state.user.profile);
     return (
         <ConnectedRouter history={history}>
-            <React.Suspense fallback={<Spin></Spin>}>
+            <Suspense fallback={<Spin></Spin>}>
                 <Switch>
                     {listAppRoutes.map(({ path, exactContainer = true }) => (
                         <Route path={path} render={() => <AppRoute />} key={path} exact={exactContainer} />
@@ -33,11 +27,9 @@ function App() {
                     {listAuthenticationRoutes.map(({ path, exactContainer = true }) => (
                         <Route path={path} render={() => <AuthenticationRoute />} key={path} exact={exactContainer} />
                     ))}
-                    <Route path="*">
-                        <NotFound />
-                    </Route>
+                    <Redirect from="*" to="/auth/login" />
                 </Switch>
-            </React.Suspense>
+            </Suspense>
         </ConnectedRouter>
     );
 }

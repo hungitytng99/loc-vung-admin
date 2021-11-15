@@ -9,6 +9,7 @@ import AddHotProduct from './components/AddHotProduct/AddHotProduct';
 export default {
     path: MODULES.productModule.route,
     exact: true,
+    isPrivate: true,
     component: lazy(async () => {
         await initModules([MODULES.productModule], 'app');
         return import('.');

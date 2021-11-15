@@ -4,11 +4,10 @@ export const loginModule = { key: 'login', path: 'Login' };
 
 const container = 'authentication';
 export default {
-    path: '/login',
+    path: '/auth/login',
     exact: true,
     isPrivate: false,
     component: lazy(async () => {
-        await initModules([loginModule], container);
         return import('.');
     }),
 };
