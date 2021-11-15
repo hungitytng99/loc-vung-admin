@@ -6,11 +6,9 @@ const d = {
     data: [],
     error: null,
 };
-export default combineReducers({
-    kanban_detail: (state = d, action) => {
-        switch (action.type) {
-            default:
-                return state;
-        }
-    },
-});
+export default (state = d, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+};

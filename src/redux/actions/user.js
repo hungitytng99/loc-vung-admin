@@ -1,47 +1,27 @@
-export const actionTypes = {
-    AUTH: 'AUTH',
-    AUTH_SUCCESS: 'AUTH_SUCCESS',
-    AUTH_FAILURE: 'AUTH_FAILURE',
-    LOGOUT: 'LOGOUT',
-    LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
-    LOGOUT_FAILURE: 'LOGOUT_FAILURE',
-};
-
-export function auth() {
+export function login(payload) {
     return {
-        type: actionTypes.AUTH,
+        type: 'LOGIN',
+        payload,
     };
 }
 
-export function authSuccess(data) {
+export function login_success(payload) {
     return {
-        type: actionTypes.AUTH_SUCCESS,
-        payload: data,
+        type: 'LOGIN_SUCCESS',
+        payload,
     };
 }
 
-export function authFailure() {
+export function login_fail(payload) {
     return {
-        type: actionTypes.AUTH_FAILURE,
+        type: 'LOGIN_FAIL',
+        payload,
     };
 }
 
-export function logout(email) {
+export function logout(payload) {
     return {
-        type: actionTypes.LOGOUT,
-        email,
-    };
-}
-
-export function logoutSuccess(data) {
-    return {
-        type: actionTypes.LOGOUT_SUCCESS,
-        payload: data,
-    };
-}
-
-export function logoutFailure() {
-    return {
-        type: actionTypes.LOGOUT_FAILURE,
+        type: 'LOGOUT',
+        payload,
     };
 }

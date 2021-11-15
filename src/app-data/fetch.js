@@ -1,5 +1,7 @@
+import { Configs } from 'app-configs';
+import { ACTION_TYPE } from 'app-configs';
 import axios from 'axios';
-import { ACTION_TYPE, Configs } from 'app-configs/index.js';
+import Cookies from 'js-cookie';
 
 let token = '';
 
@@ -11,15 +13,7 @@ export const getOptions = (options) => {
         ...options,
     };
 
-    if (!token) {
-        const source = localStorage.getItem('token');
-        // const source = sessionStorage.getItem("token");
-
-        if (source) {
-            token = JSON.parse(source).value;
-        }
-    }
-
+    const token = Cookies.get('token');
     if (token) {
         opts.headers.Authorization = 'Bearer ' + token;
     }

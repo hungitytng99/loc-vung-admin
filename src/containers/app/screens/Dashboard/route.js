@@ -6,6 +6,7 @@ import { initModules } from 'router/index';
 export default {
     path: MODULES.dashboardModule.route,
     exact: true,
+    isPrivate: true,
     component: lazy(async () => {
         await initModules([MODULES.dashboardModule], 'app');
         return import('.');

@@ -7,6 +7,7 @@ import CreatePost from './components/CreatePost/CreatePost';
 export default {
     path: MODULES.postModule.route,
     exact: true,
+    isPrivate: true,
     component: lazy(async () => {
         await initModules([MODULES.postModule], 'app');
         return import('.');

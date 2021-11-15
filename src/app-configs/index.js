@@ -9,9 +9,10 @@ import {
     ShoppingCartOutlined,
     DashboardOutlined,
 } from '@ant-design/icons';
-
+// SWAGGER:
+// http://locvungshop.southeastasia.cloudapp.azure.com:4000/api-docs/
 export const Configs = {
-    BASE_API: '',
+    BASE_API: 'http://locvungshop.southeastasia.cloudapp.azure.com:4000/api/v1',
     DOMAIN: '',
 
     CURRENT_PAGE: 1,
@@ -26,6 +27,15 @@ export const REQUEST_STATE = {
     SUCCESS: 'SUCCESS',
 };
 export const I18LANGUAGE = 'i18nextLng';
+
+export const ACTION_TYPE = {
+    CREATE: 'CREATE',
+    LIST: 'LIST',
+    VIEW: 'VIEW',
+    DELETE: 'DELETE',
+    UPDATE: 'UPDATE',
+    UNMOUNT: 'UNMOUNT',
+};
 
 // 1. UI flow: add router
 export const MODULES = {

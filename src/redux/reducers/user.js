@@ -1,50 +1,26 @@
-import { actionTypes } from '../actions/user';
+import Cookies from 'js-cookie';
+import { logout } from 'redux/actions/user';
+import { login_success } from 'redux/actions/user';
 
 const defaultState = {
-    isAuthenticated: true,
-    isAuthRequesting: false,
+    profile: null,
 };
-export default (state = defaultState, action) => {
-    switch (action.type) {
-        case actionTypes.AUTH: {
-            return {
-                ...state,
-                isAuthRequesting: true,
-            };
-        }
-        case actionTypes.AUTH_SUCCESS: {
-            return {
-                ...state,
-                isAuthenticated: true,
-                ...action.payload,
-                isAuthRequesting: false,
-            };
-        }
-        case actionTypes.AUTH_FAILURE: {
-            return {
-                ...state,
-                isAuthenticated: false,
-                isAuthRequesting: false,
-            };
-        }
 
-        case actionTypes.LOGOUT: {
+export default function userReducer(state = defaultState, action) {
+    switch (action.type) {
+        case login_success().type: {
             return {
                 ...state,
+                profile: action.payload,
             };
         }
-        case actionTypes.LOGOUT_SUCCESS: {
+        case logout().type: {
+            Cookies.remove('token');
             return {
-                ...state,
-                isAuthenticated: false,
-            };
-        }
-        case actionTypes.LOGOUT_FAILURE: {
-            return {
-                ...state,
+                profile: null,
             };
         }
         default:
             return state;
     }
-};
+}
