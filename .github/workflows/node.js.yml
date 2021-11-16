@@ -1,0 +1,28 @@
+name: Loc vung admin CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    strategy:
+          matrix:
+            node-version: [16.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - uses: appleboy/ssh-action@main
+      with: 
+        host: http://locvungshop.southeastasia.cloudapp.azure.com/
+        username: azureuser
+        key: ${{ secrets.LOC_VUNG_SERVER }}
+        port: 22
+        script: |
+          ls -la
