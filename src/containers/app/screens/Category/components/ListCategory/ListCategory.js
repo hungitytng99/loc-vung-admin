@@ -9,6 +9,7 @@ import {
     SearchOutlined,
     LoadingOutlined,
     RiseOutlined,
+    ConsoleSqlOutlined,
 } from '@ant-design/icons';
 import 'containers/app/screens/Category/components/ListCategory/ListCategory.sass';
 import { Link } from 'react-router-dom';
@@ -16,6 +17,7 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import Moment from 'react-moment';
 import moment from 'moment';
+import { apiListProduct } from 'app-data/product';
 const { Search } = Input;
 
 function ListCategory(props) {
@@ -36,7 +38,23 @@ function ListCategory(props) {
             ...params,
         };
     }
-
+    // useEffect(() => {
+    //     (async () => {
+    //         const response = await apiListProduct({
+    //             limmit: 1,
+    //             offset: 1,
+    //         });
+    //         console.log(response);
+    //     })();
+    // }, []);
+    useEffect(() => {
+        (async () => {
+            const response = await apiListProduct({
+                id: 1,
+            });
+            console.log('dayla dât:' + response);
+        })();
+    }, []);
     function fetchData(params) {
         setLoading(true);
         reqwest({
