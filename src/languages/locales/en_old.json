@@ -1,8 +1,27 @@
 {
+    "accountSetting": "accountSetting",
+    "action": "action",
+    "addHotProduct": "addHotProduct",
+    "addProduct": "addProduct",
+    "back": "Back",
+    "changePassword": "changePassword",
     "content": "Content",
+    "deleteProduct": "deleteProduct",
+    "discount": "discount",
+    "editProduct": "editProduct",
+    "emailAddress": "Địa chỉ email",
+    "id": "ID",
+    "key": "en",
+    "listProduct": "listProduct",
+    "login": "Đăng nhập",
+    "logout": "logout",
+    "name": "name",
+    "newPrice": "newPrice",
+    "password": "Mật khẩu",
     "post": "Post",
+    "price": "price",
     "product": "Product",
-    "searchProduct": {
-        "": "searchProduct..."
-    }
+    "rememberMe": "Nhớ tài khoản",
+    "searchProduct": "searchProduct",
+    "signIn": "Đăng nhập"
 }

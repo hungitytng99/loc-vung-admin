@@ -13,7 +13,7 @@ export const apiListProduct = async (params) => {
         console.log('error', error);
         return {
             state: REQUEST_STATE.ERROR,
-            data: [],
+            message: error.message,
         };
     }
 };

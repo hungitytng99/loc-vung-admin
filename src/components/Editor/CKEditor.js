@@ -8,7 +8,13 @@ import UploadAdapterPlugin from './UploadAdapterPlugin';
 // import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
 // import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials';
 
-export default function EditorBase({ type = 'classic', placeholder = '', onTextChange, initContent, items = [] }) {
+export default function EditorBase({
+    type = 'classic',
+    placeholder = '',
+    onTextChange,
+    initContent,
+    items = [],
+}) {
     const [showTool, setShowTool] = useState(false);
     const [data, setdata] = useState('');
     const [isEditorReady, setIsEditorReady] = useState(false);
@@ -46,7 +52,13 @@ export default function EditorBase({ type = 'classic', placeholder = '', onTextC
     }, [initContent, isEditorReady]);
 
     return (
-        <div className={(type == 'inline' && !showTool ? 'hidden-toolbar' : '') + ` ${type}` + ' compose-editor'}>
+        <div
+            className={
+                (type == 'inline' && !showTool ? 'hidden-toolbar' : '') +
+                ` ${type}` +
+                ' compose-editor'
+            }
+        >
             <CKEditor
                 editor={CKEditorVi}
                 key="ckeditor"

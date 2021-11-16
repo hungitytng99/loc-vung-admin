@@ -21,7 +21,7 @@ export const apiRegisterByDevice = async (params) => {
         console.log('error', error);
         return {
             state: REQUEST_STATE.ERROR,
-            data: null,
+            message: error.message,
         };
     }
 };
@@ -45,7 +45,7 @@ export const apiLogin = async (params) => {
         console.log('error', error);
         return {
             state: REQUEST_STATE.ERROR,
-            data: null,
+            message: error.message,
         };
     }
 };
@@ -69,7 +69,7 @@ export const apiProfile = async () => {
         console.log('error', error);
         return {
             state: REQUEST_STATE.ERROR,
-            data: null,
+            message: error.message,
         };
     }
 };

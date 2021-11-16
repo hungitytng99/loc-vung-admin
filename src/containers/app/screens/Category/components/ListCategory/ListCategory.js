@@ -3,7 +3,13 @@ import { Button, Layout, Popconfirm, Space, Table, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 import reqwest from 'reqwest';
 import { numberWithCommas } from 'helpers/format';
-import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
+import {
+    DeleteOutlined,
+    FormOutlined,
+    SearchOutlined,
+    LoadingOutlined,
+    RiseOutlined,
+} from '@ant-design/icons';
 import 'containers/app/screens/Category/components/ListCategory/ListCategory.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
