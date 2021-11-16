@@ -13,6 +13,7 @@
     "id": "ID",
     "key": "vi",
     "listProduct": "listProduct",
+    "login": "Đăng nhập",
     "logout": "logout",
     "name": "name",
     "newPrice": "newPrice",
@@ -20,6 +21,7 @@
     "post": "Bài đăng",
     "price": "price",
     "product": "Sản phẩm",
+    "rememberMe": "Nhớ tài khoản",
     "searchProduct": "Tìm kiếm sản phẩm",
     "signIn": "Đăng nhập"
 }

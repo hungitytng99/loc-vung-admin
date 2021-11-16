@@ -13,6 +13,7 @@
     "id": "ID",
     "key": "vi",
     "listProduct": "listProduct",
+    "login": "Đăng nhập",
     "logout": "logout",
     "name": "name",
     "newPrice": "newPrice",
@@ -20,8 +21,13 @@
     "post": "Bài đăng",
     "price": "price",
     "product": "Sản phẩm",
+    "rememberMe": "Nhớ tài khoản",
     "searchProduct": "Tìm kiếm sản phẩm",
     "signIn": "Đăng nhập",
-    "rememberMe": "Nhớ tài khoản",
-    "login": "Đăng nhập"
+    "loginFail": "Đăng nhập thất bại",
+    "yourEmailOrPasswordIsWrong": "Tài khoản email hoặc mật khẩu không chính xác",
+    "pleaseInputYourEmail": "Vui lòng nhập địa chỉ email của bạn",
+    "pleaseEnterYourEmailAddress": "Nhập địa chỉ email của bạn",
+    "pleaseInputYourPassword": "Vui lòng nhập mật khẩu của bạn",
+    "pleaseEnterYourPassword": "Nhập mật khẩu của bạn"
 }
