@@ -20,7 +20,7 @@ jobs:
         cache: 'npm'
     - uses: appleboy/ssh-action@master
       with: 
-        host: http://locvungshop.southeastasia.cloudapp.azure.com
+        host: locvungshop.southeastasia.cloudapp.azure.com
         username: azureuser
         key: ${{ secrets.LOC_VUNG_SERVER }}
         script: |
