@@ -1,6 +1,6 @@
 import React from 'react';
 import './FullPageLoading.sass';
-import { BugTwoTone, ShopTwoTone } from '@ant-design/icons';
+import { Spin } from 'antd';
 
 function FullPageLoading({ opacity = 1 }) {
     return (
@@ -8,7 +8,7 @@ function FullPageLoading({ opacity = 1 }) {
             className="full-page-loading"
             style={{ backgroundColor: `rgba(255,255,255,${opacity})` }}
         >
-            <BugTwoTone spin style={{ fontSize: '100px' }} />
+            <Spin />
             {/* <ShopTwoTone spin style={{ fontSize: '100px' }}/> */}
         </div>
     );

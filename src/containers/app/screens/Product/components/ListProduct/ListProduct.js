@@ -14,17 +14,23 @@ import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { get_list_product } from '../../actions/action';
+import { apiListProduct } from 'app-data/product';
 const { Search } = Input;
 
 function ListProduct(props) {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
-        pageNumber: 1,
-        productsPerPage: 10,
+        offset: 0,
+        limit: 10,
     });
     const [isSearch, setIsSearch] = useState(false);
+    const product = useSelector((state) => state.product);
 
     function getRandomuserParams(params) {
         return {
@@ -34,6 +40,16 @@ function ListProduct(props) {
         };
     }
 
+    useEffect(() => {
+        (async () => {
+            const response = await apiListProduct({
+                limit: 10,
+                offset: 0,
+            });
+            console.debug('responseXXX: ', response);
+        })();
+    }, []);
+
     function fetchData(params) {
         setLoading(true);
         reqwest({
@@ -42,7 +58,6 @@ function ListProduct(props) {
             type: 'json',
             data: getRandomuserParams(params),
         }).then((response) => {
-            console.log('response: ', response);
             setLoading(false);
             setData(response.data);
             setPagination({
@@ -53,10 +68,7 @@ function ListProduct(props) {
     }
 
     function handleTableChange(pagination, filters, sorter) {
-        console.log('sorter: ', sorter);
-        console.log('filters: ', filters);
         console.log('pagination: ', pagination);
-
         fetchData({
             sortField: sorter.field,
             sortOrder: sorter.order,
@@ -76,6 +88,7 @@ function ListProduct(props) {
 
     useEffect(() => {
         fetchData({ pagination });
+        dispatch(get_list_product({ pagination }));
     }, []);
 
     return (

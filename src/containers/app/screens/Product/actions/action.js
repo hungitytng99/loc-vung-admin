@@ -1,10 +1,62 @@
-export const actionTypes = {
-    SET_CURRENT_PROJECT: 'SET_CURRENT_PROJECT',
-};
-
-export function setCurrentProject(currentProject) {
+export function get_list_product(payload) {
     return {
-        type: actionTypes.SET_CURRENT_PROJECT,
-        payload: currentProject,
+        type: 'GET_LIST_PRODUCT',
+        payload,
+    };
+}
+
+export function get_list_product_success(payload) {
+    return {
+        type: 'GET_LIST_PRODUCT_SUCCESS',
+        payload,
+    };
+}
+
+export function create_product_success(payload) {
+    return {
+        type: 'CREATE_PRODUCT_SUCCESS',
+        payload,
+    };
+}
+
+export function get_product_by_id(payload) {
+    return {
+        type: 'GET_PRODUCT_BY_ID',
+        payload,
+    };
+}
+
+export function get_product_by_id_success(payload) {
+    return {
+        type: 'GET_PRODUCT_BY_ID_SUCCESS',
+        payload,
+    };
+}
+
+export function delete_product(payload) {
+    return {
+        type: 'DELETE_PRODUCT',
+        payload,
+    };
+}
+
+export function delete_product_success(payload) {
+    return {
+        type: 'DELETE_PRODUCT_SUCCESS',
+        payload,
+    };
+}
+
+export function update_product(payload) {
+    return {
+        type: 'UPDATE_PRODUCT',
+        payload,
+    };
+}
+
+export function update_product_success(payload) {
+    return {
+        type: 'UPDATE_PRODUCT_SUCCESS',
+        payload,
     };
 }
