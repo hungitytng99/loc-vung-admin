@@ -13,7 +13,11 @@ function* handleLogin({ type, payload }) {
             Cookies.set('token', response.data.token, { secure: true });
             yield put(login_success(response.data));
         } else {
-            yield put(login_fail(response.data));
+            let errMessage = 'yourEmailOrPasswordIsWrong';
+            if (response.message.includes('Network Error')) {
+                errMessage = 'ourServerIsStoppingForMaintenance';
+            }
+            yield put(login_fail(errMessage));
         }
     } catch (error) {
         console.log('error: ', error);

@@ -6,6 +6,7 @@ import PrivateRoute from 'router/PrivateRoute';
 import PublicRoute from 'router/PublicRoute';
 import { appRoutes } from 'router/index';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import { Route } from 'react-router-dom';
 
 function AppRoute() {
     return (
@@ -36,6 +37,7 @@ function AppRoute() {
                                 );
                         },
                     )}
+                    <Route path="*" component={<div> is developing</div>} />
                 </Switch>
             </Suspense>
         </AdminLayout>

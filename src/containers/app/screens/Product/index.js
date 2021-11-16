@@ -7,14 +7,6 @@ import ListProduct from './components/ListProduct/ListProduct';
 import { childRoutes } from './route';
 const Product = (props) => {
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(
-            login({
-                email: 'admin@locvung.com',
-                password: 'admin',
-            }),
-        );
-    }, []);
     return (
         <Suspense fallback={<Spin />}>
             <Switch>

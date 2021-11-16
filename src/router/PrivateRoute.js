@@ -13,14 +13,13 @@ function PrivateRoute({ component: Component, location, ...rest }) {
     useEffect(() => {
         (async () => {
             const accessToken = Cookies.get('token');
-            console.log('accessToken: ', accessToken);
+            console.debug('accessToken: ', accessToken);
             if (accessToken) {
                 const res = await apiProfile();
                 if (res.state === REQUEST_STATE.SUCCESS) {
                     dispatch(login_success(res.data));
                     setIsAuth(1);
                 } else if (res.state === REQUEST_STATE.ERROR) {
-                    console.log('logout');
                     dispatch(logout());
                     setIsAuth(2);
                 }

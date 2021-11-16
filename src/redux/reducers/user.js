@@ -7,12 +7,18 @@ import { login_success } from 'redux/actions/user';
 
 const defaultState = {
     profile: null,
-    authState: null,
+    isRequestAuth: null,
+    errorMessageKey: '',
 };
 
 export default function userReducer(state = defaultState, action) {
     switch (action.type) {
         case login().type: {
+            if (action.payload?.remember && action.payload.email) {
+                localStorage.setItem('rememberUser', JSON.stringify(action.payload));
+            } else if (localStorage.getItem('rememberUser') !== null) {
+                localStorage.removeItem('rememberUser');
+            }
             return {
                 ...state,
                 authState: REQUEST_STATE.REQUEST,
@@ -29,6 +35,7 @@ export default function userReducer(state = defaultState, action) {
             return {
                 ...state,
                 authState: REQUEST_STATE.ERROR,
+                errorMessageKey: action.payload,
             };
         }
         case logout().type: {

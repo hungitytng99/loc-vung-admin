@@ -29,7 +29,7 @@ export default function Login() {
             notification.error({
                 duration: 2,
                 message: t('loginFail'),
-                description: t('yourEmailOrPasswordIsWrong'),
+                description: t(user.errorMessageKey),
             });
         }
     }, [user.authState]);
@@ -40,10 +40,7 @@ export default function Login() {
                 <div className={styles.loginFormSignIn}>{t('signIn')}</div>
                 <Form
                     name="basic"
-                    initialValues={{
-                        email: 'admin@locvung.com',
-                        password: 'admin',
-                    }}
+                    initialValues={JSON.parse(localStorage.getItem('rememberUser'))}
                     onFinish={onFinish}
                     autoComplete="off"
                 >

@@ -91,18 +91,20 @@ function AdminLayout(props) {
                         }}
                         defaultSelectedKeys={['nothing']}
                     >
-                        <Menu.Item key={localStorage.getItem(I18LANGUAGE)}>
+                        <Menu.Item
+                            onClick={({ domEvent }) => {
+                                domEvent.preventDefault();
+                                const lng =
+                                    localStorage.getItem(I18LANGUAGE) === 'vi' ? 'en' : 'vi';
+                                localStorage.setItem(I18LANGUAGE, lng);
+                                i18n.changeLanguage(lng);
+                            }}
+                            key={localStorage.getItem(I18LANGUAGE)}
+                        >
                             <div
                                 style={{
                                     display: 'block',
                                     textAlign: 'center',
-                                }}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    const lng =
-                                        localStorage.getItem(I18LANGUAGE) === 'vi' ? 'en' : 'vi';
-                                    localStorage.setItem(I18LANGUAGE, lng);
-                                    i18n.changeLanguage(lng);
                                 }}
                             >
                                 <span style={{ color: '#fff' }}>{t('key')}</span>
