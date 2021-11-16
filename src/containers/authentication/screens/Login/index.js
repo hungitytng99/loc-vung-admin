@@ -1,4 +1,5 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, notification, Spin } from 'antd';
+import { REQUEST_STATE } from 'app-configs';
 import { isEmptyValue } from 'helpers/check';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +11,7 @@ import styles from './Login.module.sass';
 export default function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const authState = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user);
     const { t } = useTranslation();
 
     const onFinish = (values) => {
@@ -18,10 +19,20 @@ export default function Login() {
     };
 
     useEffect(() => {
-        if (!isEmptyValue(authState.profile?.token)) {
+        if (!isEmptyValue(user.profile?.token)) {
             history.push('/');
         }
-    }, [authState.profile, history]);
+    }, [user.profile, history]);
+
+    useEffect(() => {
+        if (user.authState == REQUEST_STATE.ERROR) {
+            notification.error({
+                duration: 2,
+                message: t('loginFail'),
+                description: t('yourEmailOrPasswordIsWrong'),
+            });
+        }
+    }, [user.authState]);
 
     return (
         <div className={styles.login}>
@@ -47,7 +58,11 @@ export default function Login() {
                             },
                         ]}
                     >
-                        <Input className={styles.loginFormInput} placeholder={t('emailAddress')} />
+                        <Input
+                            placeholder={t('pleaseEnterYourEmailAddress')}
+                            className={styles.loginFormInput}
+                            placeholder={t('emailAddress')}
+                        />
                     </Form.Item>
                     <div className={styles.loginFormLabel}>{t('password')}</div>
                     <Form.Item
@@ -60,7 +75,10 @@ export default function Login() {
                             },
                         ]}
                     >
-                        <Input.Password className={styles.loginFormInput} />
+                        <Input.Password
+                            placeholder={t('pleaseEnterYourPassword')}
+                            className={styles.loginFormInput}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -81,8 +99,13 @@ export default function Login() {
                             span: 24,
                         }}
                     >
-                        <Button style={{ width: '100%' }} type="primary" htmlType="submit">
-                            {t('login')}
+                        <Button
+                            disabled={user.authState === REQUEST_STATE.REQUEST}
+                            style={{ width: '100%' }}
+                            type="primary"
+                            htmlType="submit"
+                        >
+                            {user.authState === REQUEST_STATE.REQUEST ? <Spin /> : t('login')}
                         </Button>
                     </Form.Item>
                 </Form>
