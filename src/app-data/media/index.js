@@ -54,7 +54,7 @@ export const apiGetProductById = async (id) => {
 
 export const apiCreateProduct = async (params) => {
     try {
-        const response = await POST('/products/', params, { isFullPath: false });
+        const response = await POST('/products/' + params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -70,7 +70,7 @@ export const apiCreateProduct = async (params) => {
 
 export const apiUpdateProduct = async (id, params) => {
     try {
-        const response = await PUT('/products/' + id, params, { isFullPath: false });
+        const response = await POST('/products/' + id, params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

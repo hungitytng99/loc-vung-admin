@@ -17,5 +17,4 @@ function AddHotCategory(props) {
         </div>
     );
 }
-
 export default AddHotCategory;
