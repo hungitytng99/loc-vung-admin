@@ -38,7 +38,12 @@ export const GET = (path, params, options = {}) => {
                   if (Array.isArray(valueParam)) {
                       // TODO with "all" value;
                       adjustParam = valueParam
-                          .map((paramDetail) => `${key}=${encodeURIComponent(paramDetail != 'all' ? paramDetail : '')}`)
+                          .map(
+                              (paramDetail) =>
+                                  `${key}=${encodeURIComponent(
+                                      paramDetail != 'all' ? paramDetail : '',
+                                  )}`,
+                          )
                           .join('&');
                   } else {
                       // TODO with "all" value;
@@ -50,7 +55,9 @@ export const GET = (path, params, options = {}) => {
               .join('&')
         : '';
 
-    const _url = (options.isFullPath ? path : Configs.BASE_API + path) + (_params === '' ? '' : '?' + _params);
+    const _url =
+        (options.isFullPath ? path : Configs.BASE_API + path) +
+        (_params === '' ? '' : '?' + _params);
 
     const _options = getOptions(options);
 

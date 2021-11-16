@@ -3,7 +3,13 @@ import { Button, Layout, Popconfirm, Space, Table, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 import reqwest from 'reqwest';
 import { numberWithCommas } from 'helpers/format';
-import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
+import {
+    DeleteOutlined,
+    FormOutlined,
+    SearchOutlined,
+    LoadingOutlined,
+    RiseOutlined,
+} from '@ant-design/icons';
 import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
@@ -115,7 +121,10 @@ function ListProduct(props) {
                                         className="list-product__action-edit text-grey-300"
                                         title={t('editProduct')}
                                     >
-                                        <Link style={{ display: 'block' }} to={`/product/edit-product/${record.id}`}>
+                                        <Link
+                                            style={{ display: 'block' }}
+                                            to={`/product/edit-product/${record.id}`}
+                                        >
                                             <FormOutlined />
                                         </Link>
                                     </Tooltip>

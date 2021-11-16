@@ -7,7 +7,6 @@ import 'antd/dist/antd.css';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'redux/actions/user';
-import { isEmptyValue } from 'helpers/check';
 import { useHistory } from 'react-router';
 
 const { Header } = Layout;
@@ -33,7 +32,11 @@ function AdminHeader({ collapseSider, handleCollapse }) {
     return (
         <Header
             className="header"
-            style={collapseSider ? { left: `${sliderWidth.collapse}px` } : { left: `${sliderWidth.normal}px` }}
+            style={
+                collapseSider
+                    ? { left: `${sliderWidth.collapse}px` }
+                    : { left: `${sliderWidth.normal}px` }
+            }
         >
             <div className="header__bars" onClick={handleCollapse}>
                 <BarsOutlined />
@@ -41,7 +44,10 @@ function AdminHeader({ collapseSider, handleCollapse }) {
             <div className="header__right">
                 <div className="header__right-notify">
                     <Badge dot={true}>
-                        <BellOutlined className="notify__icon" style={{ fontSize: '20px', color: '#646464' }} />
+                        <BellOutlined
+                            className="notify__icon"
+                            style={{ fontSize: '20px', color: '#646464' }}
+                        />
                     </Badge>
                 </div>
                 <Dropdown
@@ -60,7 +66,9 @@ function AdminHeader({ collapseSider, handleCollapse }) {
                             </Menu.Item>
                             <Divider style={{ margin: '2px' }} />
                             <Menu.Item onClick={handleLogout}>
-                                <div style={{ fontWeight: '550', color: '#666' }}>{t('logout')}</div>
+                                <div style={{ fontWeight: '550', color: '#666' }}>
+                                    {t('logout')}
+                                </div>
                             </Menu.Item>
                         </Menu>
                     }

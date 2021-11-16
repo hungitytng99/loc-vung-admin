@@ -3,7 +3,6 @@ import React, { Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { login } from 'redux/actions/user';
-import CreateProduct from './components/CreateProduct/CreateProduct';
 import ListProduct from './components/ListProduct/ListProduct';
 import { childRoutes } from './route';
 const Product = (props) => {

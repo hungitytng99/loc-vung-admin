@@ -22,10 +22,20 @@ function App() {
             <Suspense fallback={<Spin></Spin>}>
                 <Switch>
                     {listAppRoutes.map(({ path, exactContainer = true }) => (
-                        <Route path={path} render={() => <AppRoute />} key={path} exact={exactContainer} />
+                        <Route
+                            path={path}
+                            render={() => <AppRoute />}
+                            key={path}
+                            exact={exactContainer}
+                        />
                     ))}
                     {listAuthenticationRoutes.map(({ path, exactContainer = true }) => (
-                        <Route path={path} render={() => <AuthenticationRoute />} key={path} exact={exactContainer} />
+                        <Route
+                            path={path}
+                            render={() => <AuthenticationRoute />}
+                            key={path}
+                            exact={exactContainer}
+                        />
                     ))}
                     <Redirect from="*" to="/auth/login" />
                 </Switch>

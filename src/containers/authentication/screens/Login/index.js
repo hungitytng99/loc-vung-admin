@@ -1,15 +1,17 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 import { isEmptyValue } from 'helpers/check';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { login } from 'redux/actions/user';
-import './Login.sass';
+import styles from './Login.module.sass';
 
 export default function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
     const authState = useSelector((state) => state.user);
+    const { t } = useTranslation();
 
     const onFinish = (values) => {
         dispatch(login(values));
@@ -22,16 +24,11 @@ export default function Login() {
     }, [authState.profile, history]);
 
     return (
-        <div className="login">
-            <div className="login__form">
+        <div className={styles.login}>
+            <div className={styles.loginForm}>
+                <div className={styles.loginFormSignIn}>{t('signIn')}</div>
                 <Form
                     name="basic"
-                    labelCol={{
-                        span: 8,
-                    }}
-                    wrapperCol={{
-                        span: 16,
-                    }}
                     initialValues={{
                         email: 'admin@locvung.com',
                         password: 'admin',
@@ -39,32 +36,31 @@ export default function Login() {
                     onFinish={onFinish}
                     autoComplete="off"
                 >
+                    <div className={styles.loginFormLabel}>{t('emailAddress')}</div>
                     <Form.Item
-                        label="Email"
                         name="email"
-                        style={{ marginBottom: '10px' }}
+                        style={{ marginBottom: '10px', display: 'flex' }}
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your email!',
+                                message: t('pleaseInputYourEmail'),
                             },
                         ]}
                     >
-                        <Input />
+                        <Input className={styles.loginFormInput} placeholder={t('emailAddress')} />
                     </Form.Item>
-
+                    <div className={styles.loginFormLabel}>{t('password')}</div>
                     <Form.Item
-                        label="Password"
                         name="password"
                         style={{ marginBottom: '10px' }}
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your password!',
+                                message: t('pleaseInputYourPassword'),
                             },
                         ]}
                     >
-                        <Input.Password />
+                        <Input.Password className={styles.loginFormInput} />
                     </Form.Item>
 
                     <Form.Item
@@ -72,21 +68,21 @@ export default function Login() {
                         valuePropName="checked"
                         style={{ marginBottom: '8px' }}
                         wrapperCol={{
-                            offset: 9,
-                            span: 10,
+                            offset: 0,
+                            span: 24,
                         }}
                     >
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox className={styles.rememberMe}>{t('rememberMe')}</Checkbox>
                     </Form.Item>
 
                     <Form.Item
                         wrapperCol={{
-                            offset: 10,
-                            span: 16,
+                            offset: 0,
+                            span: 24,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
-                            Login
+                        <Button style={{ width: '100%' }} type="primary" htmlType="submit">
+                            {t('login')}
                         </Button>
                     </Form.Item>
                 </Form>

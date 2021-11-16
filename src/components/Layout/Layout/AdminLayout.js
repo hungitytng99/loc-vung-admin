@@ -20,7 +20,9 @@ export const sliderWidth = {
 function AdminLayout(props) {
     const { children } = props;
     const { t } = useTranslation();
-    const [collapseSider, setCollapseSider] = useState(localStorage.getItem(LOCAL_STORAGE.collapseSider) === 'true');
+    const [collapseSider, setCollapseSider] = useState(
+        localStorage.getItem(LOCAL_STORAGE.collapseSider) === 'true',
+    );
     const history = useHistory();
 
     function getMainPathName(history) {
@@ -47,7 +49,11 @@ function AdminLayout(props) {
                 collapsedWidth={sliderWidth.collapse}
             >
                 <div className="flex-col-between" style={{ height: 'calc( 100vh - 45px )' }}>
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={[getMainPathName(history)]}>
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={[getMainPathName(history)]}
+                    >
                         <Link to={'/'} style={{ display: 'block', padding: '8px' }}>
                             <Image
                                 className="icon-home-page"
@@ -63,7 +69,11 @@ function AdminLayout(props) {
                         {Object.keys(MODULES).map((key) => {
                             if (MODULES[key].displayOnSidebar) {
                                 return (
-                                    <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
+                                    <Menu.Item
+                                        key={MODULES[key].route}
+                                        className="menu-hover"
+                                        icon={MODULES[key].icon}
+                                    >
                                         <Link to={MODULES[key].route} style={{ color: '#fff' }}>
                                             {t(MODULES[key].key)}
                                         </Link>
@@ -89,7 +99,8 @@ function AdminLayout(props) {
                                 }}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    const lng = localStorage.getItem(I18LANGUAGE) === 'vi' ? 'en' : 'vi';
+                                    const lng =
+                                        localStorage.getItem(I18LANGUAGE) === 'vi' ? 'en' : 'vi';
                                     localStorage.setItem(I18LANGUAGE, lng);
                                     i18n.changeLanguage(lng);
                                 }}
@@ -101,7 +112,6 @@ function AdminLayout(props) {
                 </div>
             </Sider>
             <Layout
-                className="site-layout"
                 style={
                     collapseSider
                         ? { marginLeft: `${sliderWidth.collapse}px` }

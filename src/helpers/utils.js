@@ -3,5 +3,8 @@ export function convertHtmlToMention(str = '') {
 }
 
 export function converMentionToHTML(str = '') {
-    return str.replace(/{\*mention-(.*?)-mention\*}/g, '<span class="mention" data-mention="@$1">@$1</span>');
+    return str.replace(
+        /{\*mention-(.*?)-mention\*}/g,
+        '<span class="mention" data-mention="@$1">@$1</span>',
+    );
 }

@@ -5,6 +5,7 @@
     "addProduct": "addProduct",
     "back": "Back",
     "changePassword": "changePassword",
+    "content": "Content",
     "deleteProduct": "deleteProduct",
     "discount": "discount",
     "editProduct": "editProduct",
@@ -14,6 +15,13 @@
     "logout": "logout",
     "name": "name",
     "newPrice": "newPrice",
+    "post": "Post",
     "price": "price",
-    "searchProduct": "searchProduct"
+    "product": "Product",
+    "searchProduct": "searchProduct",
+    "signIn": "Đăng nhập",
+    "rememberMe": "Nhớ tài khoản",
+    "login": "Đăng nhập",
+    "emailAddress": "Địa chỉ email",
+    "password": "Mật khẩu"
 }
