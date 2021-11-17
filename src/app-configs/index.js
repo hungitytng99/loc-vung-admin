@@ -15,7 +15,7 @@ export const Configs = {
     BASE_API:
         process.env.REACT_APP_ENV === 'develop'
             ? 'http://locvungshop.southeastasia.cloudapp.azure.com:4000/api/v1'
-            : 'https://locvungshop.southeastasia.cloudapp.azure.com:4000/api/v1',
+            : 'https://locvungshop.southeastasia.cloudapp.azure.com/api/v1',
     DOMAIN: '',
 
     CURRENT_PAGE: 1,
