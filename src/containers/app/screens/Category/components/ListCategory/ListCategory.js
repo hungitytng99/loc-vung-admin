@@ -18,6 +18,8 @@ import { Input } from 'antd';
 import Moment from 'react-moment';
 import moment from 'moment';
 import { apiListProduct } from 'app-data/product';
+import { apiListArticles } from 'app-data/articles';
+import { apiGetArticlesById } from 'app-data/articles';
 const { Search } = Input;
 
 function ListCategory(props) {
@@ -38,23 +40,7 @@ function ListCategory(props) {
             ...params,
         };
     }
-    // useEffect(() => {
-    //     (async () => {
-    //         const response = await apiListProduct({
-    //             limmit: 1,
-    //             offset: 1,
-    //         });
-    //         console.log(response);
-    //     })();
-    // }, []);
-    useEffect(() => {
-        (async () => {
-            const response = await apiListProduct({
-                id: 1,
-            });
-            console.log('dayla dât:' + response);
-        })();
-    }, []);
+
     function fetchData(params) {
         setLoading(true);
         reqwest({
@@ -104,6 +90,25 @@ function ListCategory(props) {
         console.log('pagination: ', pagination);
     }, [pagination]);
 
+    // test api
+    useEffect(() => {
+        (async () => {
+            const response = await apiListArticles({
+                limmit: 1,
+                offset: 1,
+            });
+            console.log('funtion 2:' + response);
+        })();
+    }, []);
+    useEffect(() => {
+        (async () => {
+            const response = await apiGetArticlesById({
+                id: 1,
+            });
+            console.log('funtion 2:' + response);
+        })();
+    }, []);
+    // end test
     return (
         <div className="list-category">
             <Table

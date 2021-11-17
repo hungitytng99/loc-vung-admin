@@ -1,25 +1,9 @@
 import { REQUEST_STATE } from 'app-configs/index.js';
 import { GET, POST, DELETE, PUT } from 'app-data/fetch';
-// Data Flow: Step 1
 
-export const apiCreateProduct = async (params) => {
+export const apiCreateOrder = async (params) => {
     try {
-        const response = await POST('/products/', params, { isFullPath: false });
-        return {
-            state: REQUEST_STATE.SUCCESS,
-            data: response.result,
-        };
-    } catch (error) {
-        console.log('error', error);
-        return {
-            state: REQUEST_STATE.ERROR,
-            message: error.message,
-        };
-    }
-};
-export const apiListProduct = async (params) => {
-    try {
-        const response = await GET('/products/', params, { isFullPath: false });
+        const response = await POST('/orders/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -33,9 +17,9 @@ export const apiListProduct = async (params) => {
     }
 };
 
-export const apiGetProductById = async (id) => {
+export const apiListOrder = async (params) => {
     try {
-        const response = await GET('/products/' + id, { isFullPath: false });
+        const response = await GET('/orders/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -49,9 +33,9 @@ export const apiGetProductById = async (id) => {
     }
 };
 
-export const apiUpdateProduct = async (id, params) => {
+export const apiGetOrderById = async (id) => {
     try {
-        const response = await PUT('/products/' + id, params, { isFullPath: false });
+        const response = await GET('/orders/' + id, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -65,9 +49,9 @@ export const apiUpdateProduct = async (id, params) => {
     }
 };
 
-export const apiDeleteProduct = async (id) => {
+export const apiGetOrderByUserId = async (userid) => {
     try {
-        const response = await DELETE('/products/' + id, { isFullPath: false });
+        const response = await GET('/users/' + userid + '/orders/', { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
