@@ -65,7 +65,7 @@ function ListProduct(props) {
                         width: '2%',
                     },
                     {
-                        title: t('title'),
+                        title: t('productName'),
                         dataIndex: 'title',
                         width: '40%',
                     },
