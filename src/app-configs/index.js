@@ -12,7 +12,10 @@ import {
 // SWAGGER:
 // http://locvungshop.southeastasia.cloudapp.azure.com:4000/api-docs/
 export const Configs = {
-    BASE_API: 'http://locvungshop.southeastasia.cloudapp.azure.com:4000/api/v1',
+    BASE_API:
+        process.env.REACT_APP_ENV === 'develop'
+            ? 'http://locvungshop.southeastasia.cloudapp.azure.com:4000/api/v1'
+            : 'https://locvungshop.southeastasia.cloudapp.azure.com:4000/api/v1',
     DOMAIN: '',
 
     CURRENT_PAGE: 1,
