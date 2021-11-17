@@ -14,7 +14,7 @@ const defaultState = {
 export default function userReducer(state = defaultState, action) {
     switch (action.type) {
         case login().type: {
-            if (action.payload?.remember && action.payload.email) {
+            if (action.payload.remember && action.payload.email) {
                 localStorage.setItem('rememberUser', JSON.stringify(action.payload));
             } else if (localStorage.getItem('rememberUser') !== null) {
                 localStorage.removeItem('rememberUser');
