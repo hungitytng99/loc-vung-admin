@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import { Layout, Menu, Image } from 'antd';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import 'components/Layout/Layout/AdminLayout.sass';
-import { LOCAL_STORAGE } from 'helpers/localStorage';
 import { I18LANGUAGE } from 'app-configs';
 import AdminHeader from 'components/Layout/Header/AdminHeader';
 import { MODULES } from 'app-configs';
-import { REQUEST_STATE } from 'app-configs';
 const { Sider, Content } = Layout;
 
 export const sliderWidth = {
@@ -21,7 +18,7 @@ function AdminLayout(props) {
     const { children } = props;
     const { t } = useTranslation();
     const [collapseSider, setCollapseSider] = useState(
-        localStorage.getItem(LOCAL_STORAGE.collapseSider) === 'true',
+        localStorage.getItem('collapseSider') === 'true',
     );
     const history = useHistory();
 
@@ -34,7 +31,7 @@ function AdminLayout(props) {
     }
 
     function handleCollapse() {
-        localStorage.setItem(LOCAL_STORAGE.collapseSider, !collapseSider);
+        localStorage.setItem('collapseSider', !collapseSider);
         setCollapseSider(!collapseSider);
     }
 

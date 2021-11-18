@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Layout, Popconfirm, Space, Table, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
-import reqwest from 'reqwest';
 import { numberWithCommas } from 'helpers/format';
 import {
     DeleteOutlined,

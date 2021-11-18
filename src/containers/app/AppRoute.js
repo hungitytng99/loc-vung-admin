@@ -37,7 +37,6 @@ function AppRoute() {
                                 );
                         },
                     )}
-                    <Route path="*" component={<div> is developing</div>} />
                 </Switch>
             </Suspense>
         </AdminLayout>

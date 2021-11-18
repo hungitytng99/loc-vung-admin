@@ -4,7 +4,6 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './EditCategory.sass';
-import { DiAndroid } from 'react-icons/di';
 
 function EditCategory(props) {
     const { t } = useTranslation();

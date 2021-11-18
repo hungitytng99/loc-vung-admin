@@ -1,10 +1,12 @@
 import { REQUEST_STATE } from 'app-configs/index.js';
+import { UPLOAD } from 'app-data/fetch';
 import { GET, POST, DELETE, PUT } from 'app-data/fetch';
 // Data Flow: Step 1
 
-export const apiGetMediaById = async (id) => {
+export const apiUploadFile = async (file) => {
+    console.log('file: ', file);
     try {
-        const response = await GET('/media/' + id, { isFullPath: false });
+        const response = await UPLOAD('/media/', file, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -18,12 +20,12 @@ export const apiGetMediaById = async (id) => {
     }
 };
 
-export const apiCreateMedia = async (params) => {
+export const apiFileById = async (id) => {
     try {
-        const response = await POST('/media/', params, { isFullPath: false });
+        const response = await GET('/media/' + id, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
-            data: response.result,
+            data: response,
         };
     } catch (error) {
         console.log('error', error);
