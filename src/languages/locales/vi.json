@@ -37,7 +37,7 @@
     "listProjectImages": "Danh sách ảnh sản phẩm",
     "login": "Đăng nhập",
     "loginFail": "Đăng nhập thất bại",
-    "logout": "Đăng xuất",
+    "LOGOUT": "Đăng xuất",
     "media": "Ảnh sản phẩm",
     "name": "Tên",
     "password": "Mật khẩu",

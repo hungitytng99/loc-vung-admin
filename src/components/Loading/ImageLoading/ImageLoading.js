@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './ImageLoading.sass';
-import LoadingSpinner from 'assets/images/Spinner-1s-200px.gif';
+import LoadingSpinner from 'assets/images/Spinner-1s-200px.svg';
 function ImageLoading(props) {
     const image = useRef(null);
     const [srcImage, setSrcImage] = useState(LoadingSpinner);

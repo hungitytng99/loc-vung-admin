@@ -37,7 +37,7 @@
     "listProjectImages": "listProjectImages",
     "login": "Login",
     "loginFail": "Đăng nhập thất bại",
-    "logout": "logout",
+    "LOGOUT": "LOGOUT",
     "media": "media",
     "name": "name",
     "password": "Mật khẩu",

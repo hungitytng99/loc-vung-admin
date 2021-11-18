@@ -1,81 +1,88 @@
-export function get_list_product(payload) {
+export function GET_LIST_PRODUCT(payload) {
     return {
         type: 'GET_LIST_PRODUCT',
         payload,
     };
 }
 
-export function get_list_product_success(payload) {
+export function GET_LIST_PRODUCT_SUCCESS(payload) {
     return {
         type: 'GET_LIST_PRODUCT_SUCCESS',
         payload,
     };
 }
 
-export function reset_state_create_product(payload) {
+export function RESET_STATE_CREATE_PRODUCT(payload) {
     return {
         type: 'RESET_STATE_CREATE_PRODUCT',
         payload,
     };
 }
 
-export function create_product(payload) {
+export function CREATE_PRODUCT(payload) {
     return {
         type: 'CREATE_PRODUCT',
         payload,
     };
 }
 
-export function create_product_success(payload) {
+export function CREATE_PRODUCT_SUCCESS(payload) {
     return {
         type: 'CREATE_PRODUCT_SUCCESS',
         payload,
     };
 }
 
-export function create_product_fail(payload) {
+export function CREATE_PRODUCT_FAIL(payload) {
     return {
         type: 'CREATE_PRODUCT_FAIL',
         payload,
     };
 }
 
-export function get_product_by_id(payload) {
+export function GET_PRODUCT_BY_ID(payload) {
     return {
         type: 'GET_PRODUCT_BY_ID',
         payload,
     };
 }
 
-export function get_product_by_id_success(payload) {
+export function GET_PRODUCT_BY_ID_SUCCESS(payload) {
     return {
         type: 'GET_PRODUCT_BY_ID_SUCCESS',
         payload,
     };
 }
 
-export function delete_product(payload) {
+export function DELETE_PRODUCT(payload) {
     return {
         type: 'DELETE_PRODUCT',
         payload,
     };
 }
 
-export function delete_product_success(payload) {
+export function DELETE_PRODUCT_SUCCESS(payload) {
     return {
         type: 'DELETE_PRODUCT_SUCCESS',
         payload,
     };
 }
 
-export function update_product(payload) {
+export function DELETE_PRODUCT_FAIL(payload) {
+    return {
+        type: 'DELETE_PRODUCT_FAIL',
+        payload,
+    };
+}
+
+export function UPDATE_PRODUCT(payload) {
     return {
         type: 'UPDATE_PRODUCT',
         payload,
     };
 }
 
-export function update_product_success(payload) {
+export function UPDATE_PRODUCT_SUCCESS(payload) {
     return {
         type: 'UPDATE_PRODUCT_SUCCESS',
         payload,

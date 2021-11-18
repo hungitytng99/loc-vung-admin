@@ -1,14 +1,24 @@
 import { REQUEST_STATE } from 'app-configs';
 import { apiUploadFile } from 'app-data/media';
+import { apiDeleteProduct } from 'app-data/product';
 import { apiCreateProduct } from 'app-data/product';
+import { apiGetProductById } from 'app-data/product';
 import { apiListProduct } from 'app-data/product';
 import { take, fork, delay, put, takeLatest, call } from 'redux-saga/effects';
+import { NOTIFY_LOADING } from 'redux/actions/notify';
+import { NOTIFY_ERROR } from 'redux/actions/notify';
+import { NOTIFY_SUCCESS } from 'redux/actions/notify';
 import {
-    create_product,
-    create_product_fail,
-    create_product_success,
-    get_list_product,
-    get_list_product_success,
+    CREATE_PRODUCT,
+    CREATE_PRODUCT_FAIL,
+    CREATE_PRODUCT_SUCCESS,
+    DELETE_PRODUCT,
+    DELETE_PRODUCT_FAIL,
+    DELETE_PRODUCT_SUCCESS,
+    GET_LIST_PRODUCT,
+    GET_LIST_PRODUCT_SUCCESS,
+    GET_PRODUCT_BY_ID,
+    GET_PRODUCT_BY_ID_SUCCESS,
 } from './actions/action';
 
 function* getListProduct({ type, payload }) {
@@ -17,7 +27,7 @@ function* getListProduct({ type, payload }) {
         const allProductsResponse = yield call(apiListProduct);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(
-                get_list_product_success({
+                GET_LIST_PRODUCT_SUCCESS({
                     products: response.data,
                     allProducts: allProductsResponse.data,
                 }),
@@ -31,6 +41,7 @@ function* getListProduct({ type, payload }) {
 
 function* createProduct({ type, payload }) {
     try {
+        yield put(NOTIFY_LOADING());
         const listImagesIdUpload = [];
         for (let i = 0; i < payload.media.length; i++) {
             const responseUpload = yield call(apiUploadFile, payload.media[i]);
@@ -45,9 +56,43 @@ function* createProduct({ type, payload }) {
 
         const responseCreate = yield call(apiCreateProduct, newParams);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
-            yield put(create_product_success(responseCreate.data));
+            yield put(CREATE_PRODUCT_SUCCESS(responseCreate.data));
+            yield put(NOTIFY_SUCCESS());
         } else {
-            yield put(create_product_fail());
+            yield put(NOTIFY_ERROR());
+        }
+    } catch (error) {
+        console.log('error: ', error);
+    }
+}
+
+function* deleteProduct({ type, payload }) {
+    const { id } = payload;
+    try {
+        yield put(NOTIFY_LOADING());
+        const response = yield call(apiDeleteProduct, id);
+        console.log('response: ', response);
+        if (response.state == REQUEST_STATE.SUCCESS) {
+            yield put(DELETE_PRODUCT_SUCCESS(response.data));
+            yield put(NOTIFY_SUCCESS());
+        } else {
+            yield put(NOTIFY_ERROR());
+        }
+    } catch (error) {
+        console.log('error: ', error);
+    }
+}
+
+function* getProductById({ type, payload }) {
+    const { id } = payload;
+    console.log('id: ', id);
+    try {
+        yield put(NOTIFY_LOADING());
+        const response = yield call(apiGetProductById, id);
+        if (response.state == REQUEST_STATE.SUCCESS) {
+            yield put(GET_PRODUCT_BY_ID_SUCCESS(response.data));
+        } else {
+            yield put(NOTIFY_ERROR());
         }
     } catch (error) {
         console.log('error: ', error);
@@ -55,6 +100,8 @@ function* createProduct({ type, payload }) {
 }
 
 export default function* () {
-    yield takeLatest(get_list_product().type, getListProduct);
-    yield takeLatest(create_product().type, createProduct);
+    yield takeLatest(GET_LIST_PRODUCT().type, getListProduct);
+    yield takeLatest(CREATE_PRODUCT().type, createProduct);
+    yield takeLatest(DELETE_PRODUCT().type, deleteProduct);
+    yield takeLatest(GET_PRODUCT_BY_ID().type, getProductById);
 }

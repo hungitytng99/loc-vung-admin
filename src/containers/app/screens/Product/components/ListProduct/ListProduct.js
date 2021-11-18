@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag } from 'antd';
+import {
+    Avatar,
+    Badge,
+    Button,
+    Layout,
+    Popconfirm,
+    Space,
+    Table,
+    Tooltip,
+    Tag,
+    notification,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
     DeleteOutlined,
@@ -14,13 +25,14 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { get_list_product } from '../../actions/action';
+import { DELETE_PRODUCT, GET_LIST_PRODUCT } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import { REQUEST_STATE } from 'app-configs';
 import { PRODUCT_STATUS } from 'app-configs';
 import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 
 function ListProduct(props) {
     const { t } = useTranslation();
@@ -31,6 +43,7 @@ function ListProduct(props) {
     });
     const [isSearch, setIsSearch] = useState(false);
     const products = useSelector((state) => state.product);
+    const notify = useSelector((state) => state.notify);
 
     function handleTableChange(pagina, filters, sorter) {
         setPagination({
@@ -40,7 +53,7 @@ function ListProduct(props) {
             total: products.totalProduct,
         });
         dispatch(
-            get_list_product({
+            GET_LIST_PRODUCT({
                 sortField: sorter.field,
                 sortOrder: sorter.order,
                 pagination: {
@@ -55,7 +68,7 @@ function ListProduct(props) {
     }
 
     function handleDeleteProduct(product) {
-        console.log('product: ', product);
+        dispatch(DELETE_PRODUCT(product));
     }
 
     function onSearch(e) {
@@ -63,7 +76,7 @@ function ListProduct(props) {
         console.log(e.target.value);
     }
     useEffect(() => {
-        dispatch(get_list_product({ pagination }));
+        dispatch(GET_LIST_PRODUCT({ pagination }));
     }, [dispatch]);
 
     useEffect(() => {
@@ -72,6 +85,7 @@ function ListProduct(props) {
 
     return (
         <div className="list-product">
+            {products.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <Table
                 columns={[
                     {
@@ -121,7 +135,7 @@ function ListProduct(props) {
                                 <div className="listProductImages">
                                     {medias.map((media) => {
                                         return (
-                                            <Zoom>
+                                            <Zoom key={media.id}>
                                                 <div
                                                     style={{
                                                         width: '50px',
@@ -170,7 +184,6 @@ function ListProduct(props) {
                                         okText={t('yes')}
                                         cancelText={t('cancel')}
                                         onConfirm={() => {
-                                            console.log('record: ', record);
                                             handleDeleteProduct(record);
                                         }}
                                     >

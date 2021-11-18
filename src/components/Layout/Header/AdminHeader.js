@@ -6,7 +6,7 @@ import { BarsOutlined, BellOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from 'redux/actions/user';
+import { LOGOUT } from 'redux/actions/user';
 import { useHistory } from 'react-router';
 
 const { Header } = Layout;
@@ -18,7 +18,7 @@ function AdminHeader({ collapseSider, handleCollapse }) {
     const history = useHistory();
 
     function handleLogout() {
-        dispatch(logout());
+        dispatch(LOGOUT());
         history.push('/auth/login');
     }
 
@@ -67,7 +67,7 @@ function AdminHeader({ collapseSider, handleCollapse }) {
                             <Divider style={{ margin: '2px' }} />
                             <Menu.Item onClick={handleLogout}>
                                 <div style={{ fontWeight: '550', color: '#666' }}>
-                                    {t('logout')}
+                                    {t('LOGOUT')}
                                 </div>
                             </Menu.Item>
                         </Menu>

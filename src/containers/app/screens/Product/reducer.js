@@ -1,30 +1,35 @@
 import { REQUEST_STATE } from 'app-configs';
 import { combineReducers } from 'redux';
 import {
-    create_product,
-    create_product_fail,
-    create_product_success,
-    get_list_product,
-    get_list_product_success,
-    reset_state_create_product,
+    CREATE_PRODUCT,
+    CREATE_PRODUCT_FAIL,
+    CREATE_PRODUCT_SUCCESS,
+    DELETE_PRODUCT,
+    DELETE_PRODUCT_FAIL,
+    DELETE_PRODUCT_SUCCESS,
+    GET_LIST_PRODUCT,
+    GET_LIST_PRODUCT_SUCCESS,
+    GET_PRODUCT_BY_ID_SUCCESS,
+    RESET_STATE_CREATE_PRODUCT,
 } from './actions/action';
 
 const defaultState = {
-    createProductState: null,
+    requestState: null,
     listProductState: null,
     list: [],
     totalProduct: 0,
+    detail: null,
 };
 
 export default (state = defaultState, action) => {
     switch (action.type) {
-        case get_list_product().type: {
+        case GET_LIST_PRODUCT().type: {
             return {
                 ...state,
                 listProductState: REQUEST_STATE.REQUEST,
             };
         }
-        case get_list_product_success().type: {
+        case GET_LIST_PRODUCT_SUCCESS().type: {
             return {
                 ...state,
                 list: action.payload.products,
@@ -32,28 +37,24 @@ export default (state = defaultState, action) => {
                 totalProduct: action.payload.allProducts.length,
             };
         }
-        case create_product().type: {
+        case CREATE_PRODUCT_SUCCESS().type: {
             return {
                 ...state,
-                createProductState: REQUEST_STATE.REQUEST,
+                requestState: REQUEST_STATE.SUCCESS,
             };
         }
-        case create_product_success().type: {
+        case DELETE_PRODUCT_SUCCESS().type: {
+            let newState = { ...state };
+            newState.list = newState.list.filter((product) => product.id != action.payload.id);
             return {
-                ...state,
-                createProductState: REQUEST_STATE.SUCCESS,
+                ...newState,
+                requestState: REQUEST_STATE.SUCCESS,
             };
         }
-        case create_product_fail().type: {
+        case GET_PRODUCT_BY_ID_SUCCESS().type: {
             return {
                 ...state,
-                createProductState: REQUEST_STATE.ERROR,
-            };
-        }
-        case reset_state_create_product().type: {
-            return {
-                ...state,
-                createProductState: null,
+                detail: action.payload,
             };
         }
         default:

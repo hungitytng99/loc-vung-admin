@@ -4,8 +4,8 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect, Route, useHistory } from 'react-router-dom';
-import { login_success } from 'redux/actions/user';
-import { logout } from 'redux/actions/user';
+import { LOGIN_SUCCESS } from 'redux/actions/user';
+import { LOGOUT } from 'redux/actions/user';
 
 function PrivateRoute({ component: Component, location, ...rest }) {
     const [isAuth, setIsAuth] = useState(0);
@@ -17,10 +17,10 @@ function PrivateRoute({ component: Component, location, ...rest }) {
             if (accessToken) {
                 const res = await apiProfile();
                 if (res.state === REQUEST_STATE.SUCCESS) {
-                    dispatch(login_success(res.data));
+                    dispatch(LOGIN_SUCCESS(res.data));
                     setIsAuth(1);
                 } else if (res.state === REQUEST_STATE.ERROR) {
-                    dispatch(logout());
+                    dispatch(LOGOUT());
                     setIsAuth(2);
                 }
             } else {

@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { login } from 'redux/actions/user';
+import { LOGIN } from 'redux/actions/user';
 import styles from './Login.module.sass';
 
 export default function Login() {
@@ -15,7 +15,7 @@ export default function Login() {
     const { t } = useTranslation();
 
     const onFinish = (values) => {
-        dispatch(login(values));
+        dispatch(LOGIN(values));
     };
 
     useEffect(() => {

@@ -6,25 +6,14 @@ import './CreateProduct.sass';
 import { Form, Input, Button, Select, Upload, Col, Divider, Modal, notification } from 'antd';
 import { PRODUCT_STATUS } from 'app-configs';
 import { PlusOutlined } from '@ant-design/icons';
-import { getBase64 } from 'helpers/media';
-import { getImageWithId } from 'helpers/media';
 import { VALID_IMAGE_TYPES } from 'app-configs';
 import { Configs } from 'app-configs';
 import { useDispatch, useSelector } from 'react-redux';
-import { create_product, reset_state_create_product } from '../../actions/action';
+import { CREATE_PRODUCT } from '../../actions/action';
 import { REQUEST_STATE } from 'app-configs';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 
 const { Option } = Select;
-
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
 
 function CreateProduct(props) {
     const { t } = useTranslation();
@@ -37,10 +26,11 @@ function CreateProduct(props) {
         isShow: false,
     });
     const product = useSelector((state) => state.product);
+    const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
         const params = { ...values, media: productImages, status: t(values.status) };
-        dispatch(create_product(params));
+        dispatch(CREATE_PRODUCT(params));
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -84,28 +74,15 @@ function CreateProduct(props) {
     }
 
     useEffect(() => {
-        if (product.createProductState === REQUEST_STATE.SUCCESS) {
-            notification.success({
-                message: t('createProduct'),
-                description: t('createProductSuccessfully'),
-            });
+        if (notify.requestState === REQUEST_STATE.SUCCESS) {
             form.resetFields();
             setProductImages([]);
-            dispatch(reset_state_create_product());
-        } else if (product.createProductState === REQUEST_STATE.ERROR) {
-            notification.error({
-                message: t('createProduct'),
-                description: t('anErrorOccurWhenCreateproduct'),
-            });
-            dispatch(reset_state_create_product());
         }
-    }, [product.createProductState]);
+    }, [notify.requestState]);
 
     return (
         <div className="create-product">
-            {product.createProductState === REQUEST_STATE.REQUEST && (
-                <FullPageLoading opacity={0.8} />
-            )}
+            {notify.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
                     <Link to="/product">{t('back')}</Link>
