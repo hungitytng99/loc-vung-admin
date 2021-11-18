@@ -16,7 +16,7 @@ export const Configs = {
     DOMAIN: '',
 
     CURRENT_PAGE: 1,
-    FILE_MAXIMUM: 2, //MB
+    FILE_MAXIMUM: 5, //MB
     PAGE_SIZE_20: 20,
     PAGE_SIZE_4: 4,
 };
@@ -37,6 +37,11 @@ export const ACTION_TYPE = {
     UNMOUNT: 'UNMOUNT',
 };
 
+export const PRODUCT_STATUS = [
+    { color: 'green', value: 'available', label: 'Còn hàng' },
+    { color: 'volcano', value: 'unavailable', label: 'Hết hàng' },
+];
+export const VALID_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png'];
 // 1. UI flow: add router
 export const MODULES = {
     dashboardModule: {

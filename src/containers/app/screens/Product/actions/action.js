@@ -12,9 +12,30 @@ export function get_list_product_success(payload) {
     };
 }
 
+export function reset_state_create_product(payload) {
+    return {
+        type: 'RESET_STATE_CREATE_PRODUCT',
+        payload,
+    };
+}
+
+export function create_product(payload) {
+    return {
+        type: 'CREATE_PRODUCT',
+        payload,
+    };
+}
+
 export function create_product_success(payload) {
     return {
         type: 'CREATE_PRODUCT_SUCCESS',
+        payload,
+    };
+}
+
+export function create_product_fail(payload) {
+    return {
+        type: 'CREATE_PRODUCT_FAIL',
         payload,
     };
 }

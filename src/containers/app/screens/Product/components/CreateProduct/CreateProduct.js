@@ -1,23 +1,111 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './CreateProduct.sass';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, notification } from 'antd';
+import { PRODUCT_STATUS } from 'app-configs';
+import { PlusOutlined } from '@ant-design/icons';
+import { getBase64 } from 'helpers/media';
+import { getImageWithId } from 'helpers/media';
+import { VALID_IMAGE_TYPES } from 'app-configs';
+import { Configs } from 'app-configs';
+import { useDispatch, useSelector } from 'react-redux';
+import { create_product, reset_state_create_product } from '../../actions/action';
+import { REQUEST_STATE } from 'app-configs';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+
+const { Option } = Select;
+
+const layout = {
+    labelCol: {
+        span: 8,
+    },
+    wrapperCol: {
+        span: 16,
+    },
+};
 
 function CreateProduct(props) {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const [form] = Form.useForm();
+    const [productImages, setProductImages] = useState([]);
+    const [previewProductStatus, setPreviewProductStatus] = useState({
+        image: '',
+        title: '',
+        isShow: false,
+    });
+    const product = useSelector((state) => state.product);
 
     const onFinish = (values) => {
-        console.log('Success:', values);
+        const params = { ...values, media: productImages, status: t(values.status) };
+        dispatch(create_product(params));
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+
+    function onSelectStatusChange(value) {
+        console.log(value);
+    }
+
+    function handleHidePreviewModal() {
+        setPreviewProductStatus({
+            isShow: false,
+        });
+    }
+
+    function handleRemoveProductImages(file) {
+        const index = productImages.indexOf(file);
+        const newFileList = productImages.slice();
+        newFileList.splice(index, 1);
+        setProductImages(newFileList);
+    }
+
+    function beforeUpload(file) {
+        const isValidImage = VALID_IMAGE_TYPES.includes(file.type);
+        const isValidSize = file.size / 1024 / 1024 < Configs.FILE_MAXIMUM;
+        if (!isValidImage) {
+            notification.error({
+                message: t('uploadError'),
+                description: t('pleaseUploadAValidImageFormat'),
+            });
+        } else if (!isValidSize) {
+            notification.error({
+                message: t('uploadError'),
+                description: t('imageSizeMustSmallerThan5MB'),
+            });
+        } else {
+            setProductImages([...productImages, file]);
+        }
+        return false;
+    }
+
+    useEffect(() => {
+        if (product.createProductState === REQUEST_STATE.SUCCESS) {
+            notification.success({
+                message: t('createProduct'),
+                description: t('createProductSuccessfully'),
+            });
+            form.resetFields();
+            setProductImages([]);
+            dispatch(reset_state_create_product());
+        } else if (product.createProductState === REQUEST_STATE.ERROR) {
+            notification.error({
+                message: t('createProduct'),
+                description: t('anErrorOccurWhenCreateproduct'),
+            });
+            dispatch(reset_state_create_product());
+        }
+    }, [product.createProductState]);
+
     return (
         <div className="create-product">
+            {product.createProductState === REQUEST_STATE.REQUEST && (
+                <FullPageLoading opacity={0.8} />
+            )}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
                     <Link to="/product">{t('back')}</Link>
@@ -27,14 +115,9 @@ function CreateProduct(props) {
                 <Form
                     name="basic"
                     form={form}
-                    // labelCol={{
-                    //   span: 4,
-                    // }}
-                    // wrapperCol={{
-                    //   span: 20,
-                    // }}
                     initialValues={{
                         remember: true,
+                        status: PRODUCT_STATUS[0].value,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -42,59 +125,169 @@ function CreateProduct(props) {
                     layout="inline"
                     size="large"
                 >
-                    <Form.Item
-                        className="create-product__item"
-                        label="Username"
-                        name="username"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your username!',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        className="create-product__item"
-                        label="Username"
-                        name="email"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your username!',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        className="create-product__item"
-                        label="Username"
-                        name="xxx"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your username!',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
+                    <div className="createProductLabel">{t('productInformation')}</div>
+                    <Col span={24}></Col>
+                    <Col span={8}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('productName')}
+                            name="title"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: t('pleaseFillThisField'),
+                                },
+                            ]}
+                        >
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                placeholder={t('enterProductName')}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('description')}
+                            name="description"
+                        >
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                placeholder={t('enterProductDescription')}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('status')}
+                            name="status"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: t('pleaseFillThisField'),
+                                },
+                            ]}
+                        >
+                            <Select
+                                style={{ width: 160 }}
+                                onChange={onSelectStatusChange}
+                                size="middle"
+                            >
+                                {PRODUCT_STATUS.map((productStatus) => {
+                                    return (
+                                        <Option
+                                            key={productStatus.value}
+                                            value={productStatus.value}
+                                        >
+                                            {t(productStatus.value)}
+                                        </Option>
+                                    );
+                                })}
+                            </Select>
+                        </Form.Item>
+                    </Col>
 
-                    <Form.Item
-                        className="create-product__item"
-                        label="Username"
-                        name="xxx"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your username!',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
+                    <Col span={8}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('price')}
+                            name="price"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: t('pleaseFillThisField'),
+                                },
+                            ]}
+                        >
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                type="number"
+                                placeholder={t('enterProductPrice')}
+                            />
+                        </Form.Item>
+                    </Col>
+
+                    <Col span={8}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('comparePrice')}
+                            name="comparePrice"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: t('pleaseFillThisField'),
+                                },
+                            ]}
+                        >
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                type="number"
+                                placeholder={t('enterProductComparePrice')}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('productUrl')}
+                            name="url"
+                        >
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                placeholder={t('enterProductURL')}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('vendorId')}
+                            name="vendorId"
+                        >
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                placeholder={t('enterProductVendor')}
+                            />
+                        </Form.Item>
+                    </Col>
+
+                    <Divider />
+                    <Col span={24}>
+                        <div className="createProductLabel">{t('listProjectImages')}</div>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Item
+                            className="create-product__item"
+                            label={t('media')}
+                            name="media"
+                            rules={[
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value || productImages.length === 0) {
+                                            return Promise.reject(
+                                                new Error(t('youMustUploadAtLeast1Image')),
+                                            );
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Upload
+                                listType="picture-card"
+                                fileList={productImages}
+                                beforeUpload={beforeUpload}
+                                onRemove={handleRemoveProductImages}
+                            >
+                                <div>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                </div>
+                            </Upload>
+                        </Form.Item>
+                    </Col>
+
                     <div className="create-product__submit">
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
@@ -103,6 +296,14 @@ function CreateProduct(props) {
                         </Form.Item>
                     </div>
                 </Form>
+                <Modal
+                    visible={previewProductStatus.isShow}
+                    title={previewProductStatus.title}
+                    footer={null}
+                    onCancel={handleHidePreviewModal}
+                >
+                    <img alt="example" style={{ width: '100%' }} src={previewProductStatus.image} />
+                </Modal>
             </div>
         </div>
     );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Layout, Popconfirm, Space, Table, Tooltip } from 'antd';
+import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { numberWithCommas } from 'helpers/format';
 import {
     DeleteOutlined,
     FormOutlined,
@@ -19,12 +18,13 @@ import { get_list_product } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-const { Search } = Input;
+import { REQUEST_STATE } from 'app-configs';
+import { PRODUCT_STATUS } from 'app-configs';
+import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
 
 function ListProduct(props) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
         offset: 0,
         limit: 10,
@@ -32,12 +32,23 @@ function ListProduct(props) {
     const [isSearch, setIsSearch] = useState(false);
     const products = useSelector((state) => state.product);
 
-    function handleTableChange(pagination, filters, sorter) {
+    function handleTableChange(pagina, filters, sorter) {
+        setPagination({
+            ...pagina,
+            offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
+            limit: pagina.pageSize,
+            total: products.totalProduct,
+        });
         dispatch(
             get_list_product({
                 sortField: sorter.field,
                 sortOrder: sorter.order,
-                pagination,
+                pagination: {
+                    ...pagina,
+                    offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
+                    limit: pagina.pageSize,
+                    total: products.totalProduct,
+                },
                 ...filters,
             }),
         );
@@ -53,7 +64,11 @@ function ListProduct(props) {
     }
     useEffect(() => {
         dispatch(get_list_product({ pagination }));
-    }, []);
+    }, [dispatch]);
+
+    useEffect(() => {
+        setPagination({ ...pagination, total: products.totalProduct });
+    }, [products.totalProduct]);
 
     return (
         <div className="list-product">
@@ -73,7 +88,17 @@ function ListProduct(props) {
                         title: t('status'),
                         dataIndex: 'status',
                         width: '10%',
-                        render: (status) => status,
+                        render: (status) => {
+                            const mapStatus =
+                                PRODUCT_STATUS.find(
+                                    (productStatus) => productStatus.label === status,
+                                ) ?? PRODUCT_STATUS[0];
+                            return (
+                                <Tag color={mapStatus.color} key={mapStatus.label}>
+                                    {mapStatus.label.toUpperCase()}
+                                </Tag>
+                            );
+                        },
                     },
                     {
                         title: t('price'),
@@ -97,12 +122,22 @@ function ListProduct(props) {
                                     {medias.map((media) => {
                                         return (
                                             <Zoom>
-                                                <img
-                                                    key={media.id}
-                                                    src={getImageWithId(media.id)}
-                                                    alt={media.link}
-                                                    className="listProductImagesItem"
-                                                ></img>
+                                                <div
+                                                    style={{
+                                                        width: '50px',
+                                                        height: '50px',
+                                                        overflow: 'hidden',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                    }}
+                                                >
+                                                    <ImageLoading
+                                                        key={media.id}
+                                                        src={getImageWithId(media.id)}
+                                                        alt={media.link}
+                                                        className="listProductImagesItem"
+                                                    ></ImageLoading>
+                                                </div>
                                             </Zoom>
                                         );
                                     })}
@@ -179,7 +214,7 @@ function ListProduct(props) {
                 rowKey={(record) => record.id}
                 dataSource={products.list}
                 pagination={pagination}
-                loading={loading}
+                loading={products.listProductState === REQUEST_STATE.REQUEST}
                 onChange={handleTableChange}
                 bordered
                 scroll={{ x: 1500 }}

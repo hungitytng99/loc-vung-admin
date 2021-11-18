@@ -3,7 +3,7 @@ module.exports = {
     useKeysAsDefaultValue: true,
     locales: ['en', 'vi'],
     output: '../src/languages/locales/$LOCALE.json',
-    input: 'src/**/*.{js,ts,tsx}',
+    input: '**/*.{js,ts,tsx}',
     sort: true,
     lexers: {
         js: ['JsxLexer'],
