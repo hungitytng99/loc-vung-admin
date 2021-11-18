@@ -42,7 +42,7 @@ function ListProduct(props) {
         limit: 10,
     });
     const [isSearch, setIsSearch] = useState(false);
-    const products = useSelector((state) => state.product);
+    const products = useSelector((state) => state.product.list);
     const notify = useSelector((state) => state.notify);
 
     function handleTableChange(pagina, filters, sorter) {
@@ -225,9 +225,9 @@ function ListProduct(props) {
                     </ListHeader>
                 )}
                 rowKey={(record) => record.id}
-                dataSource={products.list}
+                dataSource={products.data}
                 pagination={pagination}
-                loading={products.listProductState === REQUEST_STATE.REQUEST}
+                loading={products.state === REQUEST_STATE.REQUEST}
                 onChange={handleTableChange}
                 bordered
                 scroll={{ x: 1500 }}

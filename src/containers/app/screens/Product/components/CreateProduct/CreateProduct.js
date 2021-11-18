@@ -12,8 +12,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_PRODUCT } from '../../actions/action';
 import { REQUEST_STATE } from 'app-configs';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import { getBase64 } from 'helpers/media';
+import Cookies from 'js-cookie';
 
 const { Option } = Select;
+
+const dummyRequest = ({ file, onSuccess }) => {
+    onSuccess('ok');
+};
 
 function CreateProduct(props) {
     const { t } = useTranslation();
@@ -25,7 +31,7 @@ function CreateProduct(props) {
         title: '',
         isShow: false,
     });
-    const product = useSelector((state) => state.product);
+    const product = useSelector((state) => state.product.create);
     const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
@@ -47,30 +53,38 @@ function CreateProduct(props) {
         });
     }
 
-    function handleRemoveProductImages(file) {
-        const index = productImages.indexOf(file);
-        const newFileList = productImages.slice();
-        newFileList.splice(index, 1);
-        setProductImages(newFileList);
+    // function beforeUpload(file) {
+    //     const isValidImage = VALID_IMAGE_TYPES.includes(file.type);
+    //     const isValidSize = file.size / 1024 / 1024 < Configs.FILE_MAXIMUM;
+    //     if (!isValidImage) {
+    //         notification.error({
+    //             message: t('uploadError'),
+    //             description: t('pleaseUploadAValidImageFormat'),
+    //         });
+    //     } else if (!isValidSize) {
+    //         notification.error({
+    //             message: t('uploadError'),
+    //             description: t('imageSizeMustSmallerThan5MB'),
+    //         });
+    //     } else {
+    //         setProductImages([...productImages, file]);
+    //     }
+    //     return false;
+    // }
+
+    async function handlePreviewProductImage(file) {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewProductStatus({
+            image: file.url || file.preview,
+            isShow: true,
+            title: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+        });
     }
 
-    function beforeUpload(file) {
-        const isValidImage = VALID_IMAGE_TYPES.includes(file.type);
-        const isValidSize = file.size / 1024 / 1024 < Configs.FILE_MAXIMUM;
-        if (!isValidImage) {
-            notification.error({
-                message: t('uploadError'),
-                description: t('pleaseUploadAValidImageFormat'),
-            });
-        } else if (!isValidSize) {
-            notification.error({
-                message: t('uploadError'),
-                description: t('imageSizeMustSmallerThan5MB'),
-            });
-        } else {
-            setProductImages([...productImages, file]);
-        }
-        return false;
+    function handleChangeUploadImage({ fileList }) {
+        setProductImages(fileList);
     }
 
     useEffect(() => {
@@ -82,7 +96,7 @@ function CreateProduct(props) {
 
     return (
         <div className="create-product">
-            {notify.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {product.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
                     <Link to="/product">{t('back')}</Link>
@@ -252,10 +266,12 @@ function CreateProduct(props) {
                             ]}
                         >
                             <Upload
+                                accept="image/*"
+                                onPreview={handlePreviewProductImage}
                                 listType="picture-card"
+                                customRequest={({ onSuccess }) => onSuccess('ok')}
                                 fileList={productImages}
-                                beforeUpload={beforeUpload}
-                                onRemove={handleRemoveProductImages}
+                                onChange={handleChangeUploadImage}
                             >
                                 <div>
                                     <PlusOutlined />

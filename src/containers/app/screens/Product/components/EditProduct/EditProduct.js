@@ -9,9 +9,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PRODUCT_STATUS } from 'app-configs';
 import { PlusOutlined } from '@ant-design/icons';
 import { REQUEST_STATE } from 'app-configs';
-import { GET_PRODUCT_BY_ID, GET_PRODUCT_BY_ID_SUCCESS } from '../../actions/action';
+import {
+    GET_PRODUCT_BY_ID,
+    GET_PRODUCT_BY_ID_SUCCESS,
+    UPDATE_PRODUCT,
+    UPDATE_PRODUCT_SUCCESS_STATE,
+} from '../../actions/action';
 import store from 'redux/index';
 import { getImageWithId } from 'helpers/media';
+import { getBase64 } from 'helpers/media';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 
 const { Option } = Select;
 
@@ -20,6 +27,7 @@ function EditProduct({ match }) {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const history = useHistory();
+    const productId = history.location.pathname.replace('/product/edit-product/', '');
 
     const [productImages, setProductImages] = useState([]);
     const [previewProductStatus, setPreviewProductStatus] = useState({
@@ -27,12 +35,12 @@ function EditProduct({ match }) {
         title: '',
         isShow: false,
     });
-    const product = useSelector((state) => state.product);
+    const product = useSelector((state) => state.product.update);
     const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
         const params = { ...values, media: productImages, status: t(values.status) };
-        dispatch(CREATE_PRODUCT(params));
+        dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -49,53 +57,34 @@ function EditProduct({ match }) {
         });
     }
 
-    function handleRemoveProductImages(file) {
-        const index = productImages.indexOf(file);
-        const newFileList = productImages.slice();
-        newFileList.splice(index, 1);
-        setProductImages(newFileList);
+    async function handlePreviewProductImage(file) {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewProductStatus({
+            image: file.url || file.preview,
+            isShow: true,
+            title: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+        });
     }
 
-    function beforeUpload(file) {
-        console.log('filexxx: ', file);
-        const isValidImage = VALID_IMAGE_TYPES.includes(file.type);
-        const isValidSize = file.size / 1024 / 1024 < Configs.FILE_MAXIMUM;
-        if (!isValidImage) {
-            console.log('IF 1');
-            notification.error({
-                message: t('uploadError'),
-                description: t('pleaseUploadAValidImageFormat'),
-            });
-        } else if (!isValidSize) {
-            console.log('IF 2');
-            notification.error({
-                message: t('uploadError'),
-                description: t('imageSizeMustSmallerThan5MB'),
-            });
-        } else {
-            console.log('ENTER HERE');
-            setProductImages([...productImages, file]);
-        }
-        console.log('ENTER HERE');
-        return false;
+    function handleChangeUploadImage({ fileList }) {
+        setProductImages(fileList);
     }
 
     useEffect(() => {
         dispatch(
             GET_PRODUCT_BY_ID({
-                id: history.location.pathname.replace('/product/edit-product/', ''),
+                id: productId,
             }),
         );
     }, [history.location.pathname]);
-    useEffect(() => {
-        console.log('productImages: ', productImages);
-    }, [productImages]);
 
     useEffect(() => {
-        if (product.detail) {
-            form.setFieldsValue(product.detail);
-            if (product.detail.media.length > 0) {
-                const listProductImages = product.detail.media.map((img) => {
+        if (product.data) {
+            form.setFieldsValue(product.data);
+            if (product.data.media.length > 0) {
+                const listProductImages = product.data.media.map((img) => {
                     return {
                         uid: img.id,
                         name: img.link,
@@ -105,16 +94,18 @@ function EditProduct({ match }) {
                 setProductImages(listProductImages);
             }
         }
-    }, [product.detail]);
+    }, [product.data]);
 
     useEffect(() => {
-        if (notify.requestState === REQUEST_STATE.SUCCESS) {
-            form.resetFields();
-            setProductImages([]);
+        if (product.state === REQUEST_STATE.SUCCESS) {
+            history.push('/product');
+            dispatch(UPDATE_PRODUCT_SUCCESS_STATE());
         }
-    }, [notify.requestState]);
+    }, [product.state]);
+
     return (
         <div className="edit-product">
+            {product.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('editProduct')}>
                 <Button type="primary">
                     <Link to="/product">{t('back')}</Link>
@@ -280,10 +271,12 @@ function EditProduct({ match }) {
                             ]}
                         >
                             <Upload
+                                accept="image/*"
+                                onPreview={handlePreviewProductImage}
                                 listType="picture-card"
+                                customRequest={({ onSuccess }) => onSuccess('ok')}
                                 fileList={productImages}
-                                beforeUpload={beforeUpload}
-                                onRemove={handleRemoveProductImages}
+                                onChange={handleChangeUploadImage}
                             >
                                 <div>
                                     <PlusOutlined />

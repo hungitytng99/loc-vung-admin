@@ -30,7 +30,7 @@ function App() {
             });
             dispatch(RESET_NOTIFY_STATE());
         } else if (notify.requestState === REQUEST_STATE.ERROR) {
-            notification.success({
+            notification.error({
                 message: t('fail'),
             });
         }
