@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Avatar,
-    Badge,
-    Button,
-    Layout,
-    Popconfirm,
-    Space,
-    Table,
-    Tooltip,
-    Tag,
-    notification,
-} from 'antd';
+import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import {
-    DeleteOutlined,
-    FormOutlined,
-    SearchOutlined,
-    LoadingOutlined,
-    RiseOutlined,
-} from '@ant-design/icons';
+import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
 import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
@@ -104,9 +87,8 @@ function ListProduct(props) {
                         width: '10%',
                         render: (status) => {
                             const mapStatus =
-                                PRODUCT_STATUS.find(
-                                    (productStatus) => productStatus.label === status,
-                                ) ?? PRODUCT_STATUS[0];
+                                PRODUCT_STATUS.find((productStatus) => productStatus.value === status) ??
+                                PRODUCT_STATUS[0];
                             return (
                                 <Tag color={mapStatus.color} key={mapStatus.label}>
                                     {mapStatus.label.toUpperCase()}
@@ -171,10 +153,7 @@ function ListProduct(props) {
                                         className="list-product__action-edit text-grey-300"
                                         title={t('editProduct')}
                                     >
-                                        <Link
-                                            style={{ display: 'block' }}
-                                            to={`/product/edit-product/${record.id}`}
-                                        >
+                                        <Link style={{ display: 'block' }} to={`/product/edit-product/${record.id}`}>
                                             <FormOutlined />
                                         </Link>
                                     </Tooltip>

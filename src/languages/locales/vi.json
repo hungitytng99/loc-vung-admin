@@ -43,7 +43,7 @@
     "password": "Mật khẩu",
     "pleaseEnterYourEmailAddress": "Nhập địa chỉ email của bạn",
     "pleaseEnterYourPassword": "Nhập mật khẩu của bạn",
-    "pleaseFillThisField": "Vui lòng điền vào trường này",
+    "thisFieldIsRequired": "Vui lòng điền vào trường này",
     "pleaseInputYourEmail": "Vui lòng nhập địa chỉ email của bạn",
     "pleaseInputYourPassword": "Vui lòng nhập mật khẩu của bạn",
     "pleaseUploadAValidImageFormat": "pleaseUploadAValidImageFormat",

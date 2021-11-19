@@ -5,6 +5,7 @@ import { initModules } from 'router/index';
 import CreateProduct from './components/CreateProduct/CreateProduct';
 import EditProduct from './components/EditProduct/EditProduct';
 import AddHotProduct from './components/AddHotProduct/AddHotProduct';
+import TestComponent from './components/TestComponent/TestComponent';
 
 export default {
     path: MODULES.productModule.route,
@@ -42,6 +43,17 @@ export const childRoutes = [
         exact: true,
         isPrivate: true,
         childComponent: <EditProduct />,
+        component: lazy(async () => {
+            await initModules([MODULES.productModule], 'app');
+            return import('.');
+        }),
+    },
+
+    {
+        path: '/product/test',
+        exact: true,
+        isPrivate: true,
+        childComponent: <TestComponent />,
         component: lazy(async () => {
             await initModules([MODULES.productModule], 'app');
             return import('.');
