@@ -88,6 +88,13 @@ export function UPDATE_PRODUCT_SUCCESS(payload) {
         payload,
     };
 }
+
+export function UPDATE_PRODUCT_FAIL(payload) {
+    return {
+        type: 'UPDATE_PRODUCT_FAIL',
+        payload,
+    };
+}
 export function UPDATE_PRODUCT_SUCCESS_STATE(payload) {
     return {
         type: 'UPDATE_PRODUCT_SUCCESS_STATE',

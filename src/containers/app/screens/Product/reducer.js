@@ -9,6 +9,7 @@ import {
     GET_LIST_PRODUCT_SUCCESS,
     GET_PRODUCT_BY_ID_SUCCESS,
     UPDATE_PRODUCT,
+    UPDATE_PRODUCT_FAIL,
     UPDATE_PRODUCT_SUCCESS,
     UPDATE_PRODUCT_SUCCESS_STATE,
 } from './actions/action';
@@ -89,6 +90,12 @@ export default combineReducers({
                 return {
                     ...state,
                     state: null,
+                };
+            }
+            case UPDATE_PRODUCT_FAIL().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.ERROR,
                 };
             }
             case GET_PRODUCT_BY_ID_SUCCESS().type: {

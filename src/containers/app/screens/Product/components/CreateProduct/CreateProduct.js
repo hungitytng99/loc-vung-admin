@@ -49,7 +49,6 @@ function CreateProduct(props) {
     let addValue = () => {};
 
     const onFinish = (values) => {
-        console.log('values: ', values);
         const params = {
             ...values,
             media: productImages,
@@ -63,7 +62,6 @@ function CreateProduct(props) {
                   })
                 : null,
         };
-        console.log('params: ', params);
         dispatch(CREATE_PRODUCT(params));
     };
 

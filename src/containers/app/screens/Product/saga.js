@@ -21,6 +21,7 @@ import {
     GET_PRODUCT_BY_ID,
     GET_PRODUCT_BY_ID_SUCCESS,
     UPDATE_PRODUCT,
+    UPDATE_PRODUCT_FAIL,
     UPDATE_PRODUCT_SUCCESS,
 } from './actions/action';
 
@@ -99,6 +100,7 @@ function* updateProduct({ type, payload }) {
             yield put(NOTIFY_SUCCESS());
         } else {
             yield put(NOTIFY_ERROR());
+            yield put(UPDATE_PRODUCT_FAIL());
         }
     } catch (error) {
         yield put(NOTIFY_ERROR());
