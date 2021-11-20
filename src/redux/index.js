@@ -8,7 +8,7 @@ import history from 'helpers/history';
 import rootSaga from './saga';
 import createReducer from './reducers';
 import logger from 'redux-logger';
-import { logout } from './actions/user';
+import { LOGOUT } from './actions/user';
 
 const sagaMiddleware = createSagaMiddleware();
 // const _routerMiddleware = routerMiddleware(history);
@@ -30,14 +30,12 @@ function createSagaInjector(runSaga, rootSaga) {
 const store = createStore(
     createReducer(),
     {},
-    composeWithDevTools(
-        applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger),
-    ),
+    composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger)),
 );
 
 store.asyncReducers = {};
 const rootReducer = (state, action) => {
-    if (action.type === logout().type) {
+    if (action.type === LOGOUT().type) {
         state = undefined;
     }
     return createReducer(store.asyncReducers)(state, action);

@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag } from 'antd';
+import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import {
-    DeleteOutlined,
-    FormOutlined,
-    SearchOutlined,
-    LoadingOutlined,
-    RiseOutlined,
-} from '@ant-design/icons';
+import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
 import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { get_list_product } from '../../actions/action';
+import { DELETE_PRODUCT, GET_LIST_PRODUCT, SEARCH_PRODUCT } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import { REQUEST_STATE } from 'app-configs';
 import { PRODUCT_STATUS } from 'app-configs';
 import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 
 function ListProduct(props) {
     const { t } = useTranslation();
@@ -29,41 +24,57 @@ function ListProduct(props) {
         offset: 0,
         limit: 10,
     });
-    const [isSearch, setIsSearch] = useState(false);
-    const products = useSelector((state) => state.product);
+    const [currentFilter, setCurrentFilter] = useState({});
+    const [searchParams, setSearchParams] = useState('');
+    const products = useSelector((state) => state.product.list);
 
     function handleTableChange(pagina, filters, sorter) {
+        console.log('pagina, filters, sorter: ', pagina, filters, sorter);
+        console.log('searchParams: ', searchParams);
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
             limit: pagina.pageSize,
             total: products.totalProduct,
         });
+        setCurrentFilter({
+            sortField: sorter.field,
+            sortOrder: sorter.order,
+            ...filters,
+        });
+
         dispatch(
-            get_list_product({
+            GET_LIST_PRODUCT({
                 sortField: sorter.field,
                 sortOrder: sorter.order,
                 pagination: {
                     ...pagina,
                     offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
                     limit: pagina.pageSize,
-                    total: products.totalProduct,
                 },
+                title: searchParams,
                 ...filters,
             }),
         );
     }
 
     function handleDeleteProduct(product) {
-        console.log('product: ', product);
+        dispatch(DELETE_PRODUCT(product));
     }
 
     function onSearch(e) {
-        setIsSearch(true);
-        console.log(e.target.value);
+        setSearchParams(() => e.target.value);
+        dispatch(
+            SEARCH_PRODUCT({
+                pagination,
+                ...currentFilter,
+                title: e.target.value,
+            }),
+        );
     }
+
     useEffect(() => {
-        dispatch(get_list_product({ pagination }));
+        dispatch(GET_LIST_PRODUCT({ pagination }));
     }, [dispatch]);
 
     useEffect(() => {
@@ -72,6 +83,7 @@ function ListProduct(props) {
 
     return (
         <div className="list-product">
+            {products.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <Table
                 columns={[
                     {
@@ -87,15 +99,19 @@ function ListProduct(props) {
                     {
                         title: t('status'),
                         dataIndex: 'status',
-                        width: '10%',
+                        width: '5%',
+                        filters: PRODUCT_STATUS.map((status) => ({
+                            value: status.value,
+                            text: t(status.value),
+                        })),
+                        filterMultiple: false,
                         render: (status) => {
                             const mapStatus =
-                                PRODUCT_STATUS.find(
-                                    (productStatus) => productStatus.label === status,
-                                ) ?? PRODUCT_STATUS[0];
+                                PRODUCT_STATUS.find((productStatus) => productStatus.value === status) ??
+                                PRODUCT_STATUS[0];
                             return (
-                                <Tag color={mapStatus.color} key={mapStatus.label}>
-                                    {mapStatus.label.toUpperCase()}
+                                <Tag color={mapStatus.color} key={mapStatus.value}>
+                                    {t(mapStatus.value).toLocaleUpperCase()}
                                 </Tag>
                             );
                         },
@@ -103,14 +119,21 @@ function ListProduct(props) {
                     {
                         title: t('price'),
                         dataIndex: 'price',
-                        width: '10%',
+                        sorter: true,
+                        width: '7%',
                         render: (price) => price.formatMoney(),
                     },
                     {
                         title: t('comparePrice'),
                         dataIndex: 'comparePrice',
-                        width: '10%',
+                        width: '7%',
                         render: (price) => price.formatMoney(),
+                    },
+                    {
+                        title: t('stockStatus'),
+                        dataIndex: 'availableNumber',
+                        width: '5%',
+                        render: (availableNumber) => availableNumber ?? 0,
                     },
                     {
                         title: t('productImages'),
@@ -121,7 +144,7 @@ function ListProduct(props) {
                                 <div className="listProductImages">
                                     {medias.map((media) => {
                                         return (
-                                            <Zoom>
+                                            <Zoom key={media.id}>
                                                 <div
                                                     style={{
                                                         width: '50px',
@@ -157,10 +180,7 @@ function ListProduct(props) {
                                         className="list-product__action-edit text-grey-300"
                                         title={t('editProduct')}
                                     >
-                                        <Link
-                                            style={{ display: 'block' }}
-                                            to={`/product/edit-product/${record.id}`}
-                                        >
+                                        <Link style={{ display: 'block' }} to={`/product/edit-product/${record.id}`}>
                                             <FormOutlined />
                                         </Link>
                                     </Tooltip>
@@ -170,7 +190,6 @@ function ListProduct(props) {
                                         okText={t('yes')}
                                         cancelText={t('cancel')}
                                         onConfirm={() => {
-                                            console.log('record: ', record);
                                             handleDeleteProduct(record);
                                         }}
                                     >
@@ -199,7 +218,10 @@ function ListProduct(props) {
                             <Input
                                 size="middle"
                                 placeholder={`${t('searchProduct')}...`}
-                                prefix={isSearch ? <LoadingOutlined /> : <SearchOutlined />}
+                                prefix={
+                                    products.state === REQUEST_STATE.REQUEST ? <LoadingOutlined /> : <SearchOutlined />
+                                }
+                                value={searchParams}
                                 onChange={onSearch}
                             />
                             <Button type="ghost">
@@ -212,9 +234,9 @@ function ListProduct(props) {
                     </ListHeader>
                 )}
                 rowKey={(record) => record.id}
-                dataSource={products.list}
+                dataSource={products.data}
                 pagination={pagination}
-                loading={products.listProductState === REQUEST_STATE.REQUEST}
+                loading={products.state === REQUEST_STATE.REQUEST}
                 onChange={handleTableChange}
                 bordered
                 scroll={{ x: 1500 }}

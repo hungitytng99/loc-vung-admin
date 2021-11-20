@@ -1,62 +1,111 @@
 import { REQUEST_STATE } from 'app-configs';
 import { combineReducers } from 'redux';
 import {
-    create_product,
-    create_product_fail,
-    create_product_success,
-    get_list_product,
-    get_list_product_success,
-    reset_state_create_product,
+    CREATE_PRODUCT,
+    CREATE_PRODUCT_SUCCESS,
+    DELETE_PRODUCT,
+    DELETE_PRODUCT_SUCCESS,
+    GET_LIST_PRODUCT,
+    GET_LIST_PRODUCT_SUCCESS,
+    GET_PRODUCT_BY_ID_SUCCESS,
+    UPDATE_PRODUCT,
+    UPDATE_PRODUCT_FAIL,
+    UPDATE_PRODUCT_SUCCESS,
+    UPDATE_PRODUCT_SUCCESS_STATE,
 } from './actions/action';
 
 const defaultState = {
-    createProductState: null,
-    listProductState: null,
-    list: [],
-    totalProduct: 0,
+    state: null,
+    data: null,
 };
 
-export default (state = defaultState, action) => {
-    switch (action.type) {
-        case get_list_product().type: {
-            return {
-                ...state,
-                listProductState: REQUEST_STATE.REQUEST,
-            };
+export default combineReducers({
+    create: (state = defaultState, action) => {
+        switch (action.type) {
+            case CREATE_PRODUCT().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.REQUEST,
+                };
+            }
+            case CREATE_PRODUCT_SUCCESS().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.SUCCESS,
+                };
+            }
+            default:
+                return state;
         }
-        case get_list_product_success().type: {
-            return {
-                ...state,
-                list: action.payload.products,
-                listProductState: REQUEST_STATE.SUCCESS,
-                totalProduct: action.payload.allProducts.length,
-            };
+    },
+    list: (state = defaultState, action) => {
+        switch (action.type) {
+            case GET_LIST_PRODUCT().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.REQUEST,
+                };
+            }
+            case GET_LIST_PRODUCT_SUCCESS().type: {
+                return {
+                    ...state,
+                    data: action.payload.products,
+                    state: REQUEST_STATE.SUCCESS,
+                    totalProduct: action.payload.total,
+                };
+            }
+            case DELETE_PRODUCT().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.REQUEST,
+                };
+            }
+            case DELETE_PRODUCT_SUCCESS().type: {
+                let newState = { ...state };
+                newState.data = newState.data.filter((product) => product.id != action.payload.id);
+                return {
+                    ...newState,
+                    state: REQUEST_STATE.SUCCESS,
+                };
+            }
+            default:
+                return state;
         }
-        case create_product().type: {
-            return {
-                ...state,
-                createProductState: REQUEST_STATE.REQUEST,
-            };
+    },
+    update: (state = defaultState, action) => {
+        switch (action.type) {
+            case UPDATE_PRODUCT().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.REQUEST,
+                };
+            }
+            case UPDATE_PRODUCT_SUCCESS().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.SUCCESS,
+                };
+            }
+            case UPDATE_PRODUCT_SUCCESS_STATE().type: {
+                return {
+                    ...state,
+                    state: null,
+                };
+            }
+            case UPDATE_PRODUCT_FAIL().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.ERROR,
+                };
+            }
+            case GET_PRODUCT_BY_ID_SUCCESS().type: {
+                return {
+                    ...state,
+                    data: action.payload,
+                };
+            }
+            default:
+                return state;
         }
-        case create_product_success().type: {
-            return {
-                ...state,
-                createProductState: REQUEST_STATE.SUCCESS,
-            };
-        }
-        case create_product_fail().type: {
-            return {
-                ...state,
-                createProductState: REQUEST_STATE.ERROR,
-            };
-        }
-        case reset_state_create_product().type: {
-            return {
-                ...state,
-                createProductState: null,
-            };
-        }
-        default:
-            return state;
-    }
-};
+    },
+});

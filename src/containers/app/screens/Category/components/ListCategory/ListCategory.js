@@ -17,8 +17,7 @@ import { Input } from 'antd';
 import Moment from 'react-moment';
 import moment from 'moment';
 import { apiListProduct } from 'app-data/product';
-import { apiListArticles } from 'app-data/articles';
-import { apiGetArticlesById } from 'app-data/articles';
+import reqwest from 'reqwest';
 const { Search } = Input;
 
 function ListCategory(props) {

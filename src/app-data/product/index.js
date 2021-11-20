@@ -8,6 +8,7 @@ export const apiCreateProduct = async (params) => {
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
+            total: response.total,
         };
     } catch (error) {
         console.log('error', error);
@@ -19,7 +20,7 @@ export const apiCreateProduct = async (params) => {
 };
 export const apiListProduct = async (params) => {
     try {
-        const response = await GET('/products/', params, { isFullPath: false });
+        const response = await GET('/products/' + id);
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -35,7 +36,7 @@ export const apiListProduct = async (params) => {
 
 export const apiGetProductById = async (id) => {
     try {
-        const response = await GET('/products/' + id, { isFullPath: false });
+        const response = await POST('/admin/products/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -51,7 +52,7 @@ export const apiGetProductById = async (id) => {
 
 export const apiUpdateProduct = async (id, params) => {
     try {
-        const response = await PUT('/products/' + id, params, { isFullPath: false });
+        const response = await PUT('/admin/products/' + id, params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -67,7 +68,7 @@ export const apiUpdateProduct = async (id, params) => {
 
 export const apiDeleteProduct = async (id) => {
     try {
-        const response = await DELETE('/products/' + id, { isFullPath: false });
+        const response = await DELETE('/admin/products/' + id, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

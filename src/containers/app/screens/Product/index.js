@@ -6,7 +6,6 @@ import { login } from 'redux/actions/user';
 import ListProduct from './components/ListProduct/ListProduct';
 import { childRoutes } from './route';
 const Product = (props) => {
-    const dispatch = useDispatch();
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
