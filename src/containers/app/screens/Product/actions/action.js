@@ -101,3 +101,10 @@ export function UPDATE_PRODUCT_SUCCESS_STATE(payload) {
         payload,
     };
 }
+
+export function SEARCH_PRODUCT(payload) {
+    return {
+        type: 'SEARCH_PRODUCT',
+        payload,
+    };
+}

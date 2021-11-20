@@ -20,26 +20,39 @@ import {
     GET_LIST_PRODUCT_SUCCESS,
     GET_PRODUCT_BY_ID,
     GET_PRODUCT_BY_ID_SUCCESS,
+    SEARCH_PRODUCT,
     UPDATE_PRODUCT,
     UPDATE_PRODUCT_FAIL,
     UPDATE_PRODUCT_SUCCESS,
 } from './actions/action';
 
 function* getListProduct({ type, payload }) {
+    const { sortField, sortOrder, status, pagination, title } = payload;
     try {
-        const response = yield call(apiListProduct, payload.pagination);
-        const allProductsResponse = yield call(apiListProduct);
+        let filterParams = { ...pagination };
+        if (status) {
+            filterParams = { ...filterParams, status: status[0] };
+        }
+        if (sortField === 'price' && sortOrder) {
+            filterParams = { ...filterParams, sortPrice: sortOrder === 'ascend' ? 'ASC' : 'DESC' };
+        }
+        if (title) {
+            filterParams = { ...filterParams, title };
+        }
+        console.log('filterParams: ', filterParams);
+        const response = yield call(apiListProduct, filterParams);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(
                 GET_LIST_PRODUCT_SUCCESS({
                     products: response.data,
-                    allProducts: allProductsResponse.data,
+                    total: response.total,
                 }),
             );
         } else {
         }
     } catch (error) {
         console.log('error: ', error);
+        yield put(NOTIFY_ERROR());
     }
 }
 
@@ -122,6 +135,7 @@ function* deleteProduct({ type, payload }) {
         }
     } catch (error) {
         console.log('error: ', error);
+        yield put(NOTIFY_ERROR());
     }
 }
 
@@ -138,6 +152,17 @@ function* getProductById({ type, payload }) {
         }
     } catch (error) {
         console.log('error: ', error);
+        yield put(NOTIFY_ERROR());
+    }
+}
+
+function* searchProduct({ type, payload }) {
+    try {
+        yield delay(600);
+        yield put(GET_LIST_PRODUCT(payload));
+    } catch (error) {
+        console.log('error: ', error);
+        yield put(NOTIFY_ERROR());
     }
 }
 
@@ -147,4 +172,5 @@ export default function* () {
     yield takeLatest(UPDATE_PRODUCT().type, updateProduct);
     yield takeLatest(DELETE_PRODUCT().type, deleteProduct);
     yield takeLatest(GET_PRODUCT_BY_ID().type, getProductById);
+    yield takeLatest(SEARCH_PRODUCT().type, searchProduct);
 }

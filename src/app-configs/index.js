@@ -38,8 +38,8 @@ export const ACTION_TYPE = {
 };
 
 export const PRODUCT_STATUS = [
-    { color: 'volcano', value: 'daft', label: 'Bản nháp' },
-    { color: 'green', value: 'active', label: 'Kích hoạt' },
+    { color: 'volcano', value: 'daft' },
+    { color: 'green', value: 'active' },
 ];
 export const VALID_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png'];
 // 1. UI flow: add router

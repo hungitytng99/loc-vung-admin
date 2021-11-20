@@ -51,7 +51,7 @@ export default combineReducers({
                     ...state,
                     data: action.payload.products,
                     state: REQUEST_STATE.SUCCESS,
-                    totalProduct: action.payload.allProducts.length,
+                    totalProduct: action.payload.total,
                 };
             }
             case DELETE_PRODUCT().type: {

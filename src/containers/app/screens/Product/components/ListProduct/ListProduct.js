@@ -8,7 +8,7 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { DELETE_PRODUCT, GET_LIST_PRODUCT } from '../../actions/action';
+import { DELETE_PRODUCT, GET_LIST_PRODUCT, SEARCH_PRODUCT } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
@@ -24,17 +24,25 @@ function ListProduct(props) {
         offset: 0,
         limit: 10,
     });
-    const [isSearch, setIsSearch] = useState(false);
+    const [currentFilter, setCurrentFilter] = useState({});
+    const [searchParams, setSearchParams] = useState('');
     const products = useSelector((state) => state.product.list);
-    const notify = useSelector((state) => state.notify);
 
     function handleTableChange(pagina, filters, sorter) {
+        console.log('pagina, filters, sorter: ', pagina, filters, sorter);
+        console.log('searchParams: ', searchParams);
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
             limit: pagina.pageSize,
             total: products.totalProduct,
         });
+        setCurrentFilter({
+            sortField: sorter.field,
+            sortOrder: sorter.order,
+            ...filters,
+        });
+
         dispatch(
             GET_LIST_PRODUCT({
                 sortField: sorter.field,
@@ -43,8 +51,8 @@ function ListProduct(props) {
                     ...pagina,
                     offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
                     limit: pagina.pageSize,
-                    total: products.totalProduct,
                 },
+                title: searchParams,
                 ...filters,
             }),
         );
@@ -55,9 +63,16 @@ function ListProduct(props) {
     }
 
     function onSearch(e) {
-        setIsSearch(true);
-        console.log(e.target.value);
+        setSearchParams(() => e.target.value);
+        dispatch(
+            SEARCH_PRODUCT({
+                pagination,
+                ...currentFilter,
+                title: e.target.value,
+            }),
+        );
     }
+
     useEffect(() => {
         dispatch(GET_LIST_PRODUCT({ pagination }));
     }, [dispatch]);
@@ -84,14 +99,19 @@ function ListProduct(props) {
                     {
                         title: t('status'),
                         dataIndex: 'status',
-                        width: '10%',
+                        width: '5%',
+                        filters: PRODUCT_STATUS.map((status) => ({
+                            value: status.value,
+                            text: t(status.value),
+                        })),
+                        filterMultiple: false,
                         render: (status) => {
                             const mapStatus =
                                 PRODUCT_STATUS.find((productStatus) => productStatus.value === status) ??
                                 PRODUCT_STATUS[0];
                             return (
-                                <Tag color={mapStatus.color} key={mapStatus.label}>
-                                    {mapStatus.label.toUpperCase()}
+                                <Tag color={mapStatus.color} key={mapStatus.value}>
+                                    {t(mapStatus.value).toLocaleUpperCase()}
                                 </Tag>
                             );
                         },
@@ -99,14 +119,21 @@ function ListProduct(props) {
                     {
                         title: t('price'),
                         dataIndex: 'price',
-                        width: '10%',
+                        sorter: true,
+                        width: '7%',
                         render: (price) => price.formatMoney(),
                     },
                     {
                         title: t('comparePrice'),
                         dataIndex: 'comparePrice',
-                        width: '10%',
+                        width: '7%',
                         render: (price) => price.formatMoney(),
+                    },
+                    {
+                        title: t('stockStatus'),
+                        dataIndex: 'availableNumber',
+                        width: '5%',
+                        render: (availableNumber) => availableNumber ?? 0,
                     },
                     {
                         title: t('productImages'),
@@ -191,7 +218,10 @@ function ListProduct(props) {
                             <Input
                                 size="middle"
                                 placeholder={`${t('searchProduct')}...`}
-                                prefix={isSearch ? <LoadingOutlined /> : <SearchOutlined />}
+                                prefix={
+                                    products.state === REQUEST_STATE.REQUEST ? <LoadingOutlined /> : <SearchOutlined />
+                                }
+                                value={searchParams}
                                 onChange={onSearch}
                             />
                             <Button type="ghost">

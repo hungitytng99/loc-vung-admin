@@ -17,6 +17,7 @@ import {
     Space,
     Row,
     Tooltip,
+    Badge,
 } from 'antd';
 import { PRODUCT_STATUS } from 'app-configs';
 import { MinusCircleOutlined, PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -69,10 +70,6 @@ function CreateProduct(props) {
         console.log('Failed:', errorInfo);
     };
 
-    function onSelectStatusChange(value) {
-        console.log(value);
-    }
-
     function handleHidePreviewModal() {
         setPreviewProductStatus({
             isShow: false,
@@ -122,18 +119,8 @@ function CreateProduct(props) {
                         status: PRODUCT_STATUS[0].value,
                         options: [
                             {
-                                id: 12,
-                                title: 'testt',
-                                productId: 73,
-                                position: 1,
-                                values: [
-                                    {
-                                        value: 'testt',
-                                    },
-                                    {
-                                        value: '123',
-                                    },
-                                ],
+                                title: '',
+                                values: [''],
                             },
                         ],
                         availableNumber: 0,
@@ -162,11 +149,12 @@ function CreateProduct(props) {
                                 },
                             ]}
                         >
-                            <Select style={{ width: 160 }} onChange={onSelectStatusChange} size="middle">
+                            <Select style={{ width: 160 }} size="middle">
                                 {PRODUCT_STATUS.map((productStatus) => {
                                     return (
                                         <Option key={productStatus.value} value={productStatus.value}>
-                                            {t(productStatus.value)}
+                                            <span>{t(productStatus.value)}</span>
+                                            <Badge style={{ marginLeft: '4px' }} color={productStatus.color} />
                                         </Option>
                                     );
                                 })}
@@ -233,11 +221,11 @@ function CreateProduct(props) {
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
+                    {/* <Col span={8}>
                         <Form.Item className="create-product__item" label={t('productUrl')} name="url">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductURL')} />
                         </Form.Item>
-                    </Col>
+                    </Col> */}
                     <Col span={8}>
                         <Form.Item className="create-product__item" label={t('vendorId')} name="vendorId">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductVendor')} />
