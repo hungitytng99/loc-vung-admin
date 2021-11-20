@@ -20,7 +20,7 @@ export const apiCreateProduct = async (params) => {
 };
 export const apiListProduct = async (params) => {
     try {
-        const response = await GET('/products/' + id);
+        const response = await GET('/products/', params);
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
