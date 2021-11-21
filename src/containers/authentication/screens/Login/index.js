@@ -72,10 +72,7 @@ export default function Login() {
                             },
                         ]}
                     >
-                        <Input.Password
-                            placeholder={t('pleaseEnterYourPassword')}
-                            className={styles.loginFormInput}
-                        />
+                        <Input.Password placeholder={t('pleaseEnterYourPassword')} className={styles.loginFormInput} />
                     </Form.Item>
 
                     <Form.Item

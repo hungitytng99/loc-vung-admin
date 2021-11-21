@@ -30,9 +30,7 @@ function createSagaInjector(runSaga, rootSaga) {
 const store = createStore(
     createReducer(),
     {},
-    composeWithDevTools(
-        applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger),
-    ),
+    composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger)),
 );
 
 store.asyncReducers = {};

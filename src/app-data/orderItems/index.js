@@ -1,26 +1,9 @@
 import { REQUEST_STATE } from 'app-configs/index.js';
 import { GET, POST, DELETE, PUT } from 'app-data/fetch';
-// Data Flow: Step 1
 
-export const apiCreateProduct = async (params) => {
+export const apiCreateOrder_Item = async (params) => {
     try {
-        const response = await POST('/products/', params, { isFullPath: false });
-        return {
-            state: REQUEST_STATE.SUCCESS,
-            data: response.result,
-            total: response.total,
-        };
-    } catch (error) {
-        console.log('error', error);
-        return {
-            state: REQUEST_STATE.ERROR,
-            message: error.message,
-        };
-    }
-};
-export const apiListProduct = async (params) => {
-    try {
-        const response = await GET('/products/', params);
+        const response = await POST('/order-items/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -33,10 +16,9 @@ export const apiListProduct = async (params) => {
         };
     }
 };
-
-export const apiGetProductById = async (id) => {
+export const apiListOrder_Item = async (params) => {
     try {
-        const response = await POST('/admin/products/', params, { isFullPath: false });
+        const response = await GET('/order-items/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -50,9 +32,9 @@ export const apiGetProductById = async (id) => {
     }
 };
 
-export const apiUpdateProduct = async (id, params) => {
+export const apiGetOrder_ItemById = async (id) => {
     try {
-        const response = await PUT('/admin/products/' + id, params, { isFullPath: false });
+        const response = await GET('/order-items/' + id, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -66,9 +48,9 @@ export const apiUpdateProduct = async (id, params) => {
     }
 };
 
-export const apiDeleteProduct = async (id) => {
+export const apiDeleteOrder_Item = async (id) => {
     try {
-        const response = await DELETE('/admin/products/' + id, { isFullPath: false });
+        const response = await DELETE('/order-items/' + id, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
