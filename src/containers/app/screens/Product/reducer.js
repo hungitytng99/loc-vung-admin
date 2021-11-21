@@ -8,6 +8,7 @@ import {
     GET_LIST_PRODUCT,
     GET_LIST_PRODUCT_SUCCESS,
     GET_PRODUCT_BY_ID_SUCCESS,
+    RESET_CREATE_PRODUCT_STATE,
     UPDATE_PRODUCT,
     UPDATE_PRODUCT_FAIL,
     UPDATE_PRODUCT_SUCCESS,
@@ -32,6 +33,11 @@ export default combineReducers({
                 return {
                     ...state,
                     state: REQUEST_STATE.SUCCESS,
+                };
+            }
+            case RESET_CREATE_PRODUCT_STATE().type: {
+                return {
+                    ...defaultState,
                 };
             }
             default:
@@ -74,6 +80,12 @@ export default combineReducers({
     },
     update: (state = defaultState, action) => {
         switch (action.type) {
+            case CREATE_PRODUCT_SUCCESS().type: {
+                return {
+                    ...state,
+                    data: action.payload,
+                };
+            }
             case UPDATE_PRODUCT().type: {
                 return {
                     ...state,

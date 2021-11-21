@@ -52,8 +52,9 @@ function EditProduct({ match }) {
                           values: option.values.map((value) => value.value),
                       };
                   })
-                : null,
+                : values.options,
         };
+
         dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
 
@@ -149,25 +150,12 @@ function EditProduct({ match }) {
                     name="basic"
                     form={form}
                     initialValues={{
-                        remember: true,
-                        status: PRODUCT_STATUS[0].value,
                         options: [
                             {
-                                id: 12,
-                                title: 'testt',
-                                productId: 73,
-                                position: 1,
-                                values: [
-                                    {
-                                        value: 'testt',
-                                    },
-                                    {
-                                        value: '123',
-                                    },
-                                ],
+                                title: '',
+                                values: [''],
                             },
                         ],
-                        availableNumber: 0,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -332,8 +320,20 @@ function EditProduct({ match }) {
                     <Col span={24}></Col>
                     {hasOptions && (
                         <>
-                            <Form.List name="options">
-                                {(fields, { add, remove }) => (
+                            <Form.List
+                                name="options"
+                                rules={[
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || value.length === 0) {
+                                                return Promise.reject(new Error(t('youMustAddAtLeast1Option')));
+                                            }
+                                            return Promise.resolve();
+                                        },
+                                    }),
+                                ]}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
                                     <Col span={24}>
                                         <Col span={24}>
                                             <Button
@@ -354,6 +354,7 @@ function EditProduct({ match }) {
                                             >
                                                 {t('addOption')}
                                             </Button>
+                                            <Form.ErrorList errors={errors} />
                                         </Col>
                                         <Row>
                                             {fields.map((field, index) => {

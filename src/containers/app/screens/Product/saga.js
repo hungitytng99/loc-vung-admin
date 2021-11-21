@@ -141,7 +141,6 @@ function* deleteProduct({ type, payload }) {
 
 function* getProductById({ type, payload }) {
     const { id } = payload;
-    console.log('id: ', id);
     try {
         yield put(NOTIFY_LOADING());
         const response = yield call(apiGetProductById, id);

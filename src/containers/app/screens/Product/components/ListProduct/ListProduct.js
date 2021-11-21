@@ -130,12 +130,6 @@ function ListProduct(props) {
                         render: (price) => price.formatMoney(),
                     },
                     {
-                        title: t('stockStatus'),
-                        dataIndex: 'availableNumber',
-                        width: '5%',
-                        render: (availableNumber) => availableNumber ?? 0,
-                    },
-                    {
                         title: t('productImages'),
                         dataIndex: ['media'],
                         width: '18%',

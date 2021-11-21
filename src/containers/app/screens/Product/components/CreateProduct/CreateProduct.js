@@ -1,35 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './CreateProduct.sass';
-import {
-    Form,
-    Input,
-    Button,
-    Select,
-    Upload,
-    Col,
-    Divider,
-    Modal,
-    notification,
-    Checkbox,
-    Space,
-    Row,
-    Tooltip,
-    Badge,
-} from 'antd';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Badge } from 'antd';
 import { PRODUCT_STATUS } from 'app-configs';
-import { MinusCircleOutlined, PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { VALID_IMAGE_TYPES } from 'app-configs';
-import { Configs } from 'app-configs';
+import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_PRODUCT } from '../../actions/action';
 import { REQUEST_STATE } from 'app-configs';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { getBase64 } from 'helpers/media';
-import Cookies from 'js-cookie';
-import { isEmptyValue } from 'helpers/check';
 
 const { Option } = Select;
 
@@ -39,15 +20,17 @@ function CreateProduct(props) {
     const [form] = Form.useForm();
     const [productImages, setProductImages] = useState([]);
     const [hasOptions, setHasOptions] = useState(false);
+    const history = useHistory();
 
     const [previewProductStatus, setPreviewProductStatus] = useState({
         image: '',
         title: '',
         isShow: false,
     });
-    const product = useSelector((state) => state.product.create);
+    const productCreate = useSelector((state) => state.product.create);
+    const productUpdate = useSelector((state) => state.product.update);
+
     const notify = useSelector((state) => state.notify);
-    let addValue = () => {};
 
     const onFinish = (values) => {
         const params = {
@@ -75,7 +58,6 @@ function CreateProduct(props) {
             isShow: false,
         });
     }
-
     async function handlePreviewProductImage(file) {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
@@ -96,15 +78,18 @@ function CreateProduct(props) {
     }
 
     useEffect(() => {
-        if (notify.requestState === REQUEST_STATE.SUCCESS) {
+        if (productCreate.state === REQUEST_STATE.SUCCESS) {
             form.resetFields();
             setProductImages([]);
+            if (hasOptions && productUpdate.data.id) {
+                history.push(`/product/edit-variant/${productUpdate.data.id}`);
+            }
         }
-    }, [notify.requestState]);
+    }, [productCreate.state]);
 
     return (
         <div className="create-product">
-            {product.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {productCreate.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
                     <Link to="/product">{t('back')}</Link>
@@ -115,7 +100,6 @@ function CreateProduct(props) {
                     name="basic"
                     form={form}
                     initialValues={{
-                        remember: true,
                         status: PRODUCT_STATUS[0].value,
                         options: [
                             {
@@ -124,6 +108,8 @@ function CreateProduct(props) {
                             },
                         ],
                         availableNumber: 0,
+                        price: 0,
+                        comparePrice: 0,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -289,8 +275,20 @@ function CreateProduct(props) {
                     <Col span={24}></Col>
                     {hasOptions && (
                         <>
-                            <Form.List name="options">
-                                {(fields, { add, remove }) => (
+                            <Form.List
+                                name="options"
+                                rules={[
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || value.length === 0) {
+                                                return Promise.reject(new Error(t('youMustAddAtLeast1Option')));
+                                            }
+                                            return Promise.resolve();
+                                        },
+                                    }),
+                                ]}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
                                     <Col span={24}>
                                         <Col span={24}>
                                             <Button
@@ -311,6 +309,7 @@ function CreateProduct(props) {
                                             >
                                                 {t('addOption')}
                                             </Button>
+                                            <Form.ErrorList errors={errors} />
                                         </Col>
                                         <Row>
                                             {fields.map((field, index) => {
@@ -498,11 +497,9 @@ function CreateProduct(props) {
                     )}
 
                     <div className="createProductSubmit">
-                        <Form.Item>
-                            <Button size="middle" type="primary" htmlType="submit">
-                                {t('submit')}
-                            </Button>
-                        </Form.Item>
+                        <Button size="middle" type="primary" htmlType="submit">
+                            {hasOptions ? t('next') : t('submit')}
+                        </Button>
                     </div>
                 </Form>
                 <Modal

@@ -33,6 +33,13 @@ export function CREATE_PRODUCT_SUCCESS(payload) {
     };
 }
 
+export function RESET_CREATE_PRODUCT_STATE(payload) {
+    return {
+        type: 'RESET_CREATE_PRODUCT_STATE',
+        payload,
+    };
+}
+
 export function CREATE_PRODUCT_FAIL(payload) {
     return {
         type: 'CREATE_PRODUCT_FAIL',
