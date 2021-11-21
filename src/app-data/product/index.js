@@ -36,7 +36,7 @@ export const apiListProduct = async (params) => {
 
 export const apiGetProductById = async (id) => {
     try {
-        const response = await POST('/admin/products/', params, { isFullPath: false });
+        const response = await GET('/products/' + id);
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
