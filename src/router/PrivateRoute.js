@@ -9,7 +9,7 @@ import { LOGIN_SUCCESS } from 'redux/actions/user';
 import { LOGOUT } from 'redux/actions/user';
 
 function PrivateRoute({ component: Component, location, ...rest }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(!isEmptyValue(Cookies.get('token')));
+    const isAuthenticated = !isEmptyValue(Cookies.get('token'));
     const dispatch = useDispatch();
 
     useEffect(() => {

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './ImageLoading.sass';
 import LoadingSpinner from 'assets/images/Spinner-1s-200px.svg';
+import noImageFound from 'assets/images/no-image-found.png';
+
 function ImageLoading(props) {
     const image = useRef(null);
     const [srcImage, setSrcImage] = useState(LoadingSpinner);
@@ -8,12 +10,17 @@ function ImageLoading(props) {
     function preloadImage(imgSrc) {
         var objImagePreloader = new Image();
         objImagePreloader.src = imgSrc;
+        console.log('objImagePreloader: ', objImagePreloader);
         if (objImagePreloader.complete) {
             setSrcImage(objImagePreloader.src);
             objImagePreloader.onload = function () {};
         } else {
             objImagePreloader.onload = function () {
                 setSrcImage(objImagePreloader.src);
+                objImagePreloader.onload = function () {};
+            };
+            objImagePreloader.onerror = (e) => {
+                setSrcImage(noImageFound);
                 objImagePreloader.onload = function () {};
             };
         }
@@ -25,11 +32,19 @@ function ImageLoading(props) {
             preloadImage(props.src);
         }
         return () => {
-            console.log('CLEAN UP');
             isMounted = false;
         };
     }, []);
-    return <img ref={image} {...props} src={srcImage}></img>;
+    return (
+        <img
+            ref={image}
+            {...props}
+            src={srcImage}
+            onError={() => {
+                console.log('LOAD IMAGE ERROR');
+            }}
+        ></img>
+    );
 }
 
 export default React.memo(ImageLoading);
