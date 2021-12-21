@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import CKEditorVi from 'vendor/ckeditor5/build/ckeditor';
+import CKEditorVi from 'vendor/ckeditor5/buildck/ckeditor';
 import './editor.css';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import UploadAdapterPlugin from './UploadAdapterPlugin';
