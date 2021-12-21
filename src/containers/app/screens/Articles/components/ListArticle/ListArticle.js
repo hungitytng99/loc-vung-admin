@@ -8,15 +8,15 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { DELETE_PRODUCT, GET_LIST_ARTICLE, SEARCH_PRODUCT } from '../../actions/action';
+import { GET_LIST_ARTICLE } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import { REQUEST_STATE } from 'app-configs';
-import { PRODUCT_STATUS } from 'app-configs';
 import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import './ListArticle.sass';
+import { getTextFromHtml } from 'helpers/format';
 
 function ListArticle(props) {
     const { t } = useTranslation();
@@ -27,15 +27,15 @@ function ListArticle(props) {
     });
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
-    const articles = useSelector((state) => state.article?.list);
-    console.log('articles: ', articles);
+    const articlesList = useSelector((state) => state.article?.list);
+    console.log('articlesList: ', articlesList);
 
     function handleTableChange(pagina, filters, sorter) {
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
             limit: pagina.pageSize,
-            total: articles.totalProduct,
+            total: articlesList.totalProduct,
         });
         setCurrentFilter({
             sortField: sorter.field,
@@ -58,32 +58,21 @@ function ListArticle(props) {
         );
     }
 
-    function handleDeleteProduct(product) {
-        dispatch(DELETE_PRODUCT(product));
-    }
-
-    function onSearch(e) {
-        setSearchParams(() => e.target.value);
-        dispatch(
-            SEARCH_PRODUCT({
-                pagination,
-                ...currentFilter,
-                title: e.target.value,
-            }),
-        );
-    }
+    // function handleDeleteProduct(product) {
+    //     dispatch(DELETE_PRODUCT(product));
+    // }
 
     useEffect(() => {
         dispatch(GET_LIST_ARTICLE({ pagination }));
     }, [dispatch]);
 
     useEffect(() => {
-        setPagination({ ...pagination, total: articles?.totalProduct });
-    }, [articles?.totalProduct]);
+        setPagination({ ...pagination, total: articlesList?.totalProduct });
+    }, [articlesList?.totalProduct]);
 
     return (
         <div className="listArticle">
-            {articles?.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {articlesList?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <Table
                 columns={[
                     {
@@ -94,12 +83,12 @@ function ListArticle(props) {
                     {
                         title: t('title'),
                         dataIndex: 'title',
-                        width: '10%',
+                        width: '15%',
                     },
                     {
                         title: t('description'),
                         dataIndex: 'description',
-                        width: '30%',
+                        width: '20%',
                         render: (description) => {
                             return <div>{description}</div>;
                         },
@@ -108,13 +97,13 @@ function ListArticle(props) {
                         title: t('content'),
                         dataIndex: 'content',
                         sorter: true,
-                        width: '7%',
-                        render: (content) => content,
+                        width: '30%',
+                        render: (content) => <div className="text_over_flow_2">{getTextFromHtml(content)}</div>,
                     },
                     {
-                        title: t('productImages'),
+                        title: t('image'),
                         dataIndex: ['avatar'],
-                        width: '18%',
+                        width: '5%',
                         render: (avatarId) => {
                             return (
                                 <div className="listArticleImages">
@@ -178,28 +167,16 @@ function ListArticle(props) {
                 title={() => (
                     <ListHeader title={t('listArticle')}>
                         <Space size="small">
-                            <Input
-                                size="middle"
-                                placeholder={`${t('searchProduct')}...`}
-                                prefix={
-                                    articles?.state === REQUEST_STATE.REQUEST ? <LoadingOutlined /> : <SearchOutlined />
-                                }
-                                value={searchParams}
-                                onChange={onSearch}
-                            />
-                            <Button type="ghost">
-                                <Link to="/product/add-hot-product">{t('addHotProduct')}</Link>
-                            </Button>
                             <Button type="primary">
-                                <Link to="/product/create">{t('addProduct')}</Link>
+                                <Link to="/article/create">{t('createArticle')}</Link>
                             </Button>
                         </Space>
                     </ListHeader>
                 )}
                 rowKey={(record) => record.id}
-                dataSource={articles?.data ?? []}
+                dataSource={articlesList?.data ?? []}
                 pagination={pagination}
-                loading={articles?.state === REQUEST_STATE.REQUEST}
+                loading={articlesList?.state === REQUEST_STATE.REQUEST}
                 onChange={handleTableChange}
                 bordered
                 scroll={{ x: 1500 }}

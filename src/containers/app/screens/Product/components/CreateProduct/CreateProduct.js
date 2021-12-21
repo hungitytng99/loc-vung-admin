@@ -239,6 +239,7 @@ function CreateProduct(props) {
                             className="create-product__item"
                             label={t('media')}
                             name="media"
+                            required
                             rules={[
                                 ({ getFieldValue }) => ({
                                     validator(_, value) {

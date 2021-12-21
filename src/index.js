@@ -7,7 +7,7 @@ import './helpers/format';
 import i18n from 'languages';
 import { I18nextProvider } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.css';
-import './index.scss';
+import './index.sass';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(

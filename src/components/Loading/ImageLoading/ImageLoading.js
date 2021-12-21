@@ -10,7 +10,6 @@ function ImageLoading(props) {
     function preloadImage(imgSrc) {
         var objImagePreloader = new Image();
         objImagePreloader.src = imgSrc;
-        console.log('objImagePreloader: ', objImagePreloader);
         if (objImagePreloader.complete) {
             setSrcImage(objImagePreloader.src);
             objImagePreloader.onload = function () {};

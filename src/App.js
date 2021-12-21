@@ -33,6 +33,7 @@ function App() {
             notification.error({
                 message: t('fail'),
             });
+            dispatch(RESET_NOTIFY_STATE());
         }
     }, [notify.requestState]);
     return (

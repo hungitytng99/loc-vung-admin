@@ -19,6 +19,12 @@ if (!String.prototype.format) {
     };
 }
 
+export function getTextFromHtml(html) {
+    var divContainer = document.createElement('div');
+    divContainer.innerHTML = html;
+    return divContainer.textContent || divContainer.innerText || '';
+}
+
 /*
 Thực hiện định dạng kiểu money format 100.111.222
 */

@@ -3,7 +3,7 @@ import { GET, POST, DELETE, PUT } from 'app-data/fetch';
 
 export const apiCreateArticles = async (params) => {
     try {
-        const response = await POST('/articles/', params, { isFullPath: false });
+        const response = await POST('/admin/articles/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

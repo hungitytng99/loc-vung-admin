@@ -4,9 +4,9 @@ import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading'
 import React, { Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import ListArticle from './components/ListProduct/ListArticle';
+import ListArticle from './components/ListArticle/ListArticle';
 import { childRoutes } from './route';
-const Product = (props) => {
+const Article = (props) => {
     const notify = useSelector((state) => state.notify);
     return (
         <Suspense fallback={<Spin />}>
@@ -26,4 +26,4 @@ const Product = (props) => {
     );
 };
 
-export default Product;
+export default Article;
