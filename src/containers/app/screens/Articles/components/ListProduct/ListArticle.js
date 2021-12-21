@@ -8,7 +8,7 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { DELETE_PRODUCT, GET_LIST_ARTICLE, GET_LIST_PRODUCT, SEARCH_PRODUCT } from '../../actions/action';
+import { DELETE_PRODUCT, GET_LIST_ARTICLE, SEARCH_PRODUCT } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
@@ -16,8 +16,9 @@ import { REQUEST_STATE } from 'app-configs';
 import { PRODUCT_STATUS } from 'app-configs';
 import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import './ListArticle.sass';
 
-function ListProduct(props) {
+function ListArticle(props) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [pagination, setPagination] = useState({
@@ -26,14 +27,15 @@ function ListProduct(props) {
     });
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
-    const products = useSelector((state) => state.product?.list);
+    const articles = useSelector((state) => state.article?.list);
+    console.log('articles: ', articles);
 
     function handleTableChange(pagina, filters, sorter) {
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
             limit: pagina.pageSize,
-            total: products.totalProduct,
+            total: articles.totalProduct,
         });
         setCurrentFilter({
             sortField: sorter.field,
@@ -42,7 +44,7 @@ function ListProduct(props) {
         });
 
         dispatch(
-            GET_LIST_PRODUCT({
+            GET_LIST_ARTICLE({
                 sortField: sorter.field,
                 sortOrder: sorter.order,
                 pagination: {
@@ -76,12 +78,12 @@ function ListProduct(props) {
     }, [dispatch]);
 
     useEffect(() => {
-        setPagination({ ...pagination, total: products?.totalProduct });
-    }, [products?.totalProduct]);
+        setPagination({ ...pagination, total: articles?.totalProduct });
+    }, [articles?.totalProduct]);
 
     return (
-        <div className="list-product">
-            {products?.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+        <div className="listArticle">
+            {articles?.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <Table
                 columns={[
                     {
@@ -90,72 +92,50 @@ function ListProduct(props) {
                         width: '2%',
                     },
                     {
-                        title: t('productName'),
+                        title: t('title'),
                         dataIndex: 'title',
-                        width: '40%',
+                        width: '10%',
                     },
                     {
-                        title: t('status'),
-                        dataIndex: 'status',
-                        width: '5%',
-                        filters: PRODUCT_STATUS.map((status) => ({
-                            value: status.value,
-                            text: t(status.value),
-                        })),
-                        filterMultiple: false,
-                        render: (status) => {
-                            const mapStatus =
-                                PRODUCT_STATUS.find((productStatus) => productStatus.value === status) ??
-                                PRODUCT_STATUS[0];
-                            return (
-                                <Tag color={mapStatus.color} key={mapStatus.value}>
-                                    {t(mapStatus.value).toLocaleUpperCase()}
-                                </Tag>
-                            );
+                        title: t('description'),
+                        dataIndex: 'description',
+                        width: '30%',
+                        render: (description) => {
+                            return <div>{description}</div>;
                         },
                     },
                     {
-                        title: t('price'),
-                        dataIndex: 'price',
+                        title: t('content'),
+                        dataIndex: 'content',
                         sorter: true,
                         width: '7%',
-                        render: (price) => price.formatMoney(),
-                    },
-                    {
-                        title: t('comparePrice'),
-                        dataIndex: 'comparePrice',
-                        width: '7%',
-                        render: (price) => price.formatMoney(),
+                        render: (content) => content,
                     },
                     {
                         title: t('productImages'),
-                        dataIndex: ['media'],
+                        dataIndex: ['avatar'],
                         width: '18%',
-                        render: (medias = []) => {
+                        render: (avatarId) => {
                             return (
-                                <div className="listProductImages">
-                                    {medias.map((media) => {
-                                        return (
-                                            <Zoom key={media.id}>
-                                                <div
-                                                    style={{
-                                                        width: '50px',
-                                                        height: '50px',
-                                                        overflow: 'hidden',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                    }}
-                                                >
-                                                    <ImageLoading
-                                                        key={media.id}
-                                                        src={getImageWithId(media.id)}
-                                                        alt={media.link}
-                                                        className="listProductImagesItem"
-                                                    ></ImageLoading>
-                                                </div>
-                                            </Zoom>
-                                        );
-                                    })}
+                                <div className="listArticleImages">
+                                    <Zoom key={avatarId}>
+                                        <div
+                                            style={{
+                                                width: '50px',
+                                                height: '50px',
+                                                overflow: 'hidden',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <ImageLoading
+                                                key={avatarId}
+                                                src={getImageWithId(avatarId)}
+                                                alt={avatarId}
+                                                className="listArticleImagesItem"
+                                            ></ImageLoading>
+                                        </div>
+                                    </Zoom>
                                 </div>
                             );
                         },
@@ -167,11 +147,8 @@ function ListProduct(props) {
                         width: '3%',
                         render: (_, record) => {
                             return (
-                                <div className="list-product__action">
-                                    <Tooltip
-                                        className="list-product__action-edit text-grey-300"
-                                        title={t('editProduct')}
-                                    >
+                                <div className="listArticleAction">
+                                    <Tooltip className="listArticleActionEdit text-grey-300" title={t('editProduct')}>
                                         <Link style={{ display: 'block' }} to={`/product/edit-product/${record.id}`}>
                                             <FormOutlined />
                                         </Link>
@@ -186,32 +163,26 @@ function ListProduct(props) {
                                         }}
                                     >
                                         <Tooltip
-                                            className="list-product__action-delete text-grey-300"
+                                            className="listArticleActionDelete text-grey-300"
                                             title={t('deleteProduct')}
                                         >
                                             <DeleteOutlined style={{ paddingTop: '6px' }} />
                                         </Tooltip>
                                     </Popconfirm>
                                     <div style={{ width: '4px' }}></div>
-                                    <Tooltip
-                                        className="list-product__action-set text-grey-300"
-                                        title={t('setAsHotProduct')}
-                                    >
-                                        <RiseOutlined style={{ paddingTop: '6px' }} />
-                                    </Tooltip>
                                 </div>
                             );
                         },
                     },
                 ]}
                 title={() => (
-                    <ListHeader title={t('listProduct')}>
+                    <ListHeader title={t('listArticle')}>
                         <Space size="small">
                             <Input
                                 size="middle"
                                 placeholder={`${t('searchProduct')}...`}
                                 prefix={
-                                    products?.state === REQUEST_STATE.REQUEST ? <LoadingOutlined /> : <SearchOutlined />
+                                    articles?.state === REQUEST_STATE.REQUEST ? <LoadingOutlined /> : <SearchOutlined />
                                 }
                                 value={searchParams}
                                 onChange={onSearch}
@@ -226,9 +197,9 @@ function ListProduct(props) {
                     </ListHeader>
                 )}
                 rowKey={(record) => record.id}
-                dataSource={products?.data ?? []}
+                dataSource={articles?.data ?? []}
                 pagination={pagination}
-                loading={products?.state === REQUEST_STATE.REQUEST}
+                loading={articles?.state === REQUEST_STATE.REQUEST}
                 onChange={handleTableChange}
                 bordered
                 scroll={{ x: 1500 }}
@@ -237,4 +208,4 @@ function ListProduct(props) {
     );
 }
 
-export default React.memo(ListProduct);
+export default React.memo(ListArticle);

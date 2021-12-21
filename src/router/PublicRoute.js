@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 function PublicRoute({ component: Component, checkRedirectHome = false, ...rest }) {
     if (Cookies.get('token') && checkRedirectHome) {
         return <Redirect to="/" />;
-    } else {
+    } else
         return (
             <Route
                 {...rest}
@@ -13,6 +13,5 @@ function PublicRoute({ component: Component, checkRedirectHome = false, ...rest 
                 }}
             />
         );
-    }
 }
 export default PublicRoute;

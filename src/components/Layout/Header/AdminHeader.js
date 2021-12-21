@@ -18,7 +18,8 @@ function AdminHeader({ collapseSider, handleCollapse }) {
     const history = useHistory();
 
     function handleLogout() {
-        dispatch(LOGOUT());
+        console.log('handleLogout: ');
+        dispatch(LOGOUT({ byUser: true }));
         history.push('/auth/login');
     }
 

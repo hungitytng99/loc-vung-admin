@@ -19,7 +19,7 @@ export const apiCreateArticles = async (params) => {
 
 export const apiListArticles = async (params) => {
     try {
-        const response = await GET('/customers/articles/', params, { isFullPath: false });
+        const response = await GET('/articles/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

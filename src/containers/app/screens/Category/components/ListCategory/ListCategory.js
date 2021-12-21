@@ -18,6 +18,8 @@ import Moment from 'react-moment';
 import moment from 'moment';
 import { apiListProduct } from 'app-data/product';
 import reqwest from 'reqwest';
+import { apiListArticles } from 'app-data/articles';
+import { apiGetArticlesById } from 'app-data/articles';
 const { Search } = Input;
 
 function ListCategory(props) {

@@ -10,7 +10,7 @@ function* handleLogin({ type, payload }) {
     try {
         const response = yield call(apiLogin, payload);
         if (response.state === REQUEST_STATE.SUCCESS) {
-            Cookies.set('token', response.data.token, { secure: true });
+            Cookies.set('token', response.data.token);
             yield put(LOGIN_SUCCESS(response.data));
         } else {
             let errMessage = 'yourEmailOrPasswordIsWrong';

@@ -9,6 +9,7 @@ import rootSaga from './saga';
 import createReducer from './reducers';
 import logger from 'redux-logger';
 import { LOGOUT } from './actions/user';
+import Cookies from 'js-cookie';
 
 const sagaMiddleware = createSagaMiddleware();
 // const _routerMiddleware = routerMiddleware(history);
@@ -22,7 +23,6 @@ function createSagaInjector(runSaga, rootSaga) {
         const task = runSaga(saga);
         injectedSagas.set(key, task);
     };
-
     injectSaga('root', rootSaga);
     return injectSaga;
 }
@@ -35,11 +35,14 @@ const store = createStore(
 
 store.asyncReducers = {};
 const rootReducer = (state, action) => {
-    if (action.type === LOGOUT().type) {
-        console.log('logout');
-        state = undefined;
-    }
-    return createReducer(store.asyncReducers)(undefined, action);
+    // if (action.type === LOGOUT().type) {
+    //     // console.log('action.type: ', action.type);
+    //     // console.log('logout', Cookies.get("token"));
+    //     Cookies.remove("token");
+    //     // action.type = "";
+    //     return createReducer(store.asyncReducers)(undefined, action);
+    // }
+    return createReducer(store.asyncReducers)(state, action);
 };
 store.injectReducer = (key, reducer) => {
     store.asyncReducers[key] = reducer;

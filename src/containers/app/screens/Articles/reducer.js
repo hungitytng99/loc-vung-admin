@@ -5,6 +5,7 @@ import {
     CREATE_PRODUCT_SUCCESS,
     DELETE_PRODUCT,
     DELETE_PRODUCT_SUCCESS,
+    GET_LIST_ARTICLE_SUCCESS,
     GET_LIST_PRODUCT,
     GET_LIST_PRODUCT_SUCCESS,
     GET_PRODUCT_BY_ID_SUCCESS,
@@ -21,23 +22,12 @@ const defaultState = {
 };
 
 export default combineReducers({
-    create: (state = defaultState, action) => {
+    create: (state = null, action) => {
         switch (action.type) {
             case CREATE_PRODUCT().type: {
                 return {
                     ...state,
                     state: REQUEST_STATE.REQUEST,
-                };
-            }
-            case CREATE_PRODUCT_SUCCESS().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.SUCCESS,
-                };
-            }
-            case RESET_CREATE_PRODUCT_STATE().type: {
-                return {
-                    ...defaultState,
                 };
             }
             default:
@@ -46,71 +36,21 @@ export default combineReducers({
     },
     list: (state = defaultState, action) => {
         switch (action.type) {
-            case GET_LIST_PRODUCT().type: {
+            case GET_LIST_ARTICLE_SUCCESS().type: {
+                const { listArticle } = action.payload;
                 return {
                     ...state,
-                    state: REQUEST_STATE.REQUEST,
-                };
-            }
-            case GET_LIST_PRODUCT_SUCCESS().type: {
-                return {
-                    ...state,
-                    data: action.payload.products,
                     state: REQUEST_STATE.SUCCESS,
-                    totalProduct: action.payload.total,
-                };
-            }
-            case DELETE_PRODUCT().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.REQUEST,
-                };
-            }
-            case DELETE_PRODUCT_SUCCESS().type: {
-                let newState = { ...state };
-                newState.data = newState.data.filter((product) => product.id != action.payload.id);
-                return {
-                    ...newState,
-                    state: REQUEST_STATE.SUCCESS,
+                    data: listArticle,
                 };
             }
             default:
                 return state;
         }
     },
-    update: (state = defaultState, action) => {
+    update: (state = null, action) => {
         switch (action.type) {
             case CREATE_PRODUCT_SUCCESS().type: {
-                return {
-                    ...state,
-                    data: action.payload,
-                };
-            }
-            case UPDATE_PRODUCT().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.REQUEST,
-                };
-            }
-            case UPDATE_PRODUCT_SUCCESS().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.SUCCESS,
-                };
-            }
-            case UPDATE_PRODUCT_SUCCESS_STATE().type: {
-                return {
-                    ...state,
-                    state: null,
-                };
-            }
-            case UPDATE_PRODUCT_FAIL().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.ERROR,
-                };
-            }
-            case GET_PRODUCT_BY_ID_SUCCESS().type: {
                 return {
                     ...state,
                     data: action.payload,

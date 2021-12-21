@@ -1,17 +1,20 @@
 import { Spin } from 'antd';
+import { REQUEST_STATE } from 'app-configs';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import React, { Suspense, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import { login } from 'redux/actions/user';
-import ListProduct from './components/ListProduct/ListProduct';
+import ListArticle from './components/ListProduct/ListArticle';
 import { childRoutes } from './route';
 const Product = (props) => {
+    const notify = useSelector((state) => state.notify);
     return (
         <Suspense fallback={<Spin />}>
+            {notify.requestState === REQUEST_STATE.REQUEST && <FullPageLoading />}
+
             <Switch>
                 <Route exact path="/article">
-                    <ListProduct />
-                    aaa
+                    <ListArticle />
                 </Route>
                 {childRoutes.map((route) => (
                     <Route key={route.path} exact={route.exact} path={route.path}>
