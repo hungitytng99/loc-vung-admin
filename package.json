@@ -13,6 +13,7 @@
         "@adobe/redux-saga-promise": "^1.1.1",
         "@ant-design/icons": "^4.7.0",
         "@ckeditor/ckeditor5-react": "^3.0.3",
+        "ckeditor5-custom-build": "file:./ckeditor5",
         "antd": "4.17.1-alpha.0",
         "axios": "^0.23.0",
         "bootstrap": "^5.1.3",
