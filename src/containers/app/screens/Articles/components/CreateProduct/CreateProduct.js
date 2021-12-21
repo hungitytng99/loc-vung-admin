@@ -78,18 +78,18 @@ function CreateProduct(props) {
     }
 
     useEffect(() => {
-        if (productCreate?.state === REQUEST_STATE.SUCCESS) {
+        if (productCreate.state === REQUEST_STATE.SUCCESS) {
             form.resetFields();
             setProductImages([]);
-            if (hasOptions && productUpdate?.data.id) {
-                history.push(`/product/edit-variant/${productUpdate?.data.id}`);
+            if (hasOptions && productUpdate.data.id) {
+                history.push(`/product/edit-variant/${productUpdate.data.id}`);
             }
         }
-    }, [productCreate?.state]);
+    }, [productCreate.state]);
 
     return (
         <div className="create-product">
-            {productCreate?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {productCreate.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
                     <Link to="/product">{t('back')}</Link>

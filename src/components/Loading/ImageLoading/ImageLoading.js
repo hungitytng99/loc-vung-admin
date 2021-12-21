@@ -10,21 +10,26 @@ function ImageLoading(props) {
         objImagePreloader.src = imgSrc;
         if (objImagePreloader.complete) {
             setSrcImage(objImagePreloader.src);
-
             objImagePreloader.onload = function () {};
         } else {
             objImagePreloader.onload = function () {
                 setSrcImage(objImagePreloader.src);
-
                 objImagePreloader.onload = function () {};
             };
         }
     }
 
     useEffect(() => {
-        preloadImage(props.src);
+        let isMounted = true;
+        if (isMounted) {
+            preloadImage(props.src);
+        }
+        return () => {
+            console.log('CLEAN UP');
+            isMounted = false;
+        };
     }, []);
     return <img ref={image} {...props} src={srcImage}></img>;
 }
 
-export default ImageLoading;
+export default React.memo(ImageLoading);

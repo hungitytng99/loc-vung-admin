@@ -8,7 +8,7 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { DELETE_PRODUCT, GET_LIST_PRODUCT, SEARCH_PRODUCT } from '../../actions/action';
+import { DELETE_PRODUCT, GET_LIST_ARTICLE, GET_LIST_PRODUCT, SEARCH_PRODUCT } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
@@ -26,16 +26,14 @@ function ListProduct(props) {
     });
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
-    const products = useSelector((state) => state.product.list);
+    const products = useSelector((state) => state.product?.list);
 
     function handleTableChange(pagina, filters, sorter) {
-        console.log('pagina, filters, sorter: ', pagina, filters, sorter);
-        console.log('searchParams: ', searchParams);
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
             limit: pagina.pageSize,
-            total: products?.totalProduct,
+            total: products.totalProduct,
         });
         setCurrentFilter({
             sortField: sorter.field,
@@ -74,7 +72,7 @@ function ListProduct(props) {
     }
 
     useEffect(() => {
-        dispatch(GET_LIST_PRODUCT({ pagination }));
+        dispatch(GET_LIST_ARTICLE({ pagination }));
     }, [dispatch]);
 
     useEffect(() => {

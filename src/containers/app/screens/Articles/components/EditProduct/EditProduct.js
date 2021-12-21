@@ -1,35 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip } from 'antd';
+
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
-import './CreateProduct.sass';
-import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Badge } from 'antd';
-import { PRODUCT_STATUS } from 'app-configs';
-import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import './EditProduct.sass';
 import { useDispatch, useSelector } from 'react-redux';
-import { CREATE_PRODUCT } from '../../actions/action';
+import { PRODUCT_STATUS } from 'app-configs';
+import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { REQUEST_STATE } from 'app-configs';
-import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import {
+    GET_PRODUCT_BY_ID,
+    GET_PRODUCT_BY_ID_SUCCESS,
+    UPDATE_PRODUCT,
+    UPDATE_PRODUCT_SUCCESS_STATE,
+} from '../../actions/action';
+import store from 'redux/index';
+import { getImageWithId } from 'helpers/media';
 import { getBase64 } from 'helpers/media';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import { isEmptyValue } from 'helpers/check';
 
 const { Option } = Select;
 
-function CreateProduct(props) {
+function EditProduct({ match }) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [form] = Form.useForm();
-    const [productImages, setProductImages] = useState([]);
-    const [hasOptions, setHasOptions] = useState(false);
     const history = useHistory();
+    const productId = history.location.pathname.replace('/product/edit-product/', '');
+    const [hasOptions, setHasOptions] = useState(false);
 
+    const [productImages, setProductImages] = useState([]);
     const [previewProductStatus, setPreviewProductStatus] = useState({
         image: '',
         title: '',
         isShow: false,
     });
-    const productCreate = useSelector((state) => state.product.create);
-    const productUpdate = useSelector((state) => state.product.update);
-
+    const product = useSelector((state) => state.product.update);
     const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
@@ -44,20 +52,26 @@ function CreateProduct(props) {
                           values: option.values.map((value) => value.value),
                       };
                   })
-                : null,
+                : values.options,
         };
-        dispatch(CREATE_PRODUCT(params));
+
+        dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
+    function onSelectStatusChange(value) {
+        console.log(value);
+    }
+
     function handleHidePreviewModal() {
         setPreviewProductStatus({
             isShow: false,
         });
     }
+
     async function handlePreviewProductImage(file) {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
@@ -78,18 +92,54 @@ function CreateProduct(props) {
     }
 
     useEffect(() => {
-        if (productCreate?.state === REQUEST_STATE.SUCCESS) {
-            form.resetFields();
-            setProductImages([]);
-            if (hasOptions && productUpdate?.data.id) {
-                history.push(`/product/edit-variant/${productUpdate?.data.id}`);
+        dispatch(
+            GET_PRODUCT_BY_ID({
+                id: productId,
+            }),
+        );
+    }, [history.location.pathname]);
+
+    useEffect(() => {
+        if (product.data) {
+            const mapStatus =
+                PRODUCT_STATUS.find((productStatus) => productStatus.value === product.data.status) ??
+                PRODUCT_STATUS[0];
+            setHasOptions(!isEmptyValue(product.data.options));
+            form.setFieldsValue({
+                ...product.data,
+                status: mapStatus.value,
+                options: product.data.options
+                    ? product.data.options.map((option) => {
+                          return {
+                              ...option,
+                              values: option.values.map((value) => ({ value })),
+                          };
+                      })
+                    : [''],
+            });
+            if (product.data.media.length > 0) {
+                const listProductImages = product.data.media.map((img) => {
+                    return {
+                        uid: img.id,
+                        name: img.link,
+                        url: getImageWithId(img.id),
+                    };
+                });
+                setProductImages(listProductImages);
             }
         }
-    }, [productCreate?.state]);
+    }, [product.data]);
+
+    useEffect(() => {
+        if (product.state === REQUEST_STATE.SUCCESS) {
+            history.push('/product');
+            dispatch(UPDATE_PRODUCT_SUCCESS_STATE());
+        }
+    }, [product.state]);
 
     return (
         <div className="create-product">
-            {productCreate?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {product.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
                     <Link to="/product">{t('back')}</Link>
@@ -100,16 +150,12 @@ function CreateProduct(props) {
                     name="basic"
                     form={form}
                     initialValues={{
-                        status: PRODUCT_STATUS[0].value,
                         options: [
                             {
                                 title: '',
                                 values: [''],
                             },
                         ],
-                        availableNumber: 0,
-                        price: 0,
-                        comparePrice: 0,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -135,12 +181,11 @@ function CreateProduct(props) {
                                 },
                             ]}
                         >
-                            <Select style={{ width: 160 }} size="middle">
+                            <Select style={{ width: 160 }} onChange={onSelectStatusChange} size="middle">
                                 {PRODUCT_STATUS.map((productStatus) => {
                                     return (
                                         <Option key={productStatus.value} value={productStatus.value}>
-                                            <span>{t(productStatus.value)}</span>
-                                            <Badge style={{ marginLeft: '4px' }} color={productStatus.color} />
+                                            {t(productStatus.value)}
                                         </Option>
                                     );
                                 })}
@@ -207,11 +252,11 @@ function CreateProduct(props) {
                             />
                         </Form.Item>
                     </Col>
-                    {/* <Col span={8}>
+                    <Col span={8}>
                         <Form.Item className="create-product__item" label={t('productUrl')} name="url">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductURL')} />
                         </Form.Item>
-                    </Col> */}
+                    </Col>
                     <Col span={8}>
                         <Form.Item className="create-product__item" label={t('vendorId')} name="vendorId">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductVendor')} />
@@ -497,9 +542,11 @@ function CreateProduct(props) {
                     )}
 
                     <div className="createProductSubmit">
-                        <Button size="middle" type="primary" htmlType="submit">
-                            {hasOptions ? t('next') : t('submit')}
-                        </Button>
+                        <Form.Item>
+                            <Button size="middle" type="primary" htmlType="submit">
+                                {t('submit')}
+                            </Button>
+                        </Form.Item>
                     </div>
                 </Form>
                 <Modal
@@ -515,4 +562,4 @@ function CreateProduct(props) {
     );
 }
 
-export default CreateProduct;
+export default EditProduct;

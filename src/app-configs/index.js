@@ -65,18 +65,18 @@ export const MODULES = {
         icon: <ShopOutlined />,
         displayOnSidebar: true,
     },
+    articleModule: {
+        key: 'article',
+        path: 'Articles',
+        route: '/article',
+        icon: <EditOutlined />,
+        displayOnSidebar: true,
+    },
     orderModule: {
         key: 'order',
         path: 'Order',
         route: '/order',
         icon: <ShoppingCartOutlined />,
-        displayOnSidebar: true,
-    },
-    postModule: {
-        key: 'post',
-        path: 'Post',
-        route: '/post',
-        icon: <EditOutlined />,
         displayOnSidebar: true,
     },
     userModule: {

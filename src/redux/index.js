@@ -30,17 +30,16 @@ function createSagaInjector(runSaga, rootSaga) {
 const store = createStore(
     createReducer(),
     {},
-    composeWithDevTools(
-        applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger),
-    ),
+    composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger)),
 );
 
 store.asyncReducers = {};
 const rootReducer = (state, action) => {
     if (action.type === LOGOUT().type) {
+        console.log('logout');
         state = undefined;
     }
-    return createReducer(store.asyncReducers)(state, action);
+    return createReducer(store.asyncReducers)(undefined, action);
 };
 store.injectReducer = (key, reducer) => {
     store.asyncReducers[key] = reducer;

@@ -1,21 +1,21 @@
+import React from 'react';
 import { Button } from 'antd';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import './ListPost.sass';
+import './AddHotProduct.sass';
 
-function ListPost(props) {
+function AddHotProduct(props) {
     const { t } = useTranslation();
     return (
-        <div className="list-post">
-            <ListHeader title={t('listPost')}>
+        <div className="add-product">
+            <ListHeader title={t('addHotProduct')}>
                 <Button type="primary">
-                    <Link to="/post/create">{t('createPost')}</Link>
+                    <Link to="/product">{t('back')}</Link>
                 </Button>
             </ListHeader>
         </div>
     );
 }
 
-export default ListPost;
+export default AddHotProduct;
