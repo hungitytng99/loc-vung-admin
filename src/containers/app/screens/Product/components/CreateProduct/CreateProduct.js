@@ -30,8 +30,6 @@ function CreateProduct(props) {
     const productCreate = useSelector((state) => state.product.create);
     const productUpdate = useSelector((state) => state.product.update);
 
-    const notify = useSelector((state) => state.notify);
-
     const onFinish = (values) => {
         const params = {
             ...values,

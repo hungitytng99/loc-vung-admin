@@ -8,6 +8,7 @@ import {
     EditOutlined,
     ShoppingCartOutlined,
     DashboardOutlined,
+    GroupOutlined,
 } from '@ant-design/icons';
 // SWAGGER:
 // http://locvungshop.southeastasia.cloudapp.azure.com:4000/api-docs/
@@ -84,6 +85,13 @@ export const MODULES = {
         path: 'User',
         route: '/user',
         icon: <UserOutlined />,
+        displayOnSidebar: true,
+    },
+    vendorModule: {
+        key: 'vendor',
+        path: 'Vendor',
+        route: '/vendor',
+        icon: <GroupOutlined />,
         displayOnSidebar: true,
     },
     paymnetModule: {

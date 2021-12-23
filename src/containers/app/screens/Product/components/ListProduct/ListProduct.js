@@ -6,8 +6,7 @@ import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DELETE_PRODUCT, GET_LIST_PRODUCT, SEARCH_PRODUCT } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
@@ -16,6 +15,7 @@ import { REQUEST_STATE } from 'app-configs';
 import { PRODUCT_STATUS } from 'app-configs';
 import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import './ListProduct.sass';
 
 function ListProduct(props) {
     const { t } = useTranslation();
@@ -83,7 +83,7 @@ function ListProduct(props) {
 
     return (
         <div className="list-product">
-            {products?.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {products?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <Table
                 columns={[
                     {
