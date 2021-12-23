@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, Input, notification, Spin } from 'antd';
 import { REQUEST_STATE } from 'app-configs';
 import { isEmptyValue } from 'helpers/check';
+import Cookies from 'js-cookie';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +34,7 @@ export default function Login() {
             });
         }
     }, [user.authState]);
+    console.log('token', Cookies.get('token'));
 
     return (
         <div className={styles.login}>

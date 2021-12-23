@@ -35,13 +35,11 @@ const store = createStore(
 
 store.asyncReducers = {};
 const rootReducer = (state, action) => {
-    // if (action.type === LOGOUT().type) {
-    //     // console.log('action.type: ', action.type);
-    //     // console.log('logout', Cookies.get("token"));
-    //     Cookies.remove("token");
-    //     // action.type = "";
-    //     return createReducer(store.asyncReducers)(undefined, action);
-    // }
+    if (action.type === LOGOUT().type) {
+        console.log('state: ', state);
+        console.log('action: ', action);
+        return createReducer(store.asyncReducers)(undefined, action);
+    }
     return createReducer(store.asyncReducers)(state, action);
 };
 store.injectReducer = (key, reducer) => {

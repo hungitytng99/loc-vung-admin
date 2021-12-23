@@ -4,7 +4,7 @@ import { GET, POST, DELETE, PUT } from 'app-data/fetch';
 
 export const apiCreateProduct = async (params) => {
     try {
-        const response = await POST('/products/', params, { isFullPath: false });
+        const response = await POST('/admin/products/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

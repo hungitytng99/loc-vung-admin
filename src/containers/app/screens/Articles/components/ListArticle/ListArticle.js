@@ -28,7 +28,6 @@ function ListArticle(props) {
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
     const articlesList = useSelector((state) => state.article?.list);
-    console.log('articlesList: ', articlesList);
 
     function handleTableChange(pagina, filters, sorter) {
         setPagination({

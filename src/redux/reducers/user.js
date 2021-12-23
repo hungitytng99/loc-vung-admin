@@ -39,10 +39,7 @@ export default function userReducer(state = defaultState, action) {
             };
         }
         case LOGOUT().type: {
-            const { byUser } = action.payload;
-            if (byUser) {
-                Cookies.remove('token');
-            }
+            Cookies.remove('token');
             return {
                 profile: null,
             };
