@@ -23,8 +23,7 @@ class MyUploadAdapter {
                 const data = await uploadImage({ files: result });
                 // data.append('upload', result);
                 const url =
-                    'https://filemanager.crmdemo.net/file/image?format=png&fit=contain&image_id=' +
-                    data?.data?.imageId;
+                    'https://filemanager.crmdemo.net/file/image?format=png&fit=contain&image_id=' + data?.data?.imageId;
                 // console.log(data.data.data)
                 resolve({
                     default: url,
@@ -61,9 +60,7 @@ class MyUploadAdapter {
         xhr.addEventListener('load', () => {
             const response = xhr.response;
             if (!response || response.error) {
-                return reject(
-                    response && response.error ? response.error.message : genericErrorText,
-                );
+                return reject(response && response.error ? response.error.message : genericErrorText);
             }
 
             // If the upload is successful, resolve the upload promise with an object containing

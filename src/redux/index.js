@@ -27,11 +27,20 @@ function createSagaInjector(runSaga, rootSaga) {
     return injectSaga;
 }
 
-const store = createStore(
-    createReducer(),
-    {},
-    composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger)),
-);
+const store =
+    process.env.NODE_ENV === 'development'
+        ? createStore(
+              createReducer(),
+              {},
+              composeWithDevTools(
+                  applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger),
+              ),
+          )
+        : createStore(
+              createReducer(),
+              {},
+              compose(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware)),
+          );
 
 store.asyncReducers = {};
 const rootReducer = (state, action) => {

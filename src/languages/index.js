@@ -5,7 +5,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 import en from 'languages/locales/en.json';
 import vi from 'languages/locales/vi.json';
-import { I18LANGUAGE } from 'app-configs';
+import { I18LANGUAGE_KEY } from 'app-configs';
 
 i18n.use(LanguageDetector)
     .use(initReactI18next)
@@ -19,7 +19,7 @@ i18n.use(LanguageDetector)
             },
         },
         fallbackLng: ['en', 'vi'],
-        lng: localStorage.getItem(I18LANGUAGE) || 'en',
+        lng: localStorage.getItem(I18LANGUAGE_KEY) || 'en',
         interpolation: {
             escapeValue: false,
         },

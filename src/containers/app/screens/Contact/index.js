@@ -1,16 +1,14 @@
 import { Spin } from 'antd';
-import React, { Suspense, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import { login } from 'redux/actions/user';
-import ListProduct from './components/ListProduct/ListProduct';
+import React, { Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import ContactPage from './components/ContactPage/ContactPage';
 import { childRoutes } from './route';
-const Product = (props) => {
+const Vendor = (props) => {
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
-                <Route exact path="/">
-                    <ListProduct />
+                <Route exact path="/contact">
+                    <ContactPage />
                 </Route>
                 {childRoutes.map((route) => (
                     <Route key={route.path} exact={route.exact} path={route.path}>
@@ -22,4 +20,4 @@ const Product = (props) => {
     );
 };
 
-export default Product;
+export default Vendor;

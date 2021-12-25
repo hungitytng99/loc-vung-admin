@@ -1,3 +1,4 @@
+import { TOKEN_KEY } from 'app-configs';
 import { REQUEST_STATE } from 'app-configs';
 import Cookies from 'js-cookie';
 import { LOGIN_FAIL } from 'redux/actions/user';
@@ -39,7 +40,7 @@ export default function userReducer(state = defaultState, action) {
             };
         }
         case LOGOUT().type: {
-            Cookies.remove('token');
+            Cookies.remove(TOKEN_KEY);
             return {
                 profile: null,
             };

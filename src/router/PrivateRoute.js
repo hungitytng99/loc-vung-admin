@@ -1,3 +1,4 @@
+import { TOKEN_KEY } from 'app-configs';
 import { REQUEST_STATE } from 'app-configs';
 import { apiProfile } from 'app-data/auth';
 import Cookies from 'js-cookie';
@@ -12,7 +13,7 @@ function PrivateRoute({ component: Component, location, ...rest }) {
     const dispatch = useDispatch();
     useEffect(() => {
         (async () => {
-            const accessToken = Cookies.get('token');
+            const accessToken = Cookies.get(TOKEN_KEY);
             console.debug('accessToken: ', accessToken);
             if (accessToken) {
                 const res = await apiProfile();

@@ -34,8 +34,6 @@ export default function Login() {
             });
         }
     }, [user.authState]);
-    console.log('token', Cookies.get('token'));
-
     return (
         <div className={styles.login}>
             <div className={styles.loginForm}>

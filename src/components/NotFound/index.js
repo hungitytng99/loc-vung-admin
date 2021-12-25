@@ -9,12 +9,10 @@ function NotFound(params) {
                 <div class="colorlib-notfound-404">
                     <h1>404</h1>
                 </div>
-                <h2 id="colorlib_404_customizer_page_heading">
-                    Oops! This page could not be found.
-                </h2>
+                <h2 id="colorlib_404_customizer_page_heading">Oops! This page could not be found.</h2>
                 <div id="colorlib_404_customizer_content" style={{ marginTop: '5px' }}>
-                    Sorry but the page you are looking for does not exist, have been removed. Name
-                    changed or is temporarily unavailable
+                    Sorry but the page you are looking for does not exist, have been removed. Name changed or is
+                    temporarily unavailable
                 </div>
                 <Link to="/" id="colorlib_404_customizer_button_text">
                     Go to home page

@@ -27,7 +27,8 @@ export const REQUEST_STATE = {
     REQUEST: 'REQUEST',
     SUCCESS: 'SUCCESS',
 };
-export const I18LANGUAGE = 'i18nextLng';
+export const I18LANGUAGE_KEY = 'i18nextLng';
+export const TOKEN_KEY = 'authencation';
 
 export const ACTION_TYPE = {
     CREATE: 'CREATE',
@@ -43,13 +44,21 @@ export const PRODUCT_STATUS = [
     { color: 'green', value: 'active' },
 ];
 export const VALID_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png'];
+
 // 1. UI flow: add router
 export const MODULES = {
     dashboardModule: {
         key: 'dashboard', // Unique
         path: 'Dashboard', // Folder name in `src/containers/app/screens`
-        route: '/', // Route defined
+        route: '/dashboard', // Route defined
         icon: <DashboardOutlined />, // Icon
+        displayOnSidebar: false,
+    },
+    productModule: {
+        key: 'product',
+        path: 'Product',
+        route: '/',
+        icon: <ShopOutlined />,
         displayOnSidebar: true,
     },
     categoryModule: {
@@ -57,13 +66,6 @@ export const MODULES = {
         path: 'Category',
         route: '/category',
         icon: <ProfileOutlined />,
-        displayOnSidebar: true,
-    },
-    productModule: {
-        key: 'product',
-        path: 'Product',
-        route: '/product',
-        icon: <ShopOutlined />,
         displayOnSidebar: true,
     },
     articleModule: {
@@ -80,10 +82,10 @@ export const MODULES = {
         icon: <ShoppingCartOutlined />,
         displayOnSidebar: true,
     },
-    userModule: {
-        key: 'user',
-        path: 'User',
-        route: '/user',
+    contactModule: {
+        key: 'contact',
+        path: 'Contact',
+        route: '/contact',
         icon: <UserOutlined />,
         displayOnSidebar: true,
     },

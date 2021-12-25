@@ -1,4 +1,5 @@
 import { Configs } from 'app-configs';
+import { TOKEN_KEY } from 'app-configs';
 import { ACTION_TYPE } from 'app-configs';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -11,7 +12,7 @@ export const getOptions = (options) => {
         ...options,
     };
 
-    const token = Cookies.get('token');
+    const token = Cookies.get(TOKEN_KEY);
     if (token) {
         opts.headers.Authorization = 'Bearer ' + token;
     }

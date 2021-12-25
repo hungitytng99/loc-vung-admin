@@ -4,8 +4,9 @@ import CKEditorVi from 'ckeditor5-custom-build/buildck/ckeditor';
 import UploadAdapterPlugin from './UploadAdapterPlugin';
 // import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
 // import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials';
+import './editor.css';
 
-export default function EditorBase({ type = 'classic', placeholder = '', onTextChange, initContent, items = [] }) {
+export default function EditorBase({ type = 'classic', placeholder = '', onTextChange, initContent }) {
     const [showTool, setShowTool] = useState(false);
     const [data, setdata] = useState('');
     const [isEditorReady, setIsEditorReady] = useState(false);
@@ -28,7 +29,6 @@ export default function EditorBase({ type = 'classic', placeholder = '', onTextC
         'bulletedList',
         '|',
         'link',
-        'insertImage',
         'mediaEmbed',
         '|',
         'undo',
@@ -49,9 +49,6 @@ export default function EditorBase({ type = 'classic', placeholder = '', onTextC
                 key="ckeditor"
                 config={{
                     placeholder: placeholder,
-                    // extraPlugins: [
-                    //   UploadAdapterPlugin,
-                    // ],
                     toolbar: {
                         items: type !== 'inline' ? itemsClassic : itemsInline,
                     },
