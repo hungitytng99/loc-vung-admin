@@ -45,8 +45,6 @@ const store =
 store.asyncReducers = {};
 const rootReducer = (state, action) => {
     if (action.type === LOGOUT().type) {
-        console.log('state: ', state);
-        console.log('action: ', action);
         return createReducer(store.asyncReducers)(undefined, action);
     }
     return createReducer(store.asyncReducers)(state, action);

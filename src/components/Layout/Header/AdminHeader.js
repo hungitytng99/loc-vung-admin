@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT } from 'redux/actions/user';
 import { useHistory } from 'react-router';
+import Cookies from 'js-cookie';
+import { TOKEN_KEY } from 'app-configs';
 
 const { Header } = Layout;
 

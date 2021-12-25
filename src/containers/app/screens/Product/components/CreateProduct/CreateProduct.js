@@ -90,7 +90,7 @@ function CreateProduct(props) {
             {productCreate?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
-                    <Link to="/product">{t('back')}</Link>
+                    <Link to="/">{t('back')}</Link>
                 </Button>
             </ListHeader>
             <div className="create-product__form">

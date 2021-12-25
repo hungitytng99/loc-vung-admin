@@ -5,7 +5,7 @@ import { apiCreateProduct } from 'app-data/product';
 import { apiGetProductById } from 'app-data/product';
 import { apiUpdateProduct } from 'app-data/product';
 import { apiListProduct } from 'app-data/product';
-import { take, fork, delay, put, takeLatest, call } from 'redux-saga/effects';
+import { delay, put, takeLatest, call, takeEvery } from 'redux-saga/effects';
 import { NOTIFY_LOADING } from 'redux/actions/notify';
 import { NOTIFY_ERROR } from 'redux/actions/notify';
 import { NOTIFY_SUCCESS } from 'redux/actions/notify';
@@ -39,7 +39,6 @@ function* getListProduct({ type, payload }) {
         if (title) {
             filterParams = { ...filterParams, title };
         }
-        console.log('filterParams: ', filterParams);
         const response = yield call(apiListProduct, filterParams);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(
@@ -62,7 +61,6 @@ function* createProduct({ type, payload }) {
         yield put(NOTIFY_LOADING());
         const listImagesIdUpload = [];
         for (let i = 0; i < payload.media.length; i++) {
-            console.log('payload.media[i]: ', payload.media[i]);
             const responseUpload = yield call(apiUploadFile, payload.media[i].originFileObj);
             listImagesIdUpload.push(Number(responseUpload.data[0].id));
         }
@@ -166,7 +164,7 @@ function* searchProduct({ type, payload }) {
 }
 
 export default function* () {
-    yield takeLatest(GET_LIST_PRODUCT().type, getListProduct);
+    yield takeEvery(GET_LIST_PRODUCT().type, getListProduct);
     yield takeLatest(CREATE_PRODUCT().type, createProduct);
     yield takeLatest(UPDATE_PRODUCT().type, updateProduct);
     yield takeLatest(DELETE_PRODUCT().type, deleteProduct);

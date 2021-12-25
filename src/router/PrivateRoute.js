@@ -1,38 +1,41 @@
 import { TOKEN_KEY } from 'app-configs';
 import { REQUEST_STATE } from 'app-configs';
 import { apiProfile } from 'app-data/auth';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import Cookies from 'js-cookie';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect, Route, useHistory } from 'react-router-dom';
-import { LOGOUT } from 'redux/actions/user';
 import { LOGIN_SUCCESS } from 'redux/actions/user';
 
 function PrivateRoute({ component: Component, location, ...rest }) {
-    const [isAuth, setIsAuth] = useState(0);
+    const [isAuth, setIsAuth] = useState(REQUEST_STATE.REQUEST);
     const dispatch = useDispatch();
+    const history = useHistory();
+
     useEffect(() => {
         (async () => {
             const accessToken = Cookies.get(TOKEN_KEY);
-            console.debug('accessToken: ', accessToken);
             if (accessToken) {
                 const res = await apiProfile();
                 if (res.state === REQUEST_STATE.SUCCESS) {
                     dispatch(LOGIN_SUCCESS(res.data));
-                    setIsAuth(1);
+                    setIsAuth(REQUEST_STATE.SUCCESS);
                 } else if (res.state === REQUEST_STATE.ERROR) {
-                    dispatch(LOGOUT());
-                    setIsAuth(2);
+                    // dispatch(LOGOUT());
+                    Cookies.remove(TOKEN_KEY);
+                    history.push('/auth/login');
+                    setIsAuth(REQUEST_STATE.ERROR);
                 }
             } else {
-                setIsAuth(2);
+                setIsAuth(REQUEST_STATE.ERROR);
             }
         })();
     }, [dispatch]);
     switch (isAuth) {
-        case 0:
-            return <div></div>;
-        case 1:
+        case REQUEST_STATE.REQUEST:
+            return <FullPageLoading />;
+        case REQUEST_STATE.SUCCESS:
             return <Route {...rest} render={(props) => <Component {...props} />} />;
         default:
             return <Redirect to={{ pathname: '/auth/login', state: { from: location } }} />;

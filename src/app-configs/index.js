@@ -96,11 +96,4 @@ export const MODULES = {
         icon: <GroupOutlined />,
         displayOnSidebar: true,
     },
-    paymnetModule: {
-        key: 'payment',
-        path: 'Payment',
-        route: '/payment',
-        icon: <CreditCardOutlined />,
-        displayOnSidebar: true,
-    },
 };

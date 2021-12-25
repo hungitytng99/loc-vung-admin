@@ -29,8 +29,6 @@ function ListProduct(props) {
     const products = useSelector((state) => state.product.list);
 
     function handleTableChange(pagina, filters, sorter) {
-        console.log('pagina, filters, sorter: ', pagina, filters, sorter);
-        console.log('searchParams: ', searchParams);
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,

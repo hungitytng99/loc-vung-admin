@@ -15,8 +15,8 @@ import { RESET_NOTIFY_STATE } from 'redux/actions/notify';
 import { REQUEST_STATE } from 'app-configs';
 import { useTranslation } from 'react-i18next';
 
-console.log('listAppRoutes =>', listAppRoutes);
-console.log('listAuthenticationRoutes =>', listAuthenticationRoutes);
+console.debug('listAppRoutes =>', listAppRoutes);
+console.debug('listAuthenticationRoutes =>', listAuthenticationRoutes);
 
 function App() {
     const { t } = useTranslation();
@@ -36,6 +36,7 @@ function App() {
             dispatch(RESET_NOTIFY_STATE());
         }
     }, [notify.requestState]);
+
     return (
         <ConnectedRouter history={history}>
             <Suspense fallback={<Spin></Spin>}>

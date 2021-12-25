@@ -40,6 +40,7 @@ export default function userReducer(state = defaultState, action) {
             };
         }
         case LOGOUT().type: {
+            console.log('User logout reducer');
             Cookies.remove(TOKEN_KEY);
             return {
                 profile: null,
