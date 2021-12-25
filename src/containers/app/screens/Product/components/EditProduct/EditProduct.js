@@ -58,10 +58,6 @@ function EditProduct({ match }) {
         dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
     function onSelectStatusChange(value) {
         console.log(value);
     }
@@ -117,7 +113,7 @@ function EditProduct({ match }) {
                       })
                     : [''],
             });
-            if (product.data.media.length > 0) {
+            if (product?.data?.media?.length > 0) {
                 const listProductImages = product.data.media.map((img) => {
                     return {
                         uid: img.id,
@@ -139,7 +135,9 @@ function EditProduct({ match }) {
 
     return (
         <div className="create-product">
-            {product.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {(product?.state === REQUEST_STATE.REQUEST || product?.getDetailState === REQUEST_STATE.REQUEST) && (
+                <FullPageLoading opacity={0.8} />
+            )}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
                     <Link to="/">{t('back')}</Link>
@@ -158,7 +156,6 @@ function EditProduct({ match }) {
                         ],
                     }}
                     onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
                     autoComplete="off"
                     layout="inline"
                     size="large"

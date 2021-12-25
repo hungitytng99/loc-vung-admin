@@ -7,8 +7,11 @@ import PublicRoute from 'router/PublicRoute';
 import { appRoutes } from 'router/index';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { Route } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { TOKEN_KEY } from 'app-configs';
 
 function AppRoute() {
+    console.debug('token: ', Cookies.get(TOKEN_KEY));
     return (
         <AdminLayout>
             <Suspense fallback={<FullPageLoading />}>

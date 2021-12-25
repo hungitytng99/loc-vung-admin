@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
-import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { GET_LIST_ARTICLE } from '../../actions/action';
+import { DELETE_ARTICLE, GET_LIST_ARTICLE } from '../../actions/action';
 import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
@@ -27,14 +26,14 @@ function ListArticle(props) {
     });
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
-    const articlesList = useSelector((state) => state.article?.list);
+    const articlesList = useSelector((state) => state.articles?.list);
 
     function handleTableChange(pagina, filters, sorter) {
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
             limit: pagina.pageSize,
-            total: articlesList.totalProduct,
+            total: articlesList.total,
         });
         setCurrentFilter({
             sortField: sorter.field,
@@ -57,21 +56,25 @@ function ListArticle(props) {
         );
     }
 
-    // function handleDeleteProduct(product) {
-    //     dispatch(DELETE_PRODUCT(product));
-    // }
+    function handleDeleteArticle(articles) {
+        console.log('articles: ', articles);
+        dispatch(
+            DELETE_ARTICLE({
+                id: articles.id,
+            }),
+        );
+    }
 
     useEffect(() => {
         dispatch(GET_LIST_ARTICLE({ pagination }));
     }, [dispatch]);
 
     useEffect(() => {
-        setPagination({ ...pagination, total: articlesList?.totalProduct });
-    }, [articlesList?.totalProduct]);
+        setPagination({ ...pagination, total: articlesList?.total });
+    }, [articlesList?.total]);
 
     return (
         <div className="listArticle">
-            {articlesList?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <Table
                 columns={[
                     {
@@ -101,7 +104,7 @@ function ListArticle(props) {
                     },
                     {
                         title: t('image'),
-                        dataIndex: ['avatar'],
+                        dataIndex: 'avatar',
                         width: '5%',
                         render: (avatarId) => {
                             return (
@@ -136,23 +139,23 @@ function ListArticle(props) {
                         render: (_, record) => {
                             return (
                                 <div className="listArticleAction">
-                                    <Tooltip className="listArticleActionEdit text-grey-300" title={t('editProduct')}>
-                                        <Link style={{ display: 'block' }} to={`/product/edit-product/${record.id}`}>
+                                    <Tooltip className="listArticleActionEdit text-grey-300" title={t('editArticles')}>
+                                        <Link style={{ display: 'block' }} to={`/articles/edit-articles/${record.id}`}>
                                             <FormOutlined />
                                         </Link>
                                     </Tooltip>
                                     <div style={{ width: '4px' }}></div>
                                     <Popconfirm
-                                        title={`${t('areYouSureToDeleteThisProduct')}?`}
+                                        title={`${t('areYouSureToDeleteThisArticles')}?`}
                                         okText={t('yes')}
                                         cancelText={t('cancel')}
                                         onConfirm={() => {
-                                            handleDeleteProduct(record);
+                                            handleDeleteArticle(record);
                                         }}
                                     >
                                         <Tooltip
                                             className="listArticleActionDelete text-grey-300"
-                                            title={t('deleteProduct')}
+                                            title={t('deleteArticles')}
                                         >
                                             <DeleteOutlined style={{ paddingTop: '6px' }} />
                                         </Tooltip>
@@ -167,7 +170,7 @@ function ListArticle(props) {
                     <ListHeader title={t('listArticle')}>
                         <Space size="small">
                             <Button type="primary">
-                                <Link to="/article/create">{t('createArticle')}</Link>
+                                <Link to="/articles/create">{t('createArticle')}</Link>
                             </Button>
                         </Space>
                     </ListHeader>

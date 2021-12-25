@@ -40,6 +40,7 @@ function* getListProduct({ type, payload }) {
             filterParams = { ...filterParams, title };
         }
         const response = yield call(apiListProduct, filterParams);
+        console.log('response: ', response);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(
                 GET_LIST_PRODUCT_SUCCESS({

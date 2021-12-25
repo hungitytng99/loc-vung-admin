@@ -27,6 +27,8 @@ export const REQUEST_STATE = {
     REQUEST: 'REQUEST',
     SUCCESS: 'SUCCESS',
 };
+
+// key store in localStorage, Cookies, Session
 export const I18LANGUAGE_KEY = 'i18nextLng';
 export const TOKEN_KEY = 'authencation';
 
@@ -69,9 +71,9 @@ export const MODULES = {
         displayOnSidebar: true,
     },
     articleModule: {
-        key: 'article',
+        key: 'articles',
         path: 'Articles',
-        route: '/article',
+        route: '/articles',
         icon: <EditOutlined />,
         displayOnSidebar: true,
     },

@@ -28,6 +28,7 @@ export default function EditorBase({ type = 'classic', placeholder = '', onTextC
         'bulletedList',
         '|',
         'link',
+        'insertImage',
         'mediaEmbed',
         '|',
         'undo',
