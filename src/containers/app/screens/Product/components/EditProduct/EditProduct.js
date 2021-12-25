@@ -140,7 +140,7 @@ function EditProduct({ match }) {
             )}
             <ListHeader title={t('addProduct')}>
                 <Button type="primary">
-                    <Link to="/">{t('back')}</Link>
+                    <Link to="/product">{t('back')}</Link>
                 </Button>
             </ListHeader>
             <div className="create-product__form">

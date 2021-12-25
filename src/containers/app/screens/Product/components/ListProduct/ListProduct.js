@@ -26,7 +26,7 @@ function ListProduct(props) {
     });
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
-    const products = useSelector((state) => state.product.list);
+    const products = useSelector((state) => state.product?.list);
 
     function handleTableChange(pagina, filters, sorter) {
         setPagination({

@@ -28,6 +28,7 @@ import {
 
 function* getListProduct({ type, payload }) {
     const { sortField, sortOrder, status, pagination, title } = payload;
+    console.log('payload: ', payload);
     try {
         let filterParams = { ...pagination };
         if (status) {

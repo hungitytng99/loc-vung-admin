@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { RESET_NOTIFY_STATE } from 'redux/actions/notify';
 import { REQUEST_STATE } from 'app-configs';
 import { useTranslation } from 'react-i18next';
+import { Configs } from 'app-configs';
 
 console.debug('listAppRoutes =>', listAppRoutes);
 console.debug('listAuthenticationRoutes =>', listAuthenticationRoutes);
@@ -47,6 +48,7 @@ function App() {
                     {listAuthenticationRoutes.map(({ path, exactContainer = true }) => (
                         <Route path={path} render={() => <AuthenticationRoute />} key={path} exact={exactContainer} />
                     ))}
+                    <Redirect exact from="/" to={Configs.HOMEPAGE_ROUTE} />
                     <Route path="*">
                         <AdminLayout>
                             <NotFound />

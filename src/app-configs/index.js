@@ -16,6 +16,8 @@ export const Configs = {
     BASE_API: process.env.REACT_APP_BASE_API_URL,
     DOMAIN: '',
 
+    HOMEPAGE_ROUTE: '/dashboard',
+
     CURRENT_PAGE: 1,
     FILE_MAXIMUM: 5, //MB
     PAGE_SIZE_20: 20,
@@ -54,12 +56,12 @@ export const MODULES = {
         path: 'Dashboard', // Folder name in `src/containers/app/screens`
         route: '/dashboard', // Route defined
         icon: <DashboardOutlined />, // Icon
-        displayOnSidebar: false,
+        displayOnSidebar: true,
     },
     productModule: {
         key: 'product',
         path: 'Product',
-        route: '/',
+        route: '/product',
         icon: <ShopOutlined />,
         displayOnSidebar: true,
     },

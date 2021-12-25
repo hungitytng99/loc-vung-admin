@@ -16,12 +16,10 @@ const { Header } = Layout;
 function AdminHeader({ collapseSider, handleCollapse }) {
     const authState = useSelector((state) => state.user);
     const { t } = useTranslation();
-    const dispatch = useDispatch();
     const history = useHistory();
 
     function handleLogout() {
-        console.log('handleLogout: ');
-        dispatch(LOGOUT({ byUser: true }));
+        Cookies.remove(TOKEN_KEY);
         history.push('/auth/login');
     }
 
