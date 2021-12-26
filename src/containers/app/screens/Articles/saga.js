@@ -5,7 +5,7 @@ import { apiCreateArticles } from 'app-data/articles';
 import { apiUpdateArticle } from 'app-data/articles';
 import { apiListArticles } from 'app-data/articles';
 import { apiUploadFile } from 'app-data/media';
-import { put, takeLatest, call, takeEvery } from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
 import { NOTIFY_SUCCESS } from 'redux/actions/notify';
 import { NOTIFY_ERROR } from 'redux/actions/notify';
 import {

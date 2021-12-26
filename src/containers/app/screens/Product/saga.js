@@ -7,16 +7,14 @@ import { apiUpdateProduct } from 'app-data/product';
 import { apiListProduct } from 'app-data/product';
 import { apiUpdateVariant } from 'app-data/variant';
 import { apiListVendor } from 'app-data/vendor';
-import { delay, put, takeLatest, call, takeEvery } from 'redux-saga/effects';
+import { delay, put, takeLatest, call } from 'redux-saga/effects';
 import { NOTIFY_LOADING } from 'redux/actions/notify';
 import { NOTIFY_ERROR } from 'redux/actions/notify';
 import { NOTIFY_SUCCESS } from 'redux/actions/notify';
 import {
     CREATE_PRODUCT,
-    CREATE_PRODUCT_FAIL,
     CREATE_PRODUCT_SUCCESS,
     DELETE_PRODUCT,
-    DELETE_PRODUCT_FAIL,
     DELETE_PRODUCT_SUCCESS,
     GET_LIST_PRODUCT,
     GET_LIST_PRODUCT_SUCCESS,
@@ -77,7 +75,6 @@ function* createProduct({ type, payload }) {
             media: listImagesIdUpload,
             featureImageId: listImagesIdUpload[0],
         };
-
         const responseCreate = yield call(apiCreateProduct, newParams);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
             yield put(CREATE_PRODUCT_SUCCESS(responseCreate.data));
@@ -211,7 +208,7 @@ function* updateProductVariant({ type, payload }) {
 }
 
 export default function* () {
-    yield takeEvery(GET_LIST_PRODUCT().type, getListProduct);
+    yield takeLatest(GET_LIST_PRODUCT().type, getListProduct);
     yield takeLatest(CREATE_PRODUCT().type, createProduct);
     yield takeLatest(UPDATE_PRODUCT().type, updateProduct);
     yield takeLatest(DELETE_PRODUCT().type, deleteProduct);

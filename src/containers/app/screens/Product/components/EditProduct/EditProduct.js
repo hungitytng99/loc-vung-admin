@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip } from 'antd';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Switch } from 'antd';
 
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +30,7 @@ function EditProduct({ match }) {
     const history = useHistory();
     const productId = history.location.pathname.replace('/product/edit-product/', '');
     const [hasOptions, setHasOptions] = useState(false);
+    const [isBestSelling, setIsBestSelling] = useState(false);
 
     const [productImages, setProductImages] = useState([]);
     const [previewProductStatus, setPreviewProductStatus] = useState({
@@ -38,7 +39,6 @@ function EditProduct({ match }) {
         isShow: false,
     });
     const product = useSelector((state) => state.product.update);
-    const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
         const params = {
@@ -57,10 +57,6 @@ function EditProduct({ match }) {
 
         dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
-
-    function onSelectStatusChange(value) {
-        console.log(value);
-    }
 
     function handleHidePreviewModal() {
         setPreviewProductStatus({
@@ -96,7 +92,7 @@ function EditProduct({ match }) {
     }, [history.location.pathname]);
 
     useEffect(() => {
-        if (product.data) {
+        if (product?.data) {
             const mapStatus =
                 PRODUCT_STATUS.find((productStatus) => productStatus.value === product.data.status) ??
                 PRODUCT_STATUS[0];
@@ -113,6 +109,7 @@ function EditProduct({ match }) {
                       })
                     : [''],
             });
+            setIsBestSelling(product.data?.bestSelling);
             if (product?.data?.media?.length > 0) {
                 const listProductImages = product.data.media.map((img) => {
                     return {
@@ -132,7 +129,7 @@ function EditProduct({ match }) {
             dispatch(UPDATE_PRODUCT_SUCCESS_STATE());
         }
     }, [product.state]);
-
+    console.log(isBestSelling);
     return (
         <div className="create-product">
             {(product?.state === REQUEST_STATE.REQUEST || product?.getDetailState === REQUEST_STATE.REQUEST) && (
@@ -163,6 +160,9 @@ function EditProduct({ match }) {
                     layout="inline"
                     size="large"
                 >
+                    <Form.Item className="create-product__item" name="bestSelling" label={t('isBestSelling')}>
+                        <Switch checked={isBestSelling} onChange={() => setIsBestSelling(!isBestSelling)} />
+                    </Form.Item>
                     <Col className="flex-height-center" style={{ marginBottom: '10px' }} span={24}>
                         <span className="createProductLabel">{t('productStatus')}</span>
                         <Tooltip title={t('theProductWillBeHiddenOrVisibleFromAllSalesChannel ')}>
@@ -181,7 +181,7 @@ function EditProduct({ match }) {
                                 },
                             ]}
                         >
-                            <Select style={{ width: 160 }} onChange={onSelectStatusChange} size="middle">
+                            <Select style={{ width: 160 }} size="middle">
                                 {PRODUCT_STATUS.map((productStatus) => {
                                     return (
                                         <Option key={productStatus.value} value={productStatus.value}>

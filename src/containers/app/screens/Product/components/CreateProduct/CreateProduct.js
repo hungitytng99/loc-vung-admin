@@ -3,7 +3,7 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 import './CreateProduct.sass';
-import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Badge } from 'antd';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Badge, Switch } from 'antd';
 import { PRODUCT_STATUS } from 'app-configs';
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -80,7 +80,9 @@ function CreateProduct(props) {
             form.resetFields();
             setProductImages([]);
             if (hasOptions && productUpdate?.data.id) {
-                history.push(`/product/edit-variant/${productUpdate?.data.id}`);
+                setTimeout(() => {
+                    history.push(`/product/edit-variant/${productUpdate?.data.id}`);
+                }, 500);
             }
         }
     }, [productCreate?.state]);
@@ -123,6 +125,7 @@ function CreateProduct(props) {
                         availableNumber: 0,
                         price: 0,
                         comparePrice: 0,
+                        bestSelling: false,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -130,13 +133,22 @@ function CreateProduct(props) {
                     layout="inline"
                     size="large"
                 >
+                    <Form.Item
+                        className="create-product__item"
+                        name="bestSelling"
+                        label={t('isBestSelling')}
+                        valuePropName="bestSelling"
+                    >
+                        <Switch />
+                    </Form.Item>
                     <Col className="flex-height-center" style={{ marginBottom: '10px' }} span={24}>
                         <span className="createProductLabel">{t('productStatus')}</span>
                         <Tooltip title={t('theProductWillBeHiddenOrVisibleFromAllSalesChannel ')}>
                             <QuestionCircleOutlined className="createProductLabelInfo" style={{ marginLeft: '6px' }} />
                         </Tooltip>
                     </Col>
-                    <Col span={8}>
+
+                    <Col span={5}>
                         <Form.Item
                             className="create-product__item"
                             label={t('status')}
@@ -160,6 +172,7 @@ function CreateProduct(props) {
                             </Select>
                         </Form.Item>
                     </Col>
+
                     <Divider style={{ margin: '10px 0px' }} />
                     <Col span={24}>
                         <div className="createProductLabel">{t('productInformation')}</div>

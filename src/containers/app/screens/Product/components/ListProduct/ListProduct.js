@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag, notification } from 'antd';
+import { Button, Popconfirm, Space, Table, Tooltip, Tag, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
+import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined } from '@ant-design/icons';
 import 'containers/app/screens/Product/components/ListProduct/ListProduct.sass';
 import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
@@ -112,14 +112,21 @@ function ListProduct(props) {
                             text: t(status.value),
                         })),
                         filterMultiple: false,
-                        render: (status) => {
+                        render: (status, record) => {
                             const mapStatus =
                                 PRODUCT_STATUS.find((productStatus) => productStatus.value === status) ??
                                 PRODUCT_STATUS[0];
                             return (
-                                <Tag color={mapStatus.color} key={mapStatus.value}>
-                                    {t(mapStatus.value).toLocaleUpperCase()}
-                                </Tag>
+                                <>
+                                    <Tag color={mapStatus.color} key={mapStatus.value}>
+                                        {t(mapStatus.value).toLocaleUpperCase()}
+                                    </Tag>
+                                    {record?.bestSelling && (
+                                        <Tag style={{ marginTop: '5px' }} color="cyan" key={mapStatus.value}>
+                                            {t('bestSeller').toLocaleUpperCase()}
+                                        </Tag>
+                                    )}
+                                </>
                             );
                         },
                     },
@@ -173,7 +180,7 @@ function ListProduct(props) {
                         title: t('action'),
                         key: 'action',
                         dataIndex: 'action',
-                        width: '3%',
+                        width: '5%',
                         render: (_, record) => {
                             return (
                                 <div className="list-product__action">
@@ -202,12 +209,6 @@ function ListProduct(props) {
                                         </Tooltip>
                                     </Popconfirm>
                                     <div style={{ width: '4px' }}></div>
-                                    <Tooltip
-                                        className="list-product__action-set text-grey-300"
-                                        title={t('setAsHotProduct')}
-                                    >
-                                        <RiseOutlined style={{ paddingTop: '6px' }} />
-                                    </Tooltip>
                                 </div>
                             );
                         },
