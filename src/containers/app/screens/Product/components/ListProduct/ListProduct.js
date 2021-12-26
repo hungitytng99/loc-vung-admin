@@ -61,7 +61,8 @@ function ListProduct(props) {
     }
 
     function onSearch(e) {
-        setSearchParams(() => e.target.value);
+        // console.log('e: ', e.target.value);
+        setSearchParams(e.target.value);
         dispatch(
             SEARCH_PRODUCT({
                 pagination,
@@ -92,7 +93,15 @@ function ListProduct(props) {
                     {
                         title: t('productName'),
                         dataIndex: 'title',
-                        width: '40%',
+                        width: '20%',
+                    },
+                    {
+                        title: t('vendor'),
+                        dataIndex: 'vendor',
+                        width: '10%',
+                        render: (vendor) => {
+                            return <div>{vendor?.name}</div>;
+                        },
                     },
                     {
                         title: t('status'),

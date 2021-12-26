@@ -7,7 +7,7 @@ import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row
 import { PRODUCT_STATUS } from 'app-configs';
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { CREATE_PRODUCT } from '../../actions/action';
+import { CREATE_PRODUCT, GET_LIST_VENDOR } from '../../actions/action';
 import { REQUEST_STATE } from 'app-configs';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { getBase64 } from 'helpers/media';
@@ -85,11 +85,26 @@ function CreateProduct(props) {
         }
     }, [productCreate?.state]);
 
+    useEffect(() => {
+        dispatch(GET_LIST_VENDOR());
+    }, []);
+
+    useEffect(() => {
+        if (productCreate?.getVendorsState === REQUEST_STATE.SUCCESS) {
+            console.log('UPDATE LIST VENDER');
+            if (productCreate?.vendors?.length > 0) {
+                // form.setFieldsValue({
+                //     vendorId: productCreate?.vendors[0]?.id,
+                // });
+            }
+        }
+    }, [productCreate?.getVendorsState]);
+
     return (
         <div className="create-product">
             {productCreate?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
-                <Button type="primary">
+                <Button type="ghost">
                     <Link to="/product">{t('back')}</Link>
                 </Button>
             </ListHeader>
@@ -146,7 +161,6 @@ function CreateProduct(props) {
                         </Form.Item>
                     </Col>
                     <Divider style={{ margin: '10px 0px' }} />
-
                     <Col span={24}>
                         <div className="createProductLabel">{t('productInformation')}</div>
                     </Col>
@@ -211,8 +225,15 @@ function CreateProduct(props) {
                         </Form.Item>
                     </Col> */}
                     <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('vendorId')} name="vendorId">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductVendor')} />
+                        <Form.Item className="create-product__item" label={t('vendor')} name="vendorId">
+                            <Select
+                                style={{ width: 120 }}
+                                loading={productCreate.getVendorsState === REQUEST_STATE.REQUEST}
+                            >
+                                {productCreate?.vendors.map((vendor) => {
+                                    return <Option value={vendor?.id}>{vendor?.name}</Option>;
+                                })}
+                            </Select>
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -497,7 +518,7 @@ function CreateProduct(props) {
 
                     <div className="createProductSubmit">
                         <Button size="middle" type="primary" htmlType="submit">
-                            {hasOptions ? t('next') : t('submit')}
+                            {hasOptions ? t('createAndContinue') : t('submit')}
                         </Button>
                     </div>
                 </Form>

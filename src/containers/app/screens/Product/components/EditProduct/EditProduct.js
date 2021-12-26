@@ -128,7 +128,7 @@ function EditProduct({ match }) {
 
     useEffect(() => {
         if (product.state === REQUEST_STATE.SUCCESS) {
-            history.push('/');
+            history.push('/product');
             dispatch(UPDATE_PRODUCT_SUCCESS_STATE());
         }
     }, [product.state]);
@@ -138,9 +138,12 @@ function EditProduct({ match }) {
             {(product?.state === REQUEST_STATE.REQUEST || product?.getDetailState === REQUEST_STATE.REQUEST) && (
                 <FullPageLoading opacity={0.8} />
             )}
-            <ListHeader title={t('addProduct')}>
-                <Button type="primary">
+            <ListHeader title={t('editProduct')}>
+                <Button type="ghost">
                     <Link to="/product">{t('back')}</Link>
+                </Button>
+                <Button type="primary" style={{ marginLeft: '15px' }}>
+                    <Link to={`/product/edit-variant/${productId}`}>{t('configVariant')}</Link>
                 </Button>
             </ListHeader>
             <div className="create-product__form">

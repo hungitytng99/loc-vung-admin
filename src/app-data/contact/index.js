@@ -20,7 +20,6 @@ export const apiCreateContact = async (params) => {
 export const apiListContact = async (id) => {
     try {
         const response = await GET('/admin/contacts/', { isFullPath: false });
-        console.log('response: ', response);
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response?.result,

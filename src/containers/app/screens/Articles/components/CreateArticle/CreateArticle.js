@@ -68,7 +68,7 @@ function CreateArticle(props) {
             {articleCreate?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <div className="createArticleHeader">
                 <ListHeader title={t('createArticle')}>
-                    <Button type="primary">
+                    <Button type="ghost">
                         <Link to="/articles">{t('back')}</Link>
                     </Button>
                 </ListHeader>

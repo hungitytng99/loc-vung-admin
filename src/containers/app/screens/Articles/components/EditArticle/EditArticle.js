@@ -100,7 +100,7 @@ function editArticle(props) {
                 articleUpdate?.state === REQUEST_STATE.REQUEST) && <FullPageLoading opacity={0.8} />}
             <div className="editArticleHeader">
                 <ListHeader title={t('editArticle')}>
-                    <Button type="primary">
+                    <Button type="ghost">
                         <Link to="/articles">{t('back')}</Link>
                     </Button>
                 </ListHeader>

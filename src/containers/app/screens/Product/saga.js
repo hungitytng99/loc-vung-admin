@@ -5,6 +5,8 @@ import { apiCreateProduct } from 'app-data/product';
 import { apiGetProductById } from 'app-data/product';
 import { apiUpdateProduct } from 'app-data/product';
 import { apiListProduct } from 'app-data/product';
+import { apiUpdateVariant } from 'app-data/variant';
+import { apiListVendor } from 'app-data/vendor';
 import { delay, put, takeLatest, call, takeEvery } from 'redux-saga/effects';
 import { NOTIFY_LOADING } from 'redux/actions/notify';
 import { NOTIFY_ERROR } from 'redux/actions/notify';
@@ -18,12 +20,17 @@ import {
     DELETE_PRODUCT_SUCCESS,
     GET_LIST_PRODUCT,
     GET_LIST_PRODUCT_SUCCESS,
+    GET_LIST_VENDOR,
+    GET_LIST_VENDOR_SUCCESS,
     GET_PRODUCT_BY_ID,
     GET_PRODUCT_BY_ID_SUCCESS,
     SEARCH_PRODUCT,
     UPDATE_PRODUCT,
     UPDATE_PRODUCT_FAIL,
     UPDATE_PRODUCT_SUCCESS,
+    UPDATE_PRODUCT_VARIANT,
+    UPDATE_PRODUCT_VARIANT_FAIL,
+    UPDATE_PRODUCT_VARIANT_SUCCESS,
 } from './actions/action';
 
 function* getListProduct({ type, payload }) {
@@ -41,7 +48,6 @@ function* getListProduct({ type, payload }) {
             filterParams = { ...filterParams, title };
         }
         const response = yield call(apiListProduct, filterParams);
-        console.log('response: ', response);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(
                 GET_LIST_PRODUCT_SUCCESS({
@@ -126,7 +132,6 @@ function* deleteProduct({ type, payload }) {
     try {
         yield put(NOTIFY_LOADING());
         const response = yield call(apiDeleteProduct, id);
-        console.log('response: ', response);
         if (response.state == REQUEST_STATE.SUCCESS) {
             yield put(DELETE_PRODUCT_SUCCESS(response.data));
             yield put(NOTIFY_SUCCESS());
@@ -157,8 +162,48 @@ function* getProductById({ type, payload }) {
 
 function* searchProduct({ type, payload }) {
     try {
-        yield delay(600);
+        yield delay(300);
         yield put(GET_LIST_PRODUCT(payload));
+    } catch (error) {
+        console.log('error: ', error);
+        yield put(NOTIFY_ERROR());
+    }
+}
+
+function* getVendors({ type, payload }) {
+    try {
+        const response = yield call(apiListVendor);
+        if (response.state === REQUEST_STATE.SUCCESS) {
+            yield put(
+                GET_LIST_VENDOR_SUCCESS({
+                    vendors: response.data,
+                }),
+            );
+        } else if (response.state === REQUEST_STATE.ERROR) {
+            yield put(GET_LIST_VENDOR_FAIL());
+        }
+    } catch (error) {
+        console.log('error: ', error);
+        yield put(NOTIFY_ERROR());
+    }
+}
+
+function* updateProductVariant({ type, payload }) {
+    const { id, variant, productId } = payload;
+    try {
+        const response = yield call(apiUpdateVariant, productId, id, variant);
+        console.log('variant: ', variant);
+        if (response.state === REQUEST_STATE.SUCCESS) {
+            yield put(NOTIFY_SUCCESS());
+            yield put(
+                UPDATE_PRODUCT_VARIANT_SUCCESS({
+                    variant: response.data,
+                }),
+            );
+        } else if (response.state === REQUEST_STATE.ERROR) {
+            yield put(UPDATE_PRODUCT_VARIANT_FAIL());
+            yield put(NOTIFY_ERROR());
+        }
     } catch (error) {
         console.log('error: ', error);
         yield put(NOTIFY_ERROR());
@@ -172,4 +217,6 @@ export default function* () {
     yield takeLatest(DELETE_PRODUCT().type, deleteProduct);
     yield takeLatest(GET_PRODUCT_BY_ID().type, getProductById);
     yield takeLatest(SEARCH_PRODUCT().type, searchProduct);
+    yield takeLatest(UPDATE_PRODUCT_VARIANT().type, updateProductVariant);
+    yield takeLatest(GET_LIST_VENDOR().type, getVendors);
 }

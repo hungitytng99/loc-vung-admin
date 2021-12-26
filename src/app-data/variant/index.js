@@ -18,6 +18,7 @@ export const apiCreateVariant = async (productId, params) => {
 };
 
 export const apiUpdateVariant = async (productId, variantId, params) => {
+    console.log('params: ', params);
     try {
         const response = await PUT(`/admin/products/${productId}/variants/${variantId}`, params, { isFullPath: false });
         return {

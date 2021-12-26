@@ -10,7 +10,7 @@ function EditCategory(props) {
     return (
         <div className="edit-category">
             <ListHeader title={t('editCategory')}>
-                <Button type="primary">
+                <Button type="ghost">
                     <Link to="/category">{t('back')}</Link>
                 </Button>
             </ListHeader>

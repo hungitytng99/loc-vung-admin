@@ -19,7 +19,7 @@ function CreateCategory(props) {
     return (
         <div className="create-category">
             <ListHeader title={t('addCategory')}>
-                <Button type="primary">
+                <Button type="ghost">
                     <Link to="/category">{t('back')}</Link>
                 </Button>
             </ListHeader>

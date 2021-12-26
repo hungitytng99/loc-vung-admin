@@ -49,7 +49,6 @@ function ListCategory(props) {
             type: 'json',
             data: getRandomuserParams(params),
         }).then((response) => {
-            console.log('response: ', response);
             setLoading(false);
             setData(response.data);
             setPagination({

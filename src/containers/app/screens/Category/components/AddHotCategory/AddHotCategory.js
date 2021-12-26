@@ -10,7 +10,7 @@ function AddHotCategory(props) {
     return (
         <div className="add-category">
             <ListHeader title={t('addHotCategory')}>
-                <Button type="primary">
+                <Button type="ghost">
                     <Link to="/category">{t('back')}</Link>
                 </Button>
             </ListHeader>

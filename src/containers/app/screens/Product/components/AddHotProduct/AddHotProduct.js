@@ -10,7 +10,7 @@ function AddHotProduct(props) {
     return (
         <div className="add-product">
             <ListHeader title={t('addHotProduct')}>
-                <Button type="primary">
+                <Button type="ghost">
                     <Link to="/product">{t('back')}</Link>
                 </Button>
             </ListHeader>
