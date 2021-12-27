@@ -107,26 +107,30 @@ function ListProduct(props) {
                         title: t('status'),
                         dataIndex: 'status',
                         width: '5%',
-                        filters: PRODUCT_STATUS.map((status) => ({
-                            value: status.value,
-                            text: t(status.value),
-                        })),
+                        filters: [
+                            ...PRODUCT_STATUS.map((status) => ({
+                                value: status.value,
+                                text: t(status.value),
+                            })),
+                            {
+                                value: 'bestSelling',
+                                text: 'bestSelling',
+                            },
+                        ],
                         filterMultiple: false,
                         render: (status, record) => {
                             const mapStatus =
                                 PRODUCT_STATUS.find((productStatus) => productStatus.value === status) ??
                                 PRODUCT_STATUS[0];
                             return (
-                                <>
-                                    <Tag color={mapStatus.color} key={mapStatus.value}>
-                                        {t(mapStatus.value).toLocaleUpperCase()}
-                                    </Tag>
+                                <div key={mapStatus.value}>
+                                    <Tag color={mapStatus.color}>{t(mapStatus.value).toLocaleUpperCase()}</Tag>
                                     {record?.bestSelling && (
-                                        <Tag style={{ marginTop: '5px' }} color="cyan" key={mapStatus.value}>
+                                        <Tag style={{ marginTop: '5px' }} color="cyan">
                                             {t('bestSeller').toLocaleUpperCase()}
                                         </Tag>
                                     )}
-                                </>
+                                </div>
                             );
                         },
                     },
@@ -226,9 +230,6 @@ function ListProduct(props) {
                                 value={searchParams}
                                 onChange={onSearch}
                             />
-                            <Button type="ghost">
-                                <Link to="/product/add-hot-product">{t('addHotProduct')}</Link>
-                            </Button>
                             <Button type="primary">
                                 <Link to="/product/create">{t('addProduct')}</Link>
                             </Button>

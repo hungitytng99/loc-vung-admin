@@ -33,11 +33,14 @@ import {
 
 function* getListProduct({ type, payload }) {
     const { sortField, sortOrder, status, pagination, title } = payload;
-    console.log('payload: ', payload);
     try {
         let filterParams = { ...pagination };
         if (status) {
-            filterParams = { ...filterParams, status: status[0] };
+            if (status[0] === 'bestSelling') {
+                filterParams = { ...filterParams, bestSelling: true };
+            } else {
+                filterParams = { ...filterParams, status: status[0] };
+            }
         }
         if (sortField === 'price' && sortOrder) {
             filterParams = { ...filterParams, sortPrice: sortOrder === 'ascend' ? 'ASC' : 'DESC' };
@@ -62,7 +65,6 @@ function* getListProduct({ type, payload }) {
 }
 
 function* createProduct({ type, payload }) {
-    console.log('payload: ', payload);
     try {
         yield put(NOTIFY_LOADING());
         const listImagesIdUpload = [];
@@ -89,7 +91,6 @@ function* createProduct({ type, payload }) {
 }
 
 function* updateProduct({ type, payload }) {
-    console.log('payload: ', payload);
     const { id, params } = payload;
     try {
         yield put(NOTIFY_LOADING());
@@ -104,7 +105,6 @@ function* updateProduct({ type, payload }) {
             }
         }
         const newListMediaId = [...oldListImagesIdUpload, ...newListImagesIdUpload];
-        console.log('newListMediaId: ', newListMediaId);
         const newParams = {
             ...params,
             media: [...newListMediaId],

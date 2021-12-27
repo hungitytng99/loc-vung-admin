@@ -5,8 +5,8 @@ import './NotFound.css';
 function NotFound(params) {
     return (
         <div id="colorlib-notfound">
-            <div class="colorlib-notfound">
-                <div class="colorlib-notfound-404">
+            <div className="colorlib-notfound">
+                <div className="colorlib-notfound-404">
                     <h1>404</h1>
                 </div>
                 <h2 id="colorlib_404_customizer_page_heading">Oops! This page could not be found.</h2>

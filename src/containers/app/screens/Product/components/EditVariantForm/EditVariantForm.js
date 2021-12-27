@@ -26,7 +26,9 @@ function EditVariantForm({ variant }) {
 
     return (
         <div className="editVariantForm">
-            <ListHeader title={`${productVariant?.data?.title} (${variant?.publicTitle})`} />
+            <ListHeader
+                title={`${productVariant?.data?.title} ${variant?.publicTitle ? `(${variant?.publicTitle})` : ``}`}
+            />
             <Form
                 name="basic"
                 form={form}

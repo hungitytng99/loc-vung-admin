@@ -1,16 +1,14 @@
 import { Spin } from 'antd';
-import React, { Suspense, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import VendorPage from './components/VendorPage/VendorPage';
+import React, { Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import AccountSetting from './components/SettingPanel/SettingPanel';
 import { childRoutes } from './route';
 const Vendor = (props) => {
-    console.log('Vendor: ');
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
-                <Route exact path="/vendor">
-                    <VendorPage />
+                <Route exact path="/account-setting">
+                    <AccountSetting />
                 </Route>
                 {childRoutes.map((route) => (
                     <Route key={route.path} exact={route.exact} path={route.path}>

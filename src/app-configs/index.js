@@ -16,7 +16,7 @@ export const Configs = {
     BASE_API: process.env.REACT_APP_BASE_API_URL,
     DOMAIN: '',
 
-    HOMEPAGE_ROUTE: '/dashboard',
+    HOMEPAGE_ROUTE: '/product',
 
     CURRENT_PAGE: 1,
     FILE_MAXIMUM: 5, //MB
@@ -56,7 +56,7 @@ export const MODULES = {
         path: 'Dashboard', // Folder name in `src/containers/app/screens`
         route: '/dashboard', // Route defined
         icon: <DashboardOutlined />, // Icon
-        displayOnSidebar: true,
+        displayOnSidebar: false,
     },
     productModule: {
         key: 'product',
@@ -99,5 +99,11 @@ export const MODULES = {
         route: '/vendor',
         icon: <GroupOutlined />,
         displayOnSidebar: true,
+    },
+    accountSettingModule: {
+        key: 'accountSetting',
+        path: 'AccountSetting',
+        route: '/account-setting',
+        displayOnSidebar: false,
     },
 };

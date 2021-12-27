@@ -10,6 +10,8 @@ import { LOGOUT } from 'redux/actions/user';
 import { useHistory } from 'react-router';
 import Cookies from 'js-cookie';
 import { TOKEN_KEY } from 'app-configs';
+import { Link } from 'react-router-dom';
+import { MODULES } from 'app-configs';
 
 const { Header } = Layout;
 
@@ -53,10 +55,9 @@ function AdminHeader({ collapseSider, handleCollapse }) {
                             </div>
                             <Divider style={{ margin: '2px' }} />
                             <Menu.Item>
-                                <div>{t('changePassword')}</div>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <div>{t('accountSetting')}</div>
+                                <Link to={MODULES.accountSettingModule.route}>
+                                    <div>{t('accountSetting')}</div>
+                                </Link>
                             </Menu.Item>
                             <Divider style={{ margin: '2px' }} />
                             <Menu.Item onClick={handleLogout}>

@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { RESET_NOTIFY_STATE } from 'redux/actions/notify';
 import { REQUEST_STATE } from 'app-configs';
 import { useTranslation } from 'react-i18next';
-import { Configs } from 'app-configs';
+import { Configs } from 'app-configs/index.js';
 
 console.debug('listAppRoutes =>', listAppRoutes);
 console.debug('listAuthenticationRoutes =>', listAuthenticationRoutes);
