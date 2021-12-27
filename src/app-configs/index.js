@@ -70,7 +70,7 @@ export const MODULES = {
         path: 'Category',
         route: '/category',
         icon: <ProfileOutlined />,
-        displayOnSidebar: true,
+        displayOnSidebar: process.env.NODE_ENV === 'development',
     },
     articleModule: {
         key: 'articles',
