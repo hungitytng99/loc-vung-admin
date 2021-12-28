@@ -3,7 +3,7 @@ import { apiCreateVendor } from 'app-data/vendor';
 import { apiDeleteVendor } from 'app-data/vendor';
 import { apiUpdateVendor } from 'app-data/vendor';
 import { apiListVendor } from 'app-data/vendor';
-import { take, fork, delay, put, takeLatest, call } from 'redux-saga/effects';
+import { take, fork, delay, put, takeLatest, call, takeEvery } from 'redux-saga/effects';
 import { NOTIFY_ERROR } from 'redux/actions/notify';
 import {
     CREATE_VENDOR,
@@ -98,7 +98,7 @@ function* updateVendor({ type, payload }) {
 }
 
 export default function* () {
-    yield takeLatest(GET_LIST_VENDOR().type, getListVendor);
+    yield takeEvery(GET_LIST_VENDOR().type, getListVendor);
     yield takeLatest(CREATE_VENDOR().type, createVendor);
     yield takeLatest(DELETE_VENDOR().type, deleteVendor);
     yield takeLatest(UPDATE_VENDOR().type, updateVendor);

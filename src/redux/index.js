@@ -51,7 +51,7 @@ const rootReducer = (state, action) => {
 };
 store.injectReducer = (key, reducer) => {
     store.asyncReducers[key] = reducer;
-    store.replaceReducer(rootReducer);
+    store.replaceReducer(createReducer(store.asyncReducers));
     return store;
 };
 

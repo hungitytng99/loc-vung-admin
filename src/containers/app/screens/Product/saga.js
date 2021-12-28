@@ -65,6 +65,7 @@ function* getListProduct({ type, payload }) {
 }
 
 function* createProduct({ type, payload }) {
+    console.log('payload: ', payload);
     try {
         yield put(NOTIFY_LOADING());
         const listImagesIdUpload = [];
@@ -79,6 +80,9 @@ function* createProduct({ type, payload }) {
         };
         const responseCreate = yield call(apiCreateProduct, newParams);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
+            if (payload?.options && payload?.options?.length > 0) {
+                yield delay(payload?.media?.length * 300);
+            }
             yield put(CREATE_PRODUCT_SUCCESS(responseCreate.data));
             yield put(NOTIFY_SUCCESS());
         } else {
@@ -146,6 +150,7 @@ function* getProductById({ type, payload }) {
     try {
         yield put(NOTIFY_LOADING());
         const response = yield call(apiGetProductById, id);
+        console.log('response: ', response);
         if (response.state == REQUEST_STATE.SUCCESS) {
             yield put(GET_PRODUCT_BY_ID_SUCCESS(response.data));
         } else {
@@ -167,29 +172,10 @@ function* searchProduct({ type, payload }) {
     }
 }
 
-function* getVendors({ type, payload }) {
-    try {
-        const response = yield call(apiListVendor);
-        if (response.state === REQUEST_STATE.SUCCESS) {
-            yield put(
-                GET_LIST_VENDOR_SUCCESS({
-                    vendors: response.data,
-                }),
-            );
-        } else if (response.state === REQUEST_STATE.ERROR) {
-            yield put(GET_LIST_VENDOR_FAIL());
-        }
-    } catch (error) {
-        console.log('error: ', error);
-        yield put(NOTIFY_ERROR());
-    }
-}
-
 function* updateProductVariant({ type, payload }) {
     const { id, variant, productId } = payload;
     try {
         const response = yield call(apiUpdateVariant, productId, id, variant);
-        console.log('variant: ', variant);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(NOTIFY_SUCCESS());
             yield put(
@@ -215,5 +201,4 @@ export default function* () {
     yield takeLatest(GET_PRODUCT_BY_ID().type, getProductById);
     yield takeLatest(SEARCH_PRODUCT().type, searchProduct);
     yield takeLatest(UPDATE_PRODUCT_VARIANT().type, updateProductVariant);
-    yield takeLatest(GET_LIST_VENDOR().type, getVendors);
 }

@@ -21,9 +21,6 @@ function ChangePassword(props) {
                 password: values,
             }),
         );
-        // dispatch(UPDATE_PROFILE_INFORMATION({
-        //     information: values,
-        // }))
     };
 
     return (
@@ -74,10 +71,17 @@ function ChangePassword(props) {
                         label={t('confirmPassword')}
                         name="confirmPassword"
                         rules={[
-                            {
-                                required: true,
-                                message: t('thisFieldIsRequired'),
-                            },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value) {
+                                        return Promise.reject(new Error(t('thisFieldIsRequired')));
+                                    }
+                                    if (getFieldValue('newPassword') !== value) {
+                                        return Promise.reject(new Error(t('passwordMustMatch')));
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }),
                         ]}
                     >
                         <Input.Password size="middle" placeholder={t('confirmNewPassword')} />

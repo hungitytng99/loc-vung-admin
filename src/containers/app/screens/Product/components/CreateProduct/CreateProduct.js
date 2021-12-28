@@ -27,8 +27,9 @@ function CreateProduct(props) {
         title: '',
         isShow: false,
     });
-    const productCreate = useSelector((state) => state.product.create);
-    const productUpdate = useSelector((state) => state.product.update);
+    const productCreate = useSelector((state) => state?.product?.create);
+    const productUpdate = useSelector((state) => state?.product?.update);
+    const vendorList = useSelector((state) => state?.vendor?.list);
 
     const onFinish = (values) => {
         const params = {
@@ -80,27 +81,14 @@ function CreateProduct(props) {
             form.resetFields();
             setProductImages([]);
             if (hasOptions && productUpdate?.data.id) {
-                setTimeout(() => {
-                    history.push(`/product/edit-variant/${productUpdate?.data.id}`);
-                }, 500);
+                history.push(`/product/edit-variant/${productUpdate?.data.id}`);
             }
         }
     }, [productCreate?.state]);
 
     useEffect(() => {
-        dispatch(GET_LIST_VENDOR());
+        dispatch(GET_LIST_VENDOR({ pagination: {} }));
     }, []);
-
-    useEffect(() => {
-        if (productCreate?.getVendorsState === REQUEST_STATE.SUCCESS) {
-            console.log('UPDATE LIST VENDER');
-            if (productCreate?.vendors?.length > 0) {
-                // form.setFieldsValue({
-                //     vendorId: productCreate?.vendors[0]?.id,
-                // });
-            }
-        }
-    }, [productCreate?.getVendorsState]);
 
     return (
         <div className="create-product">
@@ -232,20 +220,13 @@ function CreateProduct(props) {
                             />
                         </Form.Item>
                     </Col>
-                    {/* <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('productUrl')} name="url">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductURL')} />
-                        </Form.Item>
-                    </Col> */}
                     <Col span={8}>
                         <Form.Item className="create-product__item" label={t('vendor')} name="vendorId">
-                            <Select
-                                style={{ width: 120 }}
-                                loading={productCreate.getVendorsState === REQUEST_STATE.REQUEST}
-                            >
-                                {productCreate?.vendors.map((vendor) => {
-                                    return <Option value={vendor?.id}>{vendor?.name}</Option>;
-                                })}
+                            <Select style={{ width: 120 }} loading={vendorList?.state === REQUEST_STATE.REQUEST}>
+                                {vendorList?.data &&
+                                    vendorList?.data.map((vendor) => {
+                                        return <Option value={vendor?.id}>{vendor?.name}</Option>;
+                                    })}
                             </Select>
                         </Form.Item>
                     </Col>

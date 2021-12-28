@@ -32,10 +32,10 @@ function VendorPage(props) {
     const [currentVendorEdit, setCurrentVendorEdit] = useState();
 
     const [formCreateVendor] = Form.useForm();
-    const vendorList = useSelector((state) => state.vendor?.list);
-    const vendorCreate = useSelector((state) => state.vendor?.create);
-    const vendorDelete = useSelector((state) => state.vendor?.delete);
-    const vendorUpdate = useSelector((state) => state.vendor?.update);
+    const vendorList = useSelector((state) => state?.vendor?.list);
+    const vendorCreate = useSelector((state) => state?.vendor?.create);
+    const vendorDelete = useSelector((state) => state?.vendor?.delete);
+    const vendorUpdate = useSelector((state) => state?.vendor?.update);
 
     const [isShowEditVendor, setIsShowEditVendor] = useState(false);
 
@@ -50,8 +50,6 @@ function VendorPage(props) {
     }
 
     function confirmEditVendor(values) {
-        console.log('values: ', values);
-        console.log('currentVendorEdit: ', currentVendorEdit);
         setIsShowEditVendor(false);
         dispatch(
             UPDATE_VENDOR({
@@ -113,6 +111,10 @@ function VendorPage(props) {
             formEditVendor.setFieldsValue({ name: '' });
         }
     }, [isShowEditVendor]);
+
+    useEffect(() => {
+        console.log(vendorList);
+    }, [vendorList]);
 
     return (
         <div className="vendorPage">

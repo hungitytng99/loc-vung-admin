@@ -40,9 +40,12 @@ function UpdateProfileDetail(props) {
             <Form
                 name="updateProfileDetail"
                 form={formEditInformation}
+                initialValues={{
+                    shipFee: 0,
+                }}
                 onFinish={onUpdateProfileInformation}
                 autoComplete="off"
-                layout="inline"
+                layout="horizontal"
                 size="large"
             >
                 <Col span={24}>
@@ -76,8 +79,18 @@ function UpdateProfileDetail(props) {
                     </Form.Item>
                 </Col>
                 <Col span={24}>
-                    <Form.Item className="updateProfileDetailItem" label={t('email')} name="email">
-                        <Input style={{ fontSize: '14px' }} placeholder={t('enterYourEmail')} />
+                    <Form.Item
+                        className="updateProfileDetailItem"
+                        label={t('shipFee')}
+                        name="shipFee"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('thisFieldIsRequired'),
+                            },
+                        ]}
+                    >
+                        <Input size="middle" style={{ fontSize: '14px' }} placeholder={t('enterShipFee')} />
                     </Form.Item>
                 </Col>
                 <Col span={24}>
@@ -97,6 +110,11 @@ function UpdateProfileDetail(props) {
                             style={{ fontSize: '14px' }}
                             placeholder={t('enterYourBankAccountNumber')}
                         />
+                    </Form.Item>
+                </Col>
+                <Col span={24}>
+                    <Form.Item className="updateProfileDetailItem" label={t('email')} name="email">
+                        <Input style={{ fontSize: '14px' }} placeholder={t('enterYourEmail')} />
                     </Form.Item>
                 </Col>
                 <Col span={24}>

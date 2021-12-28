@@ -58,7 +58,7 @@ export default combineReducers({
                 return {
                     ...state,
                     state: REQUEST_STATE.SUCCESS,
-                    data: listVendor,
+                    data: listVendor ?? state?.listVendor,
                     total: total,
                 };
             }

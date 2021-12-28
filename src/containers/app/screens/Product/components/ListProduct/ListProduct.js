@@ -16,6 +16,7 @@ import { PRODUCT_STATUS } from 'app-configs';
 import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import './ListProduct.sass';
+import { MODULES } from 'app-configs';
 
 function ListProduct(props) {
     const { t } = useTranslation();
@@ -231,7 +232,7 @@ function ListProduct(props) {
                                 onChange={onSearch}
                             />
                             <Button type="primary">
-                                <Link to="/product/create">{t('addProduct')}</Link>
+                                <Link to={`${MODULES.productModule.route}/create`}>{t('addProduct')}</Link>
                             </Button>
                         </Space>
                     </ListHeader>

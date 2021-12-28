@@ -19,20 +19,18 @@ export const childRoutes = [
         path: '/articles/create',
         exact: true,
         isPrivate: true,
-        childComponent: <CreateArticle />,
         component: lazy(async () => {
             await initModules([MODULES.articleModule], 'app');
-            return import('.');
+            return import('./components/CreateArticle/CreateArticle');
         }),
     },
     {
         path: '/articles/edit-articles/:id',
         exact: true,
         isPrivate: true,
-        childComponent: <EditArticles />,
         component: lazy(async () => {
             await initModules([MODULES.articleModule], 'app');
-            return import('.');
+            return import('./components/EditArticle/EditArticle');
         }),
     },
 ];
