@@ -11,6 +11,8 @@ import { CREATE_PRODUCT, GET_LIST_VENDOR } from '../../actions/action';
 import { REQUEST_STATE } from 'app-configs';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { getBase64 } from 'helpers/media';
+import { isEmptyValue } from 'helpers/check';
+import CKEditor from 'components/Editor/CKEditor';
 
 const { Option } = Select;
 
@@ -21,6 +23,7 @@ function CreateProduct(props) {
     const [productImages, setProductImages] = useState([]);
     const [hasOptions, setHasOptions] = useState(false);
     const history = useHistory();
+    const [content, setContent] = useState('');
 
     const [previewProductStatus, setPreviewProductStatus] = useState({
         image: '',
@@ -34,6 +37,7 @@ function CreateProduct(props) {
     const onFinish = (values) => {
         const params = {
             ...values,
+            description: content,
             media: productImages,
             status: t(values.status),
             options: values.options
@@ -45,6 +49,7 @@ function CreateProduct(props) {
                   })
                 : null,
         };
+        console.log('params: ', params);
         dispatch(CREATE_PRODUCT(params));
     };
 
@@ -76,10 +81,18 @@ function CreateProduct(props) {
         setHasOptions(!hasOptions);
     }
 
+    function onContentChange(value) {
+        form.setFieldsValue({
+            content: value,
+        });
+        setContent(value);
+    }
+
     useEffect(() => {
         if (productCreate?.state === REQUEST_STATE.SUCCESS) {
             form.resetFields();
             setProductImages([]);
+            setContent('');
             if (hasOptions && productUpdate?.data.id) {
                 history.push(`/product/edit-variant/${productUpdate?.data.id}`);
             }
@@ -180,11 +193,6 @@ function CreateProduct(props) {
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductName')} />
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('description')} name="description">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductDescription')} />
-                        </Form.Item>
-                    </Col>
 
                     <Col span={8}>
                         <Form.Item
@@ -243,6 +251,12 @@ function CreateProduct(props) {
                             />
                         </Form.Item>
                     </Col>
+                    <Col span={24}>
+                        <Form.Item className="create-product__item" label={t('description')} name="description">
+                            <CKEditor onTextChange={onContentChange} initContent={content} />
+                        </Form.Item>
+                    </Col>
+
                     <Divider style={{ margin: '10px 0px' }} />
                     <Col span={24}>
                         <div className="createProductLabel">{t('listProductImages')}</div>

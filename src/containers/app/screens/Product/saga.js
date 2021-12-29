@@ -13,6 +13,7 @@ import { NOTIFY_ERROR } from 'redux/actions/notify';
 import { NOTIFY_SUCCESS } from 'redux/actions/notify';
 import {
     CREATE_PRODUCT,
+    CREATE_PRODUCT_FAIL,
     CREATE_PRODUCT_SUCCESS,
     DELETE_PRODUCT,
     DELETE_PRODUCT_SUCCESS,
@@ -56,7 +57,7 @@ function* getListProduct({ type, payload }) {
                     total: response.total,
                 }),
             );
-        } else {
+        } else if (response.state === REQUEST_STATE.ERROR) {
         }
     } catch (error) {
         console.log('error: ', error);
@@ -86,6 +87,7 @@ function* createProduct({ type, payload }) {
             yield put(CREATE_PRODUCT_SUCCESS(responseCreate.data));
             yield put(NOTIFY_SUCCESS());
         } else {
+            yield put(CREATE_PRODUCT_FAIL());
             yield put(NOTIFY_ERROR());
         }
     } catch (error) {

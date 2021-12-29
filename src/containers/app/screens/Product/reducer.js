@@ -21,6 +21,7 @@ import {
     UPDATE_PRODUCT_VARIANT,
     UPDATE_PRODUCT_VARIANT_SUCCESS,
     UPDATE_PRODUCT_VARIANT_FAIL,
+    CREATE_PRODUCT_FAIL,
 } from './actions/action';
 
 const defaultState = {
@@ -41,6 +42,12 @@ export default combineReducers({
                 return {
                     ...state,
                     state: REQUEST_STATE.SUCCESS,
+                };
+            }
+            case CREATE_PRODUCT_FAIL().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.ERROR,
                 };
             }
             case RESET_CREATE_PRODUCT_STATE().type: {
