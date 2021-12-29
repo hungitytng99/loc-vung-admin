@@ -1,4 +1,5 @@
 import { REQUEST_STATE } from 'app-configs';
+import { apiUpdatePassword } from 'app-data/auth';
 import { apiGetShopInfo } from 'app-data/shopInfo';
 import { apiUpdateShopInfo } from 'app-data/shopInfo';
 import { apiCreateVendor } from 'app-data/vendor';
@@ -10,6 +11,8 @@ import { NOTIFY_SUCCESS } from 'redux/actions/notify';
 import { NOTIFY_ERROR } from 'redux/actions/notify';
 import {
     CHANGE_PASSWORD,
+    CHANGE_PASSWORD_FAIL,
+    CHANGE_PASSWORD_SUCCESS,
     GET_DETAIL_PROFILE_INFORMATION,
     GET_DETAIL_PROFILE_INFORMATION_FAIL,
     GET_DETAIL_PROFILE_INFORMATION_SUCCESS,
@@ -60,7 +63,15 @@ function* updateProfileInformation({ type, payload }) {
 function* changePassword({ type, payload }) {
     const { password } = payload;
     try {
-        console.log('password: ', password);
+        const response = yield call(apiUpdatePassword, password);
+        console.log('response: ', response);
+        if (response.state === REQUEST_STATE.SUCCESS) {
+            yield put(NOTIFY_SUCCESS());
+            yield put(CHANGE_PASSWORD_SUCCESS());
+        } else if (response.state === REQUEST_STATE.ERROR) {
+            yield put(NOTIFY_ERROR());
+            yield put(CHANGE_PASSWORD_FAIL());
+        }
     } catch (error) {
         console.log('error: ', error);
         yield put(NOTIFY_ERROR());

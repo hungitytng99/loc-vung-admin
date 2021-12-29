@@ -9,8 +9,7 @@ import './ChangePassword.sass';
 
 function ChangePassword(props) {
     const dispatch = useDispatch();
-    const profileDetailInformation = useSelector((state) => state?.accountSetting?.detail);
-    const profileUpdateInformation = useSelector((state) => state?.accountSetting?.update);
+    const profileChangePassword = useSelector((state) => state?.accountSetting?.changePassword);
     const [formChangePassword] = Form.useForm();
     const { t } = useTranslation();
 
@@ -25,7 +24,7 @@ function ChangePassword(props) {
 
     return (
         <div>
-            {profileDetailInformation?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            {profileChangePassword?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <div className="changePasswordTitle">{t('changePassword')}</div>
             <Form
                 name="changePassword"

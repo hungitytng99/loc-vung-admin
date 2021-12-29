@@ -35,7 +35,7 @@ function SettingPanel({ currentTab }) {
                             <TabPane
                                 className="accountSettingProfile"
                                 tab={t('profileDetailInformation')}
-                                key="project-detail"
+                                key="customer-detail"
                             >
                                 <UpdateProfileDetail />
                             </TabPane>

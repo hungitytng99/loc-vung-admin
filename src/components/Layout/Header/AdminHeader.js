@@ -42,15 +42,15 @@ function AdminHeader({ collapseSider, handleCollapse }) {
             </div>
             <div className="header__right">
                 <div className="header__right-notify">
-                    <Badge dot={true}>
+                    {/* <Badge dot={true}>
                         <BellOutlined className="notify__icon" style={{ fontSize: '20px', color: '#646464' }} />
-                    </Badge>
+                    </Badge> */}
                 </div>
                 <Dropdown
                     overlay={
                         <Menu style={{ width: '200px', padding: '6px 0px' }}>
                             <div className="username">
-                                <strong>Username</strong>
+                                <strong>Admin</strong>
                                 <div className="active" />
                             </div>
                             <Divider style={{ margin: '2px' }} />
@@ -70,7 +70,7 @@ function AdminHeader({ collapseSider, handleCollapse }) {
                     trigger={['click']}
                 >
                     <Avatar size={40} className="header__right-avatar">
-                        USER
+                        AD
                     </Avatar>
                 </Dropdown>
             </div>
