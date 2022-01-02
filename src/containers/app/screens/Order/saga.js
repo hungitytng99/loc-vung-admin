@@ -41,6 +41,7 @@ function* getListOrder({ type, payload }) {
         }
         console.log('filterParams: ', filterParams);
         const response = yield call(apiListOrder, filterParams);
+        console.log('response: ', response);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(
                 GET_LIST_ORDER_SUCCESS({
@@ -169,8 +170,8 @@ function* searchOrder({ type, payload }) {
 export default function* () {
     yield takeLatest(GET_LIST_ORDER().type, getListOrder);
     yield takeLatest(CREATE_ORDER().type, createOrder);
-    yield takeLatest(UPDATE_ORDER().type, updateOrder);
-    yield takeLatest(DELETE_ORDER().type, deleteOrder);
+    // yield takeLatest(UPDATE_ORDER().type, updateOrder);
+    // yield takeLatest(DELETE_ORDER().type, deleteOrder);
     yield takeLatest(GET_ORDER_BY_ID().type, getOrderById);
     yield takeLatest(SEARCH_ORDER().type, searchOrder);
 }

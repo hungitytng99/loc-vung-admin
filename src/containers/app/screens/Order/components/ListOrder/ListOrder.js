@@ -81,6 +81,14 @@ function ListOrder({ hasOptions }) {
         setPagination({ ...pagination, total: orders.totalOrder });
     }, [orders.totalOrder]);
 
+    // test api
+    // useEffect(() => {
+    //     (async () => {
+    //         const response = await apiListOrder({});
+    //         console.log('test api:' + response);
+    //     })();
+    // }, []);
+
     return (
         <div className="list-order">
             {orders.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
@@ -92,121 +100,85 @@ function ListOrder({ hasOptions }) {
                         width: '2%',
                     },
                     {
-                        title: t('orderName'),
-                        dataIndex: 'title',
-                        width: '40%',
+                        title: t('userId'),
+                        dataIndex: 'userId',
+                        width: '12%',
                     },
                     {
-                        title: t('status'),
-                        dataIndex: 'status',
-                        width: '5%',
-                        filters: ORDER_STATUS.map((status) => ({
-                            value: status.value,
-                            text: t(status.value),
-                        })),
-                        filterMultiple: false,
-                        render: (status) => {
-                            const mapStatus =
-                                ORDER_STATUS.find((orderStatus) => orderStatus.value === status) ?? ORDER_STATUS[0];
-                            return (
-                                <Tag color={mapStatus.color} key={mapStatus.value}>
-                                    {t(mapStatus.value).toLocaleUpperCase()}
-                                </Tag>
-                            );
-                        },
+                        title: t('name'),
+                        dataIndex: 'customerName',
+                        width: '12%',
                     },
                     {
-                        title: t('price'),
-                        dataIndex: 'price',
-                        sorter: true,
-                        width: '7%',
-                        render: (price) => price.formatMoney(),
+                        title: t('phone'),
+                        dataIndex: 'customerPhone',
+                        width: '12%',
                     },
                     {
-                        title: t('comparePrice'),
-                        dataIndex: 'comparePrice',
-                        width: '7%',
-                        render: (price) => price.formatMoney(),
+                        title: t('dia chi'),
+                        dataIndex: 'customerAddress',
+                        width: '12%',
                     },
                     {
-                        title: t('stockStatus'),
-                        dataIndex: 'availableNumber',
-                        width: '5%',
-                        render: (availableNumber) => availableNumber ?? 0,
+                        title: t('email'),
+                        dataIndex: 'customerEmail',
+                        width: '12%',
                     },
                     {
-                        title: t('orderImages'),
-                        dataIndex: ['media'],
-                        width: '18%',
-                        render: (medias = []) => {
-                            return (
-                                <div className="listOrderImages">
-                                    {medias.map((media) => {
-                                        return (
-                                            <Zoom key={media.id}>
-                                                <div
-                                                    style={{
-                                                        width: '50px',
-                                                        height: '50px',
-                                                        overflow: 'hidden',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                    }}
-                                                >
-                                                    <ImageLoading
-                                                        key={media.id}
-                                                        src={getImageWithId(media.id)}
-                                                        alt={media.link}
-                                                        className="listOrderImagesItem"
-                                                    ></ImageLoading>
-                                                </div>
-                                            </Zoom>
-                                        );
-                                    })}
-                                </div>
-                            );
-                        },
+                        title: t('deliveryMethod'),
+                        dataIndex: 'deliveryMethod',
+                        width: '12%',
                     },
                     {
-                        title: t('action'),
-                        key: 'action',
-                        dataIndex: 'action',
-                        width: '3%',
-                        render: (_, record) => {
-                            return (
-                                <div className="list-order__action">
-                                    <Tooltip className="list-order__action-edit text-grey-300" title={t('editOrder')}>
-                                        <Link style={{ display: 'block' }} to={`/order/edit-order/${record.id}`}>
-                                            <FormOutlined />
-                                        </Link>
-                                    </Tooltip>
-                                    <div style={{ width: '4px' }}></div>
-                                    <Popconfirm
-                                        title={`${t('areYouSureToDeleteThisOrder')}?`}
-                                        okText={t('yes')}
-                                        cancelText={t('cancel')}
-                                        onConfirm={() => {
-                                            handleDeleteOrder(record);
-                                        }}
-                                    >
-                                        <Tooltip
-                                            className="list-order__action-delete text-grey-300"
-                                            title={t('deleteOrder')}
-                                        >
-                                            <DeleteOutlined style={{ paddingTop: '6px' }} />
-                                        </Tooltip>
-                                    </Popconfirm>
-                                    <div style={{ width: '4px' }}></div>
-                                    <Tooltip
-                                        className="list-order__action-set text-grey-300"
-                                        title={t('setAsHotOrder')}
-                                    >
-                                        <RiseOutlined style={{ paddingTop: '6px' }} />
-                                    </Tooltip>
-                                </div>
-                            );
-                        },
+                        title: t('product'),
+                        // dataIndex: 'deliveryMethod',
+                        width: '12%',
                     },
+                    {
+                        title: t('create at'),
+                        dataIndex: 'createdAt',
+                        width: '12%',
+                    },
+                    // {
+                    //     title: t('action'),
+                    //     key: 'action',
+                    //     dataIndex: 'action',
+                    //     width: '3%',
+                    //     render: (_, record) => {
+                    //         return (
+                    //             <div className="list-order__action">
+                    //                 <Tooltip className="list-order__action-edit text-grey-300" title={t('editOrder')}>
+                    //                     <Link style={{ display: 'block' }} to={`/order/edit-order/${record.id}`}>
+                    //                         <FormOutlined />
+                    //                     </Link>
+                    //                 </Tooltip>
+                    //                 <div style={{ width: '4px' }}></div>
+                    //                 <Popconfirm
+                    //                     title={`${t('areYouSureToDeleteThisOrder')}?`}
+                    //                     okText={t('yes')}
+                    //                     cancelText={t('cancel')}
+                    //                     onConfirm={() => {
+                    //                         handleDeleteOrder(record);
+                    //                     }}
+                    //                 >
+                    //                     <Tooltip
+                    //                         className="list-order__action-delete text-grey-300"
+                    //                         title={t('deleteOrder')}
+                    //                     >
+                    //                         <DeleteOutlined style={{ paddingTop: '6px' }} />
+                    //                     </Tooltip>
+                    //                 </Popconfirm>
+                    //                 <div style={{ width: '4px' }}></div>
+                    //                 <Tooltip
+                    //                     className="list-order__action-set text-grey-300"
+                    //                     title={t('setAsHotOrder')}
+                    //                 >
+                    //                     <RiseOutlined style={{ paddingTop: '6px' }} />
+                    //                 </Tooltip>
+                    //             </div>
+                    //         );
+                    //     },
+                    // },
                 ]}
                 title={() => (
                     <ListHeader title={t('listOrder')}>

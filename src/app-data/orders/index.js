@@ -19,7 +19,7 @@ export const apiCreateOrder = async (params) => {
 
 export const apiListOrder = async (params) => {
     try {
-        const response = await GET('/orders/', params, { isFullPath: false });
+        const response = await GET('/admin/orders', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
