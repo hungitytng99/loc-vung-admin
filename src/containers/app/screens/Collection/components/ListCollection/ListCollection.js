@@ -29,8 +29,6 @@ function ListCollection(props) {
     const collections = useSelector((state) => state.collection?.list);
 
     function handleTableChange(pagina, filters, sorter) {
-        console.log('pagina, filters, sorter: ', pagina, filters, sorter);
-        console.log('searchParams: ', searchParams);
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
@@ -105,6 +103,30 @@ function ListCollection(props) {
                         title: t('thumbnailId'),
                         dataIndex: 'thumbnailId',
                         width: '10%',
+                        render: (thumbnailId) => {
+                            return (
+                                <div className="listProductImages">
+                                    <Zoom key={thumbnailId}>
+                                        <div
+                                            style={{
+                                                width: '50px',
+                                                height: '50px',
+                                                overflow: 'hidden',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <ImageLoading
+                                                key={thumbnailId}
+                                                src={getImageWithId(thumbnailId)}
+                                                alt={thumbnailId}
+                                                className="listProductImagesItem"
+                                            ></ImageLoading>
+                                        </div>
+                                    </Zoom>
+                                </div>
+                            );
+                        },
                     },
                     {
                         title: t('action'),
@@ -142,12 +164,6 @@ function ListCollection(props) {
                                         </Tooltip>
                                     </Popconfirm>
                                     <div style={{ width: '4px' }}></div>
-                                    <Tooltip
-                                        className="list-collection__action-set text-grey-300"
-                                        title={t('setAsHotCollection')}
-                                    >
-                                        <RiseOutlined style={{ paddingTop: '6px' }} />
-                                    </Tooltip>
                                 </div>
                             );
                         },

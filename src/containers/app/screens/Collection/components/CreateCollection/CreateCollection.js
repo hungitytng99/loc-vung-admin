@@ -33,9 +33,7 @@ function CreateCollection(props) {
     const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
-        console.log('values: ', values);
-
-        dispatch(CREATE_COLLECTION(values));
+        dispatch(CREATE_COLLECTION({ params: values }));
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -46,6 +44,21 @@ function CreateCollection(props) {
         setPreviewCollectionStatus({
             isShow: false,
         });
+    }
+
+    async function handlePreviewProductImage(file) {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewProductStatus({
+            image: file.url || file.preview,
+            isShow: true,
+            title: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+        });
+    }
+
+    function handleChangeUploadImage({ fileList }) {
+        setCollectionImages(fileList);
     }
 
     useEffect(() => {
@@ -114,19 +127,39 @@ function CreateCollection(props) {
                         </Form.Item>
                     </Col>
 
-                    <Col span={8}>
+                    <Col span={24}>
+                        <div className="editCollectionLabel">{t('collectionImage')}</div>
+                    </Col>
+                    <Col span={24}>
                         <Form.Item
-                            className="create-collection__item"
-                            label={t('thumbnailId')}
-                            name="thumbnailId"
+                            className="editProduct__item"
+                            label={t('medias')}
+                            name="media"
                             rules={[
-                                {
-                                    required: true,
-                                    message: t('thisFieldIsRequired'),
-                                },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (collectionImages.length === 0) {
+                                            return Promise.reject(new Error(t('youMustUploadAtLeast1Image')));
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                }),
                             ]}
                         >
-                            <Input style={{ fontSize: '14px' }} type="number" placeholder={t('enterCollectionPrice')} />
+                            <Upload
+                                accept="image/*"
+                                onPreview={handlePreviewProductImage}
+                                listType="picture-card"
+                                customRequest={({ onSuccess }) => onSuccess('ok')}
+                                fileList={collectionImages}
+                                onChange={handleChangeUploadImage}
+                                maxCount={1}
+                            >
+                                <div>
+                                    <PlusOutlined />
+                                    <div style={{ marginTop: 8 }}>Upload</div>
+                                </div>
+                            </Upload>
                         </Form.Item>
                     </Col>
 

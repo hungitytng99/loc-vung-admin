@@ -60,22 +60,20 @@ function* getListCollection({ type, payload }) {
 }
 
 function* createCollection({ type, payload }) {
-    console.log('payload: ', payload);
+    const { params } = payload;
+    console.log('params: ', params);
     try {
         yield put(NOTIFY_LOADING());
-        // const listImagesIdUpload = [];
-        // for (let i = 0; i < payload.media.length; i++) {
-        //     console.log('payload.media[i]: ', payload.media[i]);
-        //     const responseUpload = yield call(apiUploadFile, payload.media[i].originFileObj);
-        //     listImagesIdUpload.push(Number(responseUpload.data[0].id));
-        // }
-        // const newParams = {
-        //     ...payload,
-        //     media: listImagesIdUpload,
-        //     featureImageId: listImagesIdUpload[0],
-        // };
-
-        const responseCreate = yield call(apiCreateCollection, payload);
+        let collectionImageId = null;
+        for (let i = 0; i < params.media.fileList.length; i++) {
+            const responseUpload = yield call(apiUploadFile, params.media.fileList[i]?.originFileObj);
+            collectionImageId = Number(responseUpload.data[0].id);
+        }
+        delete params.media;
+        const responseCreate = yield call(apiCreateCollection, {
+            ...params,
+            thumbnailId: collectionImageId,
+        });
         console.log('responseCreate: ', responseCreate);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
             yield put(CREATE_COLLECTION_SUCCESS(responseCreate.data));
@@ -90,12 +88,21 @@ function* createCollection({ type, payload }) {
 }
 
 function* updateCollection({ type, payload }) {
-    console.log('payload: ', payload);
     const { id, params } = payload;
     try {
         yield put(NOTIFY_LOADING());
-
-        const responseCreate = yield call(apiUpdateCollection, id, payload);
+        let collectionImageId = null;
+        for (let i = 0; i < params.media.length; i++) {
+            if (params.media[i].originFileObj) {
+                const responseUpload = yield call(apiUploadFile, params.media[i].originFileObj);
+                collectionImageId = Number(responseUpload.data[0].id);
+            } else {
+                collectionImageId = params.media[i].uid;
+            }
+        }
+        delete params.media;
+        const newParams = { ...params, thumbnailId: collectionImageId };
+        const responseCreate = yield call(apiUpdateCollection, id, newParams);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
             yield put(UPDATE_COLLECTION_SUCCESS(responseCreate.data));
             yield put(NOTIFY_SUCCESS());

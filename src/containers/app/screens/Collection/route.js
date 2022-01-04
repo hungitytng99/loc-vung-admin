@@ -5,8 +5,6 @@ import { initModules } from 'router/index';
 import CreateCollection from './components/CreateCollection/CreateCollection';
 import EditCollection from './components/EditCollection/EditCollection';
 import AddHotCollection from './components/AddHotCollection/AddHotCollection';
-import TestComponent from './components/TestComponent/TestComponent';
-import EditVariants from './components/EditVariants/EditVariants';
 
 export default {
     path: MODULES.collectionModule.route,
@@ -44,27 +42,6 @@ export const childRoutes = [
         exact: true,
         isPrivate: true,
         childComponent: <EditCollection />,
-        component: lazy(async () => {
-            await initModules([MODULES.collectionModule], 'app');
-            return import('.');
-        }),
-    },
-    {
-        path: '/collection/edit-variant/:id',
-        exact: true,
-        isPrivate: true,
-        childComponent: <EditVariants />,
-        component: lazy(async () => {
-            await initModules([MODULES.collectionModule], 'app');
-            return import('.');
-        }),
-    },
-
-    {
-        path: '/collection/test',
-        exact: true,
-        isPrivate: true,
-        childComponent: <TestComponent />,
         component: lazy(async () => {
             await initModules([MODULES.collectionModule], 'app');
             return import('.');
