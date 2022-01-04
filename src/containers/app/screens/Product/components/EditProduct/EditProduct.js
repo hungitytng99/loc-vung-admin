@@ -9,17 +9,18 @@ import { PRODUCT_STATUS } from 'app-configs';
 import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { REQUEST_STATE } from 'app-configs';
 import {
+    GET_LIST_VENDOR,
     GET_PRODUCT_BY_ID,
     GET_PRODUCT_BY_ID_SUCCESS,
     UPDATE_PRODUCT,
     UPDATE_PRODUCT_SUCCESS_STATE,
 } from '../../actions/action';
-import store from 'redux/index';
 import { getImageWithId } from 'helpers/media';
 import { getBase64 } from 'helpers/media';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { isEmptyValue } from 'helpers/check';
 import { MODULES } from 'app-configs';
+import CKEditor from 'components/Editor/CKEditor';
 import './EditProduct.sass';
 
 const { Option } = Select;
@@ -32,6 +33,8 @@ function EditProduct({ match }) {
     const productId = history.location.pathname.replace('/product/edit-product/', '');
     const [hasOptions, setHasOptions] = useState(false);
     const [isBestSelling, setIsBestSelling] = useState(false);
+    const [content, setContent] = useState('');
+    const [vendorId, setVendorId] = useState(null);
 
     const [productImages, setProductImages] = useState([]);
     const [previewProductStatus, setPreviewProductStatus] = useState({
@@ -39,13 +42,16 @@ function EditProduct({ match }) {
         title: '',
         isShow: false,
     });
+    const vendorList = useSelector((state) => state?.vendor?.list);
     const product = useSelector((state) => state.product.update);
 
     const onFinish = (values) => {
+        console.log('values: ', values);
         const params = {
             ...values,
             media: productImages,
             status: t(values.status),
+            vendorId: vendorId,
             options: values.options
                 ? values.options.map((option) => {
                       return {
@@ -55,6 +61,7 @@ function EditProduct({ match }) {
                   })
                 : values.options,
         };
+        console.log('params: ', params);
 
         dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
@@ -84,6 +91,17 @@ function EditProduct({ match }) {
         setHasOptions(!hasOptions);
     }
 
+    function onContentChange(value) {
+        form.setFieldsValue({
+            description: value,
+        });
+        setContent(value);
+    }
+
+    function handleSelectVendor(value) {
+        setVendorId(value);
+    }
+
     useEffect(() => {
         dispatch(
             GET_PRODUCT_BY_ID({
@@ -101,6 +119,7 @@ function EditProduct({ match }) {
             form.setFieldsValue({
                 ...product.data,
                 status: mapStatus.value,
+                availableNumber: product.data?.availableNumber ?? 0,
                 options: product.data.options
                     ? product.data.options.map((option) => {
                           return {
@@ -110,6 +129,8 @@ function EditProduct({ match }) {
                       })
                     : [''],
             });
+            setContent(product.data.description);
+            setVendorId(product.data?.vendor?.id);
             setIsBestSelling(product.data?.bestSelling);
             if (product?.data?.media?.length > 0) {
                 const listProductImages = product.data.media.map((img) => {
@@ -130,6 +151,12 @@ function EditProduct({ match }) {
             dispatch(UPDATE_PRODUCT_SUCCESS_STATE());
         }
     }, [product.state]);
+
+    useEffect(() => {
+        dispatch(GET_LIST_VENDOR({ pagination: {} }));
+    }, []);
+
+    console.log('product.data?.vendor?.id: ', product.data?.vendor?.id);
     return (
         <div className="editProduct">
             {(product?.state === REQUEST_STATE.REQUEST || product?.getDetailState === REQUEST_STATE.REQUEST) && (
@@ -213,12 +240,6 @@ function EditProduct({ match }) {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item className="editProduct__item" label={t('description')} name="description">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductDescription')} />
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={8}>
                         <Form.Item
                             className="editProduct__item"
                             label={t('price')}
@@ -258,17 +279,32 @@ function EditProduct({ match }) {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item className="editProduct__item" label={t('vendorId')} name="vendorId">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductVendor')} />
+                        <Form.Item className="create-product__item" label={t('vendor')}>
+                            <Select
+                                onChange={handleSelectVendor}
+                                value={vendorId}
+                                style={{ width: 120 }}
+                                loading={vendorList?.state === REQUEST_STATE.REQUEST}
+                            >
+                                {vendorList?.data &&
+                                    vendorList?.data.map((vendor) => {
+                                        return <Option value={vendor?.id}>{vendor?.name}</Option>;
+                                    })}
+                            </Select>
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
+                    {/* <Col span={8}>
                         <Form.Item className="editProduct__item" label={t('availableProducts')} name="availableNumber">
                             <Input
                                 type="number"
                                 style={{ fontSize: '14px' }}
                                 placeholder={t('enternumberOfAvailableProducts')}
                             />
+                        </Form.Item>
+                    </Col> */}
+                    <Col span={24}>
+                        <Form.Item className="editProduct__item" label={t('description')} name="description">
+                            <CKEditor onTextChange={onContentChange} initContent={content} />
                         </Form.Item>
                     </Col>
                     <Divider style={{ margin: '10px 0px' }} />
@@ -537,7 +573,7 @@ function EditProduct({ match }) {
                         </>
                     )}
 
-                    <div className="createProductSubmit">
+                    <div className="editProductSubmit">
                         <Form.Item>
                             <Button size="middle" type="primary" htmlType="submit">
                                 {t('submit')}

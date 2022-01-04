@@ -37,7 +37,7 @@ export const childRoutes = [
         exact: true,
         isPrivate: true,
         component: lazy(async () => {
-            await initModules([MODULES.productModule], 'app');
+            await initModules([MODULES.productModule, MODULES.vendorModule], 'app');
             return import('./components/EditProduct/EditProduct');
         }),
     },
