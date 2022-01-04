@@ -1,18 +1,19 @@
 import { Spin } from 'antd';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import CreateCategory from './components/CreateCategory/CreateCategory';
-import ListCategory from './components/ListCategory/ListCategory';
+import { login } from 'redux/actions/user';
+import ListOrder from './components/ListOrder/ListOrder';
 import { childRoutes } from './route';
-const Category = (props) => {
+const Order = (props) => {
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
-                <Route exact path="/category">
-                    <ListCategory />
+                <Route exact path="/order">
+                    <ListOrder />
                 </Route>
                 {childRoutes.map((route) => (
-                    <Route exact={route.exact} path={route.path}>
+                    <Route key={route.path} exact={route.exact} path={route.path}>
                         {route.childComponent}
                     </Route>
                 ))}
@@ -21,4 +22,4 @@ const Category = (props) => {
     );
 };
 
-export default Category;
+export default Order;

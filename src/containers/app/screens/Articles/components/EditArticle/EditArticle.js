@@ -60,7 +60,7 @@ function editArticle(props) {
     function handleChangeUploadImage({ fileList }) {
         setArticleImages(fileList);
     }
-
+    // UPDATE DATA TO FORM
     useEffect(() => {
         dispatch(
             GET_DETAIL_ARTICLE_BY_ID({
@@ -83,7 +83,7 @@ function editArticle(props) {
             setContent(articleUpdate?.data?.content);
         }
     }, [articleUpdate?.data]);
-
+    //END
     useEffect(() => {
         if (articleUpdate?.state === REQUEST_STATE.SUCCESS) {
             form.resetFields();

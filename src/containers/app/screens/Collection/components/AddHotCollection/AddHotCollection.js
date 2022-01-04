@@ -3,18 +3,19 @@ import { Button } from 'antd';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import './AddHotCategory.sass';
+import './AddHotCollection.sass';
 
-function AddHotCategory(props) {
+function AddHotCollection(props) {
     const { t } = useTranslation();
     return (
-        <div className="add-category">
-            <ListHeader title={t('addHotCategory')}>
-                <Button type="ghost">
-                    <Link to="/category">{t('back')}</Link>
+        <div className="add-collection">
+            <ListHeader title={t('addHotCollection')}>
+                <Button type="primary">
+                    <Link to="/collection">{t('back')}</Link>
                 </Button>
             </ListHeader>
         </div>
     );
 }
-export default AddHotCategory;
+
+export default AddHotCollection;
