@@ -115,3 +115,45 @@ export function SEARCH_PRODUCT(payload) {
         payload,
     };
 }
+
+export function GET_LIST_VENDOR(payload) {
+    return {
+        type: 'GET_LIST_VENDOR',
+        payload,
+    };
+}
+
+export function GET_LIST_VENDOR_SUCCESS(payload) {
+    return {
+        type: 'GET_LIST_VENDOR_SUCCESS',
+        payload,
+    };
+}
+
+export function GET_LIST_VENDOR_FAIL(payload) {
+    return {
+        type: 'GET_LIST_VENDOR_FAIL',
+        payload,
+    };
+}
+
+export function UPDATE_PRODUCT_VARIANT(payload) {
+    return {
+        type: 'UPDATE_PRODUCT_VARIANT',
+        payload,
+    };
+}
+
+export function UPDATE_PRODUCT_VARIANT_SUCCESS(payload) {
+    return {
+        type: 'UPDATE_PRODUCT_VARIANT_SUCCESS',
+        payload,
+    };
+}
+
+export function UPDATE_PRODUCT_VARIANT_FAIL(payload) {
+    return {
+        type: 'UPDATE_PRODUCT_VARIANT_FAIL',
+        payload,
+    };
+}

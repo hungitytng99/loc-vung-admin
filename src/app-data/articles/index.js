@@ -19,7 +19,24 @@ export const apiCreateArticles = async (params) => {
 
 export const apiListArticles = async (params) => {
     try {
-        const response = await GET('/articles/', params, { isFullPath: false });
+        const response = await GET('/admin/articles/', params, { isFullPath: false });
+        return {
+            state: REQUEST_STATE.SUCCESS,
+            data: response.result,
+            total: response?.total ?? 0,
+        };
+    } catch (error) {
+        console.log('error', error);
+        return {
+            state: REQUEST_STATE.ERROR,
+            message: error.message,
+        };
+    }
+};
+
+export const apiGetArticlesById = async (id) => {
+    try {
+        const response = await GET('/articles/' + id, {}, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -33,9 +50,25 @@ export const apiListArticles = async (params) => {
     }
 };
 
-export const apiGetArticlesById = async (id) => {
+export const apiUpdateArticle = async (id, params) => {
     try {
-        const response = await GET('/articles/' + id, { isFullPath: false });
+        const response = await PUT('/admin/articles/' + id, params, { isFullPath: false });
+        return {
+            state: REQUEST_STATE.SUCCESS,
+            data: response.result,
+        };
+    } catch (error) {
+        console.log('error', error);
+        return {
+            state: REQUEST_STATE.ERROR,
+            message: error.message,
+        };
+    }
+};
+
+export const apiDeleteArticle = async (id, params) => {
+    try {
+        const response = await PUT('/admin/articles/' + id, { ...params, isDeleted: true }, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

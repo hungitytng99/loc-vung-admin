@@ -8,7 +8,7 @@ import CKEditor from 'components/Editor/CKEditor';
 import { Form } from 'antd';
 import { isEmptyValue } from 'helpers/check';
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { CREATE_ARTICLE } from '../../actions/action';
+import { CREATE_ARTICLE, RESET_CREATE_ARTICLE_STATE } from '../../actions/action';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { REQUEST_STATE } from 'app-configs';
@@ -20,7 +20,7 @@ function CreateArticle(props) {
     const [content, setContent] = useState('');
     const dispatch = useDispatch();
     const history = useHistory();
-    const articleCreate = useSelector((state) => state?.article?.create);
+    const articleCreate = useSelector((state) => state?.articles?.create);
 
     const [form] = Form.useForm();
 
@@ -54,21 +54,22 @@ function CreateArticle(props) {
         setArticleImages(fileList);
     }
     useEffect(() => {
-        if (articleCreate.state === REQUEST_STATE.SUCCESS) {
+        if (articleCreate?.state === REQUEST_STATE.SUCCESS) {
             form.resetFields();
             setContent('');
             setArticleImages([]);
-            history.push(`/article/`);
+            dispatch(RESET_CREATE_ARTICLE_STATE());
+            history.push(`/articles/`);
         }
-    }, [articleCreate.state]);
+    }, [articleCreate?.state]);
 
     return (
         <div className="createArticle">
             {articleCreate?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <div className="createArticleHeader">
                 <ListHeader title={t('createArticle')}>
-                    <Button type="primary">
-                        <Link to="/article">{t('back')}</Link>
+                    <Button type="ghost">
+                        <Link to="/articles">{t('back')}</Link>
                     </Button>
                 </ListHeader>
             </div>
@@ -100,7 +101,17 @@ function CreateArticle(props) {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item className="createArticleItem" label={t('description')} name="description">
+                        <Form.Item
+                            className="createArticleItem"
+                            label={t('description')}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: t('thisFieldIsRequired'),
+                                },
+                            ]}
+                            name="description"
+                        >
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterDescription')} />
                         </Form.Item>
                     </Col>

@@ -108,3 +108,16 @@ export function SEARCH_ORDER(payload) {
         payload,
     };
 }
+export function SEARCH_ORDER_SUCCESS(payload) {
+    return {
+        type: 'SEARCH_ORDER_SUCCESS',
+        payload,
+    };
+}
+
+export function SEARCH_ORDER_FAIL(payload) {
+    return {
+        type: 'SEARCH_ORDER_FAIL',
+        payload,
+    };
+}

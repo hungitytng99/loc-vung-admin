@@ -19,4 +19,9 @@ ReactDOM.render(
     document.getElementById('root'),
 );
 
+if (process.env.NODE_ENV !== 'development') {
+    console.log = () => {};
+    console.debug = () => {};
+}
+
 serviceWorker.unregister();

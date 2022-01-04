@@ -26,7 +26,7 @@ function ListCollection(props) {
     });
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
-    const collections = useSelector((state) => state.collection.list);
+    const collections = useSelector((state) => state.collection?.list);
 
     function handleTableChange(pagina, filters, sorter) {
         console.log('pagina, filters, sorter: ', pagina, filters, sorter);
@@ -169,9 +169,7 @@ function ListCollection(props) {
                                 value={searchParams}
                                 onChange={onSearch}
                             />
-                            <Button type="ghost">
-                                <Link to="/collection/add-hot-collection">{t('addHotCollection')}</Link>
-                            </Button>
+
                             <Button type="primary">
                                 <Link to="/collection/create">{t('addCollection')}</Link>
                             </Button>

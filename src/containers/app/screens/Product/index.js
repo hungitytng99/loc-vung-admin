@@ -1,8 +1,6 @@
 import { Spin } from 'antd';
-import React, { Suspense, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import { login } from 'redux/actions/user';
+import React, { Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import ListProduct from './components/ListProduct/ListProduct';
 import { childRoutes } from './route';
 const Product = (props) => {
@@ -14,7 +12,7 @@ const Product = (props) => {
                 </Route>
                 {childRoutes.map((route) => (
                     <Route key={route.path} exact={route.exact} path={route.path}>
-                        {route.childComponent}
+                        {route.component}
                     </Route>
                 ))}
             </Switch>

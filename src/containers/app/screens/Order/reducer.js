@@ -8,6 +8,9 @@ import {
     GET_LIST_ORDER,
     GET_LIST_ORDER_SUCCESS,
     GET_ORDER_BY_ID_SUCCESS,
+    SEARCH_ORDER,
+    SEARCH_ORDER_FAIL,
+    SEARCH_ORDER_SUCCESS,
     UPDATE_ORDER,
     UPDATE_ORDER_FAIL,
     UPDATE_ORDER_SUCCESS,
@@ -52,6 +55,25 @@ export default combineReducers({
                     data: action.payload.orders,
                     state: REQUEST_STATE.SUCCESS,
                     totalOrder: action.payload.total,
+                };
+            }
+            case SEARCH_ORDER().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.REQUEST,
+                };
+            }
+            case SEARCH_ORDER_SUCCESS().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.SUCCESS,
+                    data: action.payload,
+                };
+            }
+            case SEARCH_ORDER_FAIL().type: {
+                return {
+                    ...state,
+                    state: REQUEST_STATE.ERROR,
                 };
             }
             // case DELETE_ORDER().type: {

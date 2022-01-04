@@ -3,6 +3,7 @@ import { MODULES } from 'app-configs';
 import { lazy } from 'react';
 import { initModules } from 'router/index';
 import CreateArticle from './components/CreateArticle/CreateArticle';
+import EditArticles from './components/EditArticle/EditArticle';
 export default {
     path: MODULES.articleModule.route,
     exact: true,
@@ -15,13 +16,21 @@ export default {
 
 export const childRoutes = [
     {
-        path: '/article/create',
+        path: '/articles/create',
         exact: true,
         isPrivate: true,
-        childComponent: <CreateArticle />,
         component: lazy(async () => {
             await initModules([MODULES.articleModule], 'app');
-            return import('.');
+            return import('./components/CreateArticle/CreateArticle');
+        }),
+    },
+    {
+        path: '/articles/edit-articles/:id',
+        exact: true,
+        isPrivate: true,
+        component: lazy(async () => {
+            await initModules([MODULES.articleModule], 'app');
+            return import('./components/EditArticle/EditArticle');
         }),
     },
 ];

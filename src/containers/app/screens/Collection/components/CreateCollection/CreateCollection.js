@@ -33,20 +33,9 @@ function CreateCollection(props) {
     const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
-        const params = {
-            ...values,
-            media: collectionImages,
-            status: t(values.status),
-            options: values.options
-                ? values.options.map((option) => {
-                      return {
-                          ...option,
-                          values: option.values.map((value) => value.value),
-                      };
-                  })
-                : null,
-        };
-        dispatch(CREATE_COLLECTION(params));
+        console.log('values: ', values);
+
+        dispatch(CREATE_COLLECTION(values));
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -57,24 +46,6 @@ function CreateCollection(props) {
         setPreviewCollectionStatus({
             isShow: false,
         });
-    }
-    async function handlePreviewCollectionImage(file) {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-        setPreviewCollectionStatus({
-            image: file.url || file.preview,
-            isShow: true,
-            title: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
-        });
-    }
-
-    function handleChangeUploadImage({ fileList }) {
-        setCollectionImages(fileList);
-    }
-
-    function handleChangeOptions() {
-        setHasOptions(!hasOptions);
     }
 
     useEffect(() => {

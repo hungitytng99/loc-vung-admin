@@ -21,6 +21,8 @@ import {
     GET_ORDER_BY_ID,
     GET_ORDER_BY_ID_SUCCESS,
     SEARCH_ORDER,
+    SEARCH_ORDER_FAIL,
+    SEARCH_ORDER_SUCCESS,
     UPDATE_ORDER,
     UPDATE_ORDER_FAIL,
     UPDATE_ORDER_SUCCESS,
@@ -61,21 +63,11 @@ function* createOrder({ type, payload }) {
     console.log('payload: ', payload);
     try {
         yield put(NOTIFY_LOADING());
-        const listImagesIdUpload = [];
-        for (let i = 0; i < payload.media.length; i++) {
-            console.log('payload.media[i]: ', payload.media[i]);
-            const responseUpload = yield call(apiUploadFile, payload.media[i].originFileObj);
-            listImagesIdUpload.push(Number(responseUpload.data[0].id));
-        }
-        const newParams = {
-            ...payload,
-            media: listImagesIdUpload,
-            featureImageId: listImagesIdUpload[0],
-        };
 
-        const responseCreate = yield call(apiCreateOrder, newParams);
+        const responseCreate = yield call(apiCreateOrder, payload);
+        console.log('responseCreate: ', responseCreate);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
-            yield put(CREATE_ORDER_SUCCESS(responseCreate.data));
+            yield put(CREATE_ORDER_SUCCESS(responseCreate.payload));
             yield put(NOTIFY_SUCCESS());
         } else {
             yield put(NOTIFY_ERROR());
@@ -85,60 +77,6 @@ function* createOrder({ type, payload }) {
         console.log('error: ', error);
     }
 }
-
-// function* updateOrder({ type, payload }) {
-//     console.log('payload: ', payload);
-//     const { id, params } = payload;
-//     try {
-//         yield put(NOTIFY_LOADING());
-//         const oldListImagesIdUpload = [];
-//         const newListImagesIdUpload = [];
-//         for (let i = 0; i < params.media.length; i++) {
-//             if ((apiUploadFile, params.media[i].originFileObj)) {
-//                 const responseUpload = yield call(apiUploadFile, params.media[i].originFileObj);
-//                 newListImagesIdUpload.push(Number(responseUpload.data[0].id));
-//             } else {
-//                 oldListImagesIdUpload.push(params.media[i].uid);
-//             }
-//         }
-//         const newListMediaId = [...oldListImagesIdUpload, ...newListImagesIdUpload];
-//         console.log('newListMediaId: ', newListMediaId);
-//         const newParams = {
-//             ...params,
-//             media: [...newListMediaId],
-//             featureImageId: newListMediaId[0],
-//         };
-//         const responseCreate = yield call(apiUpdateOrder, id, newParams);
-//         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
-//             yield put(UPDATE_ORDER_SUCCESS(responseCreate.data));
-//             yield put(NOTIFY_SUCCESS());
-//         } else {
-//             yield put(NOTIFY_ERROR());
-//             yield put(UPDATE_ORDER_FAIL());
-//         }
-//     } catch (error) {
-//         yield put(NOTIFY_ERROR());
-//         console.log('error: ', error);
-//     }
-// }
-
-// function* deleteOrder({ type, payload }) {
-//     const { id } = payload;
-//     try {
-//         yield put(NOTIFY_LOADING());
-//         const response = yield call(apiDeleteORDER, id);
-//         console.log('response: ', response);
-//         if (response.state == REQUEST_STATE.SUCCESS) {
-//             yield put(DELETE_ORDER_SUCCESS(response.data));
-//             yield put(NOTIFY_SUCCESS());
-//         } else {
-//             yield put(NOTIFY_ERROR());
-//         }
-//     } catch (error) {
-//         console.log('error: ', error);
-//         yield put(NOTIFY_ERROR());
-//     }
-// }
 
 function* getOrderById({ type, payload }) {
     const { id } = payload;
@@ -158,9 +96,18 @@ function* getOrderById({ type, payload }) {
 }
 
 function* searchOrder({ type, payload }) {
+    const { search } = payload;
+    console.log('search: ', search);
     try {
-        yield delay(600);
-        yield put(GET_LIST_ORDER(payload));
+        yield delay(400);
+        const response = yield call(apiListOrder, { search });
+        console.log('response: ', response);
+        if (response.state == REQUEST_STATE.SUCCESS) {
+            yield put(SEARCH_ORDER_SUCCESS(response.data));
+        } else {
+            yield put(NOTIFY_ERROR());
+            yield put(SEARCH_ORDER_FAIL());
+        }
     } catch (error) {
         console.log('error: ', error);
         yield put(NOTIFY_ERROR());

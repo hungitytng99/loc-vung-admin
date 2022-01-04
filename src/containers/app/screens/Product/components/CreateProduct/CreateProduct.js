@@ -3,14 +3,16 @@ import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 import './CreateProduct.sass';
-import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Badge } from 'antd';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Badge, Switch } from 'antd';
 import { PRODUCT_STATUS } from 'app-configs';
 import { PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { CREATE_PRODUCT } from '../../actions/action';
+import { CREATE_PRODUCT, GET_LIST_VENDOR } from '../../actions/action';
 import { REQUEST_STATE } from 'app-configs';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { getBase64 } from 'helpers/media';
+import { isEmptyValue } from 'helpers/check';
+import CKEditor from 'components/Editor/CKEditor';
 
 const { Option } = Select;
 
@@ -21,20 +23,21 @@ function CreateProduct(props) {
     const [productImages, setProductImages] = useState([]);
     const [hasOptions, setHasOptions] = useState(false);
     const history = useHistory();
+    const [content, setContent] = useState('');
 
     const [previewProductStatus, setPreviewProductStatus] = useState({
         image: '',
         title: '',
         isShow: false,
     });
-    const productCreate = useSelector((state) => state.product.create);
-    const productUpdate = useSelector((state) => state.product.update);
-
-    const notify = useSelector((state) => state.notify);
+    const productCreate = useSelector((state) => state?.product?.create);
+    const productUpdate = useSelector((state) => state?.product?.update);
+    const vendorList = useSelector((state) => state?.vendor?.list);
 
     const onFinish = (values) => {
         const params = {
             ...values,
+            description: content,
             media: productImages,
             status: t(values.status),
             options: values.options
@@ -46,6 +49,7 @@ function CreateProduct(props) {
                   })
                 : null,
         };
+        console.log('params: ', params);
         dispatch(CREATE_PRODUCT(params));
     };
 
@@ -77,21 +81,33 @@ function CreateProduct(props) {
         setHasOptions(!hasOptions);
     }
 
+    function onContentChange(value) {
+        form.setFieldsValue({
+            content: value,
+        });
+        setContent(value);
+    }
+
     useEffect(() => {
         if (productCreate?.state === REQUEST_STATE.SUCCESS) {
             form.resetFields();
             setProductImages([]);
+            setContent('');
             if (hasOptions && productUpdate?.data.id) {
                 history.push(`/product/edit-variant/${productUpdate?.data.id}`);
             }
         }
     }, [productCreate?.state]);
 
+    useEffect(() => {
+        dispatch(GET_LIST_VENDOR({ pagination: {} }));
+    }, []);
+
     return (
         <div className="create-product">
             {productCreate?.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <ListHeader title={t('addProduct')}>
-                <Button type="primary">
+                <Button type="ghost">
                     <Link to="/product">{t('back')}</Link>
                 </Button>
             </ListHeader>
@@ -110,6 +126,7 @@ function CreateProduct(props) {
                         availableNumber: 0,
                         price: 0,
                         comparePrice: 0,
+                        bestSelling: false,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -117,13 +134,22 @@ function CreateProduct(props) {
                     layout="inline"
                     size="large"
                 >
+                    <Form.Item
+                        className="create-product__item"
+                        name="bestSelling"
+                        label={t('isBestSelling')}
+                        valuePropName="bestSelling"
+                    >
+                        <Switch />
+                    </Form.Item>
                     <Col className="flex-height-center" style={{ marginBottom: '10px' }} span={24}>
                         <span className="createProductLabel">{t('productStatus')}</span>
                         <Tooltip title={t('theProductWillBeHiddenOrVisibleFromAllSalesChannel ')}>
                             <QuestionCircleOutlined className="createProductLabelInfo" style={{ marginLeft: '6px' }} />
                         </Tooltip>
                     </Col>
-                    <Col span={8}>
+
+                    <Col span={5}>
                         <Form.Item
                             className="create-product__item"
                             label={t('status')}
@@ -147,8 +173,8 @@ function CreateProduct(props) {
                             </Select>
                         </Form.Item>
                     </Col>
-                    <Divider style={{ margin: '10px 0px' }} />
 
+                    <Divider style={{ margin: '10px 0px' }} />
                     <Col span={24}>
                         <div className="createProductLabel">{t('productInformation')}</div>
                     </Col>
@@ -165,11 +191,6 @@ function CreateProduct(props) {
                             ]}
                         >
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductName')} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('description')} name="description">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductDescription')} />
                         </Form.Item>
                     </Col>
 
@@ -207,14 +228,14 @@ function CreateProduct(props) {
                             />
                         </Form.Item>
                     </Col>
-                    {/* <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('productUrl')} name="url">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductURL')} />
-                        </Form.Item>
-                    </Col> */}
                     <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('vendorId')} name="vendorId">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterProductVendor')} />
+                        <Form.Item className="create-product__item" label={t('vendor')} name="vendorId">
+                            <Select style={{ width: 120 }} loading={vendorList?.state === REQUEST_STATE.REQUEST}>
+                                {vendorList?.data &&
+                                    vendorList?.data.map((vendor) => {
+                                        return <Option value={vendor?.id}>{vendor?.name}</Option>;
+                                    })}
+                            </Select>
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -230,6 +251,12 @@ function CreateProduct(props) {
                             />
                         </Form.Item>
                     </Col>
+                    <Col span={24}>
+                        <Form.Item className="create-product__item" label={t('description')} name="description">
+                            <CKEditor onTextChange={onContentChange} initContent={content} />
+                        </Form.Item>
+                    </Col>
+
                     <Divider style={{ margin: '10px 0px' }} />
                     <Col span={24}>
                         <div className="createProductLabel">{t('listProductImages')}</div>
@@ -499,7 +526,7 @@ function CreateProduct(props) {
 
                     <div className="createProductSubmit">
                         <Button size="middle" type="primary" htmlType="submit">
-                            {hasOptions ? t('next') : t('submit')}
+                            {hasOptions ? t('createAndContinue') : t('submit')}
                         </Button>
                     </div>
                 </Form>

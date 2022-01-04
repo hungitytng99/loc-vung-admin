@@ -3,7 +3,6 @@ import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag, 
 import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
 import 'containers/app/screens/Order/components/ListOrder/ListOrder.sass';
-import { Link } from 'react-router-dom';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
@@ -13,9 +12,8 @@ import { getImageWithId } from 'helpers/media';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import { REQUEST_STATE } from 'app-configs';
-import { ORDER_STATUS } from 'app-configs';
-import ImageLoading from 'components/Loading/ImageLoading/ImageLoading';
-import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
 
 function ListOrder({ hasOptions }) {
     const { t } = useTranslation();
@@ -52,7 +50,7 @@ function ListOrder({ hasOptions }) {
                     offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
                     limit: pagina.pageSize,
                 },
-                title: searchParams,
+                userId: searchParams,
                 ...filters,
             }),
         );
@@ -63,12 +61,14 @@ function ListOrder({ hasOptions }) {
     }
 
     function onSearch(e) {
-        setSearchParams(() => e.target.value);
+        console.log(' e.target.value: ', e.target.value);
+        setSearchParams(e.target.value);
+
         dispatch(
             SEARCH_ORDER({
-                pagination,
                 ...currentFilter,
-                title: e.target.value,
+                pagination,
+                search: e.target.value,
             }),
         );
     }
@@ -91,7 +91,6 @@ function ListOrder({ hasOptions }) {
 
     return (
         <div className="list-order">
-            {orders.requestState === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
             <Table
                 columns={[
                     {
@@ -99,15 +98,11 @@ function ListOrder({ hasOptions }) {
                         dataIndex: 'id',
                         width: '2%',
                     },
-                    {
-                        title: t('userId'),
-                        dataIndex: 'userId',
-                        width: '12%',
-                    },
+
                     {
                         title: t('name'),
                         dataIndex: 'customerName',
-                        width: '12%',
+                        width: '24%',
                     },
                     {
                         title: t('phone'),
@@ -131,13 +126,27 @@ function ListOrder({ hasOptions }) {
                     },
                     {
                         title: t('product'),
-                        // dataIndex: 'orderItems',
+                        dataIndex: 'orderItems',
                         width: '12%',
+                        render: (orderItems) => {
+                            return orderItems.map((orderItem, index) => (
+                                <ul>
+                                    <li>
+                                        <Link to={`/product/edit-product/${orderItem.variant.product.id}`}>
+                                            {orderItem.variant.product.title}
+                                        </Link>
+                                    </li>
+                                </ul>
+                            ));
+                        },
                     },
                     {
                         title: t('create at'),
                         dataIndex: 'createdAt',
                         width: '12%',
+                        render: (createdAt) => {
+                            return <Moment format="HH:mm:ss DD/MM/YYYY">{createdAt}</Moment>;
+                        },
                     },
                 ]}
                 title={() => (
@@ -145,17 +154,13 @@ function ListOrder({ hasOptions }) {
                         <Space size="small">
                             <Input
                                 size="middle"
-                                placeholder={`${t('searchOrder')}...`}
+                                placeholder={`${t('searchOrderByCustomer')}...`}
                                 prefix={
                                     orders.state === REQUEST_STATE.REQUEST ? <LoadingOutlined /> : <SearchOutlined />
                                 }
                                 value={searchParams}
                                 onChange={onSearch}
                             />
-
-                            <Button type="primary">
-                                <Link to="/order/create">{t('addOrder')}</Link>
-                            </Button>
                         </Space>
                     </ListHeader>
                 )}

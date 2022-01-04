@@ -5,7 +5,7 @@ import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import 'components/Layout/Layout/AdminLayout.sass';
-import { I18LANGUAGE } from 'app-configs';
+import { I18LANGUAGE_KEY } from 'app-configs';
 import AdminHeader from 'components/Layout/Header/AdminHeader';
 import { MODULES } from 'app-configs';
 const { Sider, Content } = Layout;
@@ -17,9 +17,7 @@ export const sliderWidth = {
 function AdminLayout(props) {
     const { children } = props;
     const { t } = useTranslation();
-    const [collapseSider, setCollapseSider] = useState(
-        localStorage.getItem('collapseSider') === 'true',
-    );
+    const [collapseSider, setCollapseSider] = useState(localStorage.getItem('collapseSider') === 'true');
     const history = useHistory();
 
     function getMainPathName(history) {
@@ -46,11 +44,7 @@ function AdminLayout(props) {
                 collapsedWidth={sliderWidth.collapse}
             >
                 <div className="flex-col-between" style={{ height: 'calc( 100vh - 45px )' }}>
-                    <Menu
-                        theme="dark"
-                        mode="inline"
-                        defaultSelectedKeys={[getMainPathName(history)]}
-                    >
+                    <Menu theme="dark" mode="inline" defaultSelectedKeys={[getMainPathName(history)]}>
                         <Link to={'/'} style={{ display: 'block', padding: '8px' }}>
                             <Image
                                 className="icon-home-page"
@@ -66,11 +60,7 @@ function AdminLayout(props) {
                         {Object.keys(MODULES).map((key) => {
                             if (MODULES[key].displayOnSidebar) {
                                 return (
-                                    <Menu.Item
-                                        key={MODULES[key].route}
-                                        className="menu-hover"
-                                        icon={MODULES[key].icon}
-                                    >
+                                    <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
                                         <Link to={MODULES[key].route} style={{ color: '#fff' }}>
                                             {t(MODULES[key].key)}
                                         </Link>
@@ -91,12 +81,11 @@ function AdminLayout(props) {
                         <Menu.Item
                             onClick={({ domEvent }) => {
                                 domEvent.preventDefault();
-                                const lng =
-                                    localStorage.getItem(I18LANGUAGE) === 'vi' ? 'en' : 'vi';
-                                localStorage.setItem(I18LANGUAGE, lng);
+                                const lng = localStorage.getItem(I18LANGUAGE_KEY) === 'vi' ? 'en' : 'vi';
+                                localStorage.setItem(I18LANGUAGE_KEY, lng);
                                 i18n.changeLanguage(lng);
                             }}
-                            key={localStorage.getItem(I18LANGUAGE)}
+                            key={localStorage.getItem(I18LANGUAGE_KEY)}
                         >
                             <div
                                 style={{

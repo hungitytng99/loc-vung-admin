@@ -1,4 +1,5 @@
 import { REQUEST_STATE } from 'app-configs';
+import { PUT } from 'app-data/fetch';
 import { GET } from 'app-data/fetch';
 import { POST } from 'app-data/fetch';
 // Data Flow: Step 1
@@ -61,6 +62,38 @@ export const apiLogin = async (params) => {
 export const apiProfile = async () => {
     try {
         const response = await GET('/me');
+        return {
+            state: REQUEST_STATE.SUCCESS,
+            data: response.result,
+        };
+    } catch (error) {
+        console.log('error', error);
+        return {
+            state: REQUEST_STATE.ERROR,
+            message: error.message,
+        };
+    }
+};
+
+export const apiUpdateUserInfo = async (info) => {
+    try {
+        const response = await PUT('/me', info);
+        return {
+            state: REQUEST_STATE.SUCCESS,
+            data: response.result,
+        };
+    } catch (error) {
+        console.log('error', error);
+        return {
+            state: REQUEST_STATE.ERROR,
+            message: error.message,
+        };
+    }
+};
+
+export const apiUpdatePassword = async (password) => {
+    try {
+        const response = await PUT('/me/password', password);
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

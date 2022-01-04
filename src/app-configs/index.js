@@ -8,12 +8,15 @@ import {
     EditOutlined,
     ShoppingCartOutlined,
     DashboardOutlined,
+    GroupOutlined,
 } from '@ant-design/icons';
 // SWAGGER:
 // http://locvungshop.southeastasia.cloudapp.azure.com:4000/api-docs/
 export const Configs = {
     BASE_API: process.env.REACT_APP_BASE_API_URL,
     DOMAIN: '',
+
+    HOMEPAGE_ROUTE: '/product',
 
     CURRENT_PAGE: 1,
     FILE_MAXIMUM: 5, //MB
@@ -26,7 +29,10 @@ export const REQUEST_STATE = {
     REQUEST: 'REQUEST',
     SUCCESS: 'SUCCESS',
 };
-export const I18LANGUAGE = 'i18nextLng';
+
+// key store in localStorage, Cookies, Session
+export const I18LANGUAGE_KEY = 'i18nextLng';
+export const TOKEN_KEY = 'authencation';
 
 export const ACTION_TYPE = {
     CREATE: 'CREATE',
@@ -50,21 +56,15 @@ export const COLLECTION_STATUS = [
     { color: 'green', value: 'active' },
 ];
 export const VALID_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png'];
+
 // 1. UI flow: add router
 export const MODULES = {
     dashboardModule: {
         key: 'dashboard', // Unique
         path: 'Dashboard', // Folder name in `src/containers/app/screens`
-        route: '/', // Route defined
+        route: '/dashboard', // Route defined
         icon: <DashboardOutlined />, // Icon
-        displayOnSidebar: true,
-    },
-    categoryModule: {
-        key: 'category',
-        path: 'Category',
-        route: '/category',
-        icon: <ProfileOutlined />,
-        displayOnSidebar: true,
+        displayOnSidebar: false,
     },
     productModule: {
         key: 'product',
@@ -81,9 +81,9 @@ export const MODULES = {
         displayOnSidebar: true,
     },
     articleModule: {
-        key: 'article',
+        key: 'articles',
         path: 'Articles',
-        route: '/article',
+        route: '/articles',
         icon: <EditOutlined />,
         displayOnSidebar: true,
     },
@@ -94,18 +94,24 @@ export const MODULES = {
         icon: <ShoppingCartOutlined />,
         displayOnSidebar: true,
     },
-    userModule: {
-        key: 'user',
-        path: 'User',
-        route: '/user',
+    contactModule: {
+        key: 'contact',
+        path: 'Contact',
+        route: '/contact',
         icon: <UserOutlined />,
         displayOnSidebar: true,
     },
-    paymnetModule: {
-        key: 'payment',
-        path: 'Payment',
-        route: '/payment',
-        icon: <CreditCardOutlined />,
+    vendorModule: {
+        key: 'vendor',
+        path: 'Vendor',
+        route: '/vendor',
+        icon: <GroupOutlined />,
         displayOnSidebar: true,
+    },
+    accountSettingModule: {
+        key: 'accountSetting',
+        path: 'AccountSetting',
+        route: '/account-setting',
+        displayOnSidebar: false,
     },
 };

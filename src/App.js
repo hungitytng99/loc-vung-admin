@@ -14,9 +14,10 @@ import { useDispatch } from 'react-redux';
 import { RESET_NOTIFY_STATE } from 'redux/actions/notify';
 import { REQUEST_STATE } from 'app-configs';
 import { useTranslation } from 'react-i18next';
+import { Configs } from 'app-configs/index.js';
 
-console.log('listAppRoutes =>', listAppRoutes);
-console.log('listAuthenticationRoutes =>', listAuthenticationRoutes);
+console.debug('listAppRoutes =>', listAppRoutes);
+console.debug('listAuthenticationRoutes =>', listAuthenticationRoutes);
 
 function App() {
     const { t } = useTranslation();
@@ -36,6 +37,7 @@ function App() {
             dispatch(RESET_NOTIFY_STATE());
         }
     }, [notify.requestState]);
+
     return (
         <ConnectedRouter history={history}>
             <Suspense fallback={<Spin></Spin>}>
@@ -46,6 +48,7 @@ function App() {
                     {listAuthenticationRoutes.map(({ path, exactContainer = true }) => (
                         <Route path={path} render={() => <AuthenticationRoute />} key={path} exact={exactContainer} />
                     ))}
+                    <Redirect exact from="/" to={Configs.HOMEPAGE_ROUTE} />
                     <Route path="*">
                         <AdminLayout>
                             <NotFound />

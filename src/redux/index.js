@@ -27,26 +27,31 @@ function createSagaInjector(runSaga, rootSaga) {
     return injectSaga;
 }
 
-const store = createStore(
-    createReducer(),
-    {},
-    composeWithDevTools(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger)),
-);
+const store =
+    process.env.NODE_ENV === 'development'
+        ? createStore(
+              createReducer(),
+              {},
+              composeWithDevTools(
+                  applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware, logger),
+              ),
+          )
+        : createStore(
+              createReducer(),
+              {},
+              compose(applyMiddleware(routerMiddleware(history), promiseMiddleware, sagaMiddleware)),
+          );
 
 store.asyncReducers = {};
 const rootReducer = (state, action) => {
-    // if (action.type === LOGOUT().type) {
-    //     // console.log('action.type: ', action.type);
-    //     // console.log('logout', Cookies.get("token"));
-    //     Cookies.remove("token");
-    //     // action.type = "";
-    //     return createReducer(store.asyncReducers)(undefined, action);
-    // }
+    if (action.type === LOGOUT().type) {
+        return createReducer(store.asyncReducers)(undefined, action);
+    }
     return createReducer(store.asyncReducers)(state, action);
 };
 store.injectReducer = (key, reducer) => {
     store.asyncReducers[key] = reducer;
-    store.replaceReducer(rootReducer);
+    store.replaceReducer(createReducer(store.asyncReducers));
     return store;
 };
 

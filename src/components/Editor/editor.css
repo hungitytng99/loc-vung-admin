@@ -1,10 +1,13 @@
 .compose-editor {
     /* margin-bottom: 1.5rem; */
 }
+
 .ck-content {
     min-height: 7.5rem;
     border-color: #c4c4c4 !important;
+    line-height: 12px !important;
 }
+
 .wrs_modal_button_cancel {
     min-width: 80px;
     font-size: 14px;
@@ -17,6 +20,7 @@
     background-color: #ddd;
     height: 32px;
 }
+
 .wrs_modal_button_accept:hover {
     margin: 0 !important;
     font-size: 14px;
@@ -40,6 +44,7 @@
     /* display: none; */
     visibility: hidden;
 }
+
 .inline .ck-content {
     min-height: 3rem !important;
 }

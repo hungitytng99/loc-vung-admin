@@ -1,9 +1,8 @@
 import { Configs } from 'app-configs';
+import { TOKEN_KEY } from 'app-configs';
 import { ACTION_TYPE } from 'app-configs';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
-let token = '';
 
 export const getOptions = (options) => {
     const opts = {
@@ -13,7 +12,7 @@ export const getOptions = (options) => {
         ...options,
     };
 
-    const token = Cookies.get('token');
+    const token = Cookies.get(TOKEN_KEY);
     if (token) {
         opts.headers.Authorization = 'Bearer ' + token;
     }
@@ -38,12 +37,7 @@ export const GET = (path, params, options = {}) => {
                   if (Array.isArray(valueParam)) {
                       // TODO with "all" value;
                       adjustParam = valueParam
-                          .map(
-                              (paramDetail) =>
-                                  `${key}=${encodeURIComponent(
-                                      paramDetail != 'all' ? paramDetail : '',
-                                  )}`,
-                          )
+                          .map((paramDetail) => `${key}=${encodeURIComponent(paramDetail != 'all' ? paramDetail : '')}`)
                           .join('&');
                   } else {
                       // TODO with "all" value;
@@ -55,9 +49,7 @@ export const GET = (path, params, options = {}) => {
               .join('&')
         : '';
 
-    const _url =
-        (options.isFullPath ? path : Configs.BASE_API + path) +
-        (_params === '' ? '' : '?' + _params);
+    const _url = (options.isFullPath ? path : Configs.BASE_API + path) + (_params === '' ? '' : '?' + _params);
 
     const _options = getOptions(options);
 

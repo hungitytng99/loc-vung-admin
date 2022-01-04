@@ -75,8 +75,8 @@ function* createCollection({ type, payload }) {
         //     featureImageId: listImagesIdUpload[0],
         // };
 
-        const responseCreate = yield call(apiCreateCollection, newParams);
-        console.log('test: ', newParams);
+        const responseCreate = yield call(apiCreateCollection, payload);
+        console.log('responseCreate: ', responseCreate);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
             yield put(CREATE_COLLECTION_SUCCESS(responseCreate.data));
             yield put(NOTIFY_SUCCESS());
@@ -94,24 +94,8 @@ function* updateCollection({ type, payload }) {
     const { id, params } = payload;
     try {
         yield put(NOTIFY_LOADING());
-        const oldListImagesIdUpload = [];
-        const newListImagesIdUpload = [];
-        for (let i = 0; i < params.media.length; i++) {
-            if ((apiUploadFile, params.media[i].originFileObj)) {
-                const responseUpload = yield call(apiUploadFile, params.media[i].originFileObj);
-                newListImagesIdUpload.push(Number(responseUpload.data[0].id));
-            } else {
-                oldListImagesIdUpload.push(params.media[i].uid);
-            }
-        }
-        const newListMediaId = [...oldListImagesIdUpload, ...newListImagesIdUpload];
-        console.log('newListMediaId: ', newListMediaId);
-        const newParams = {
-            ...params,
-            media: [...newListMediaId],
-            featureImageId: newListMediaId[0],
-        };
-        const responseCreate = yield call(apiUpdateCollection, id, newParams);
+
+        const responseCreate = yield call(apiUpdateCollection, id, payload);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
             yield put(UPDATE_COLLECTION_SUCCESS(responseCreate.data));
             yield put(NOTIFY_SUCCESS());

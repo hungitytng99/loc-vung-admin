@@ -8,18 +8,20 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT } from 'redux/actions/user';
 import { useHistory } from 'react-router';
+import Cookies from 'js-cookie';
+import { TOKEN_KEY } from 'app-configs';
+import { Link } from 'react-router-dom';
+import { MODULES } from 'app-configs';
 
 const { Header } = Layout;
 
 function AdminHeader({ collapseSider, handleCollapse }) {
     const authState = useSelector((state) => state.user);
     const { t } = useTranslation();
-    const dispatch = useDispatch();
     const history = useHistory();
 
     function handleLogout() {
-        console.log('handleLogout: ');
-        dispatch(LOGOUT({ byUser: true }));
+        Cookies.remove(TOKEN_KEY);
         history.push('/auth/login');
     }
 
@@ -40,23 +42,22 @@ function AdminHeader({ collapseSider, handleCollapse }) {
             </div>
             <div className="header__right">
                 <div className="header__right-notify">
-                    <Badge dot={true}>
+                    {/* <Badge dot={true}>
                         <BellOutlined className="notify__icon" style={{ fontSize: '20px', color: '#646464' }} />
-                    </Badge>
+                    </Badge> */}
                 </div>
                 <Dropdown
                     overlay={
                         <Menu style={{ width: '200px', padding: '6px 0px' }}>
                             <div className="username">
-                                <strong>Username</strong>
+                                <strong>Admin</strong>
                                 <div className="active" />
                             </div>
                             <Divider style={{ margin: '2px' }} />
                             <Menu.Item>
-                                <div>{t('changePassword')}</div>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <div>{t('accountSetting')}</div>
+                                <Link to={MODULES.accountSettingModule.route}>
+                                    <div>{t('accountSetting')}</div>
+                                </Link>
                             </Menu.Item>
                             <Divider style={{ margin: '2px' }} />
                             <Menu.Item onClick={handleLogout}>
@@ -69,7 +70,7 @@ function AdminHeader({ collapseSider, handleCollapse }) {
                     trigger={['click']}
                 >
                     <Avatar size={40} className="header__right-avatar">
-                        USER
+                        AD
                     </Avatar>
                 </Dropdown>
             </div>

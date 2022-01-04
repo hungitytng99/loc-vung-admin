@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from '@redux-saga/core/effects';
+import { TOKEN_KEY } from 'app-configs';
 import { REQUEST_STATE } from 'app-configs';
 import { apiLogin } from 'app-data/auth';
 import Cookies from 'js-cookie';
@@ -10,7 +11,7 @@ function* handleLogin({ type, payload }) {
     try {
         const response = yield call(apiLogin, payload);
         if (response.state === REQUEST_STATE.SUCCESS) {
-            Cookies.set('token', response.data.token);
+            Cookies.set(TOKEN_KEY, response.data.token);
             yield put(LOGIN_SUCCESS(response.data));
         } else {
             let errMessage = 'yourEmailOrPasswordIsWrong';

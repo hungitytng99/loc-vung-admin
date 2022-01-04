@@ -4,7 +4,7 @@ import { GET, POST, DELETE, PUT } from 'app-data/fetch';
 
 export const apiCreateCollection = async (params) => {
     try {
-        const response = await POST('/collections/', params, { isFullPath: false });
+        const response = await POST('/admin/collections/', params, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
@@ -40,7 +40,7 @@ export const apiGetCollectionById = async (id) => {
         const response = await GET('/collections/' + id);
         return {
             state: REQUEST_STATE.SUCCESS,
-            data: response.result,
+            data: response.results,
         };
     } catch (error) {
         console.log('error', error);

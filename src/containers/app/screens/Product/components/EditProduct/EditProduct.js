@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip } from 'antd';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip, Switch } from 'antd';
 
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
-import './EditProduct.sass';
 import { useDispatch, useSelector } from 'react-redux';
 import { PRODUCT_STATUS } from 'app-configs';
 import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
@@ -20,6 +19,8 @@ import { getImageWithId } from 'helpers/media';
 import { getBase64 } from 'helpers/media';
 import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { isEmptyValue } from 'helpers/check';
+import { MODULES } from 'app-configs';
+import './EditProduct.sass';
 
 const { Option } = Select;
 
@@ -30,6 +31,7 @@ function EditProduct({ match }) {
     const history = useHistory();
     const productId = history.location.pathname.replace('/product/edit-product/', '');
     const [hasOptions, setHasOptions] = useState(false);
+    const [isBestSelling, setIsBestSelling] = useState(false);
 
     const [productImages, setProductImages] = useState([]);
     const [previewProductStatus, setPreviewProductStatus] = useState({
@@ -38,7 +40,6 @@ function EditProduct({ match }) {
         isShow: false,
     });
     const product = useSelector((state) => state.product.update);
-    const notify = useSelector((state) => state.notify);
 
     const onFinish = (values) => {
         const params = {
@@ -57,14 +58,6 @@ function EditProduct({ match }) {
 
         dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
-
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-    function onSelectStatusChange(value) {
-        console.log(value);
-    }
 
     function handleHidePreviewModal() {
         setPreviewProductStatus({
@@ -100,7 +93,7 @@ function EditProduct({ match }) {
     }, [history.location.pathname]);
 
     useEffect(() => {
-        if (product.data) {
+        if (product?.data) {
             const mapStatus =
                 PRODUCT_STATUS.find((productStatus) => productStatus.value === product.data.status) ??
                 PRODUCT_STATUS[0];
@@ -117,7 +110,8 @@ function EditProduct({ match }) {
                       })
                     : [''],
             });
-            if (product.data.media.length > 0) {
+            setIsBestSelling(product.data?.bestSelling);
+            if (product?.data?.media?.length > 0) {
                 const listProductImages = product.data.media.map((img) => {
                     return {
                         uid: img.id,
@@ -136,16 +130,20 @@ function EditProduct({ match }) {
             dispatch(UPDATE_PRODUCT_SUCCESS_STATE());
         }
     }, [product.state]);
-
     return (
-        <div className="create-product">
-            {product.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
-            <ListHeader title={t('addProduct')}>
-                <Button type="primary">
+        <div className="editProduct">
+            {(product?.state === REQUEST_STATE.REQUEST || product?.getDetailState === REQUEST_STATE.REQUEST) && (
+                <FullPageLoading opacity={0.8} />
+            )}
+            <ListHeader title={t('editProduct')}>
+                <Button type="ghost">
                     <Link to="/product">{t('back')}</Link>
                 </Button>
+                <Button type="primary" style={{ marginLeft: '15px' }}>
+                    <Link to={`${MODULES.productModule.route}/edit-variant/${productId}`}>{t('configVariant')}</Link>
+                </Button>
             </ListHeader>
-            <div className="create-product__form">
+            <div className="editProduct__form">
                 <Form
                     name="basic"
                     form={form}
@@ -158,11 +156,13 @@ function EditProduct({ match }) {
                         ],
                     }}
                     onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
                     autoComplete="off"
                     layout="inline"
                     size="large"
                 >
+                    <Form.Item className="editProduct__item" name="bestSelling" label={t('isBestSelling')}>
+                        <Switch checked={isBestSelling} onChange={() => setIsBestSelling(!isBestSelling)} />
+                    </Form.Item>
                     <Col className="flex-height-center" style={{ marginBottom: '10px' }} span={24}>
                         <span className="createProductLabel">{t('productStatus')}</span>
                         <Tooltip title={t('theProductWillBeHiddenOrVisibleFromAllSalesChannel ')}>
@@ -171,7 +171,7 @@ function EditProduct({ match }) {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            className="create-product__item"
+                            className="editProduct__item"
                             label={t('status')}
                             name="status"
                             rules={[
@@ -181,7 +181,7 @@ function EditProduct({ match }) {
                                 },
                             ]}
                         >
-                            <Select style={{ width: 160 }} onChange={onSelectStatusChange} size="middle">
+                            <Select style={{ width: 160 }} size="middle">
                                 {PRODUCT_STATUS.map((productStatus) => {
                                     return (
                                         <Option key={productStatus.value} value={productStatus.value}>
@@ -199,7 +199,7 @@ function EditProduct({ match }) {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            className="create-product__item"
+                            className="editProduct__item"
                             label={t('productName')}
                             name="title"
                             rules={[
@@ -213,14 +213,14 @@ function EditProduct({ match }) {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('description')} name="description">
+                        <Form.Item className="editProduct__item" label={t('description')} name="description">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductDescription')} />
                         </Form.Item>
                     </Col>
 
                     <Col span={8}>
                         <Form.Item
-                            className="create-product__item"
+                            className="editProduct__item"
                             label={t('price')}
                             name="price"
                             rules={[
@@ -235,7 +235,7 @@ function EditProduct({ match }) {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            className="create-product__item"
+                            className="editProduct__item"
                             label={t('comparePrice')}
                             name="comparePrice"
                             rules={[
@@ -253,21 +253,17 @@ function EditProduct({ match }) {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('productUrl')} name="url">
+                        <Form.Item className="editProduct__item" label={t('productUrl')} name="url">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductURL')} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item className="create-product__item" label={t('vendorId')} name="vendorId">
+                        <Form.Item className="editProduct__item" label={t('vendorId')} name="vendorId">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductVendor')} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item
-                            className="create-product__item"
-                            label={t('availableProducts')}
-                            name="availableNumber"
-                        >
+                        <Form.Item className="editProduct__item" label={t('availableProducts')} name="availableNumber">
                             <Input
                                 type="number"
                                 style={{ fontSize: '14px' }}
@@ -281,7 +277,7 @@ function EditProduct({ match }) {
                     </Col>
                     <Col span={24}>
                         <Form.Item
-                            className="create-product__item"
+                            className="editProduct__item"
                             label={t('media')}
                             name="media"
                             rules={[

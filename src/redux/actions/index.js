@@ -4,3 +4,10 @@ export function CLEAR_ALL_STATE(payload) {
         payload,
     };
 }
+
+export function AUTHENCATE_USER(payload) {
+    return {
+        type: 'AUTHENCATE_USER',
+        payload,
+    };
+}
