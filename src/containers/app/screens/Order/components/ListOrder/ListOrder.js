@@ -115,7 +115,7 @@ function ListOrder({ hasOptions }) {
                         width: '12%',
                     },
                     {
-                        title: t('dia chi'),
+                        title: t('customerAddress'),
                         dataIndex: 'customerAddress',
                         width: '12%',
                     },
@@ -131,7 +131,7 @@ function ListOrder({ hasOptions }) {
                     },
                     {
                         title: t('product'),
-                        // dataIndex: 'deliveryMethod',
+                        // dataIndex: 'orderItems',
                         width: '12%',
                     },
                     {
@@ -139,46 +139,6 @@ function ListOrder({ hasOptions }) {
                         dataIndex: 'createdAt',
                         width: '12%',
                     },
-                    // {
-                    //     title: t('action'),
-                    //     key: 'action',
-                    //     dataIndex: 'action',
-                    //     width: '3%',
-                    //     render: (_, record) => {
-                    //         return (
-                    //             <div className="list-order__action">
-                    //                 <Tooltip className="list-order__action-edit text-grey-300" title={t('editOrder')}>
-                    //                     <Link style={{ display: 'block' }} to={`/order/edit-order/${record.id}`}>
-                    //                         <FormOutlined />
-                    //                     </Link>
-                    //                 </Tooltip>
-                    //                 <div style={{ width: '4px' }}></div>
-                    //                 <Popconfirm
-                    //                     title={`${t('areYouSureToDeleteThisOrder')}?`}
-                    //                     okText={t('yes')}
-                    //                     cancelText={t('cancel')}
-                    //                     onConfirm={() => {
-                    //                         handleDeleteOrder(record);
-                    //                     }}
-                    //                 >
-                    //                     <Tooltip
-                    //                         className="list-order__action-delete text-grey-300"
-                    //                         title={t('deleteOrder')}
-                    //                     >
-                    //                         <DeleteOutlined style={{ paddingTop: '6px' }} />
-                    //                     </Tooltip>
-                    //                 </Popconfirm>
-                    //                 <div style={{ width: '4px' }}></div>
-                    //                 <Tooltip
-                    //                     className="list-order__action-set text-grey-300"
-                    //                     title={t('setAsHotOrder')}
-                    //                 >
-                    //                     <RiseOutlined style={{ paddingTop: '6px' }} />
-                    //                 </Tooltip>
-                    //             </div>
-                    //         );
-                    //     },
-                    // },
                 ]}
                 title={() => (
                     <ListHeader title={t('listOrder')}>
@@ -192,9 +152,7 @@ function ListOrder({ hasOptions }) {
                                 value={searchParams}
                                 onChange={onSearch}
                             />
-                            <Button type="ghost">
-                                <Link to="/order/add-hot-order">{t('addHotOrder')}</Link>
-                            </Button>
+
                             <Button type="primary">
                                 <Link to="/order/create">{t('addOrder')}</Link>
                             </Button>

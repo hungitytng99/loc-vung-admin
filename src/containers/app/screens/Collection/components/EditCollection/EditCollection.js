@@ -1,59 +1,49 @@
 import React, { useEffect, useState } from 'react';
+import { Form, Input, Button, Select, Upload, Col, Divider, Modal, Checkbox, Row, Tooltip } from 'antd';
+
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import './CreateOrder.sass';
-import {
-    Form,
-    Input,
-    Button,
-    Select,
-    Upload,
-    Col,
-    Divider,
-    Modal,
-    notification,
-    Checkbox,
-    Space,
-    Row,
-    Tooltip,
-    Badge,
-} from 'antd';
-import { ORDER_STATUS } from 'app-configs';
-import { MinusCircleOutlined, PlusOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { VALID_IMAGE_TYPES } from 'app-configs';
-import { Configs } from 'app-configs';
+import { Link, useHistory } from 'react-router-dom';
+import './EditCollection.sass';
 import { useDispatch, useSelector } from 'react-redux';
-import { CREATE_ORDER } from '../../actions/action';
+import { COLLECTION_STATUS } from 'app-configs';
+import { DeleteOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { REQUEST_STATE } from 'app-configs';
-import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
+import {
+    GET_COLLECTION_BY_ID,
+    GET_COLLECTION_BY_ID_SUCCESS,
+    UPDATE_COLLECTION,
+    UPDATE_COLLECTION_SUCCESS_STATE,
+} from '../../actions/action';
+import store from 'redux/index';
+import { getImageWithId } from 'helpers/media';
 import { getBase64 } from 'helpers/media';
-import Cookies from 'js-cookie';
+import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading';
 import { isEmptyValue } from 'helpers/check';
-import ListOrder from '../ListOrder/ListOrder';
 
 const { Option } = Select;
 
-function CreateOrder(props) {
+function EditCollection({ match }) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [form] = Form.useForm();
-    const [orderImages, setOrderImages] = useState([]);
+    const history = useHistory();
+    const collectionId = history.location.pathname.replace('/collection/edit-collection/', '');
     const [hasOptions, setHasOptions] = useState(false);
 
-    const [previewOrderStatus, setPreviewOrderStatus] = useState({
+    const [collectionImages, setCollectionImages] = useState([]);
+    const [previewCollectionStatus, setPreviewCollectionStatus] = useState({
         image: '',
         title: '',
         isShow: false,
     });
-    const order = useSelector((state) => state.order.create);
+    const collection = useSelector((state) => state.collection.update);
     const notify = useSelector((state) => state.notify);
-    let addValue = () => {};
 
     const onFinish = (values) => {
         const params = {
             ...values,
-            media: orderImages,
+            media: collectionImages,
             status: t(values.status),
             options: values.options
                 ? values.options.map((option) => {
@@ -62,26 +52,31 @@ function CreateOrder(props) {
                           values: option.values.map((value) => value.value),
                       };
                   })
-                : null,
+                : values.options,
         };
-        dispatch(CREATE_ORDER(params));
+
+        dispatch(UPDATE_COLLECTION({ params, id: collectionId }));
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
+    function onSelectStatusChange(value) {
+        console.log(value);
+    }
+
     function handleHidePreviewModal() {
-        setPreviewOrderStatus({
+        setPreviewCollectionStatus({
             isShow: false,
         });
     }
 
-    async function handlePreviewOrderImage(file) {
+    async function handlePreviewCollectionImage(file) {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
         }
-        setPreviewOrderStatus({
+        setPreviewCollectionStatus({
             image: file.url || file.preview,
             isShow: true,
             title: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
@@ -89,7 +84,7 @@ function CreateOrder(props) {
     }
 
     function handleChangeUploadImage({ fileList }) {
-        setOrderImages(fileList);
+        setCollectionImages(fileList);
     }
 
     function handleChangeOptions() {
@@ -97,35 +92,70 @@ function CreateOrder(props) {
     }
 
     useEffect(() => {
-        if (notify.requestState === REQUEST_STATE.SUCCESS) {
-            form.resetFields();
-            setOrderImages([]);
+        dispatch(
+            GET_COLLECTION_BY_ID({
+                id: collectionId,
+            }),
+        );
+    }, [history.location.pathname]);
+
+    useEffect(() => {
+        if (collection.data) {
+            const mapStatus =
+                COLLECTION_STATUS.find((collectionStatus) => collectionStatus.value === collection.data.status) ??
+                COLLECTION_STATUS[0];
+            setHasOptions(!isEmptyValue(collection.data.options));
+            form.setFieldsValue({
+                ...collection.data,
+                status: mapStatus.value,
+                options: collection.data.options
+                    ? collection.data.options.map((option) => {
+                          return {
+                              ...option,
+                              values: option.values.map((value) => ({ value })),
+                          };
+                      })
+                    : [''],
+            });
+            if (collection.data.media.length > 0) {
+                const listCollectionImages = collection.data.media.map((img) => {
+                    return {
+                        uid: img.id,
+                        name: img.link,
+                        url: getImageWithId(img.id),
+                    };
+                });
+                setCollectionImages(listCollectionImages);
+            }
         }
-    }, [notify.requestState]);
+    }, [collection.data]);
+
+    useEffect(() => {
+        if (collection.state === REQUEST_STATE.SUCCESS) {
+            history.push('/collection');
+            dispatch(UPDATE_COLLECTION_SUCCESS_STATE());
+        }
+    }, [collection.state]);
 
     return (
-        <div className="create-order">
-            {order.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
-            <ListHeader title={t('addOrder')}>
+        <div className="create-collection">
+            {collection.state === REQUEST_STATE.REQUEST && <FullPageLoading opacity={0.8} />}
+            <ListHeader title={t('addCollection')}>
                 <Button type="primary">
-                    <Link to="/order">{t('back')}</Link>
+                    <Link to="/collection">{t('back')}</Link>
                 </Button>
             </ListHeader>
-            <ListOrder hasOptions={hasOptions} />
-            <div className="create-order__form">
+            <div className="create-collection__form">
                 <Form
                     name="basic"
                     form={form}
                     initialValues={{
-                        remember: true,
-                        status: ORDER_STATUS[0].value,
                         options: [
                             {
                                 title: '',
                                 values: [''],
                             },
                         ],
-                        availableNumber: 0,
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -133,15 +163,18 @@ function CreateOrder(props) {
                     layout="inline"
                     size="large"
                 >
-                    {/* <Col className="flex-height-center" style={{ marginBottom: '10px' }} span={24}>
-                        <span className="createOrderLabel">{t('orderStatus')}</span>
-                        <Tooltip title={t('theOrderWillBeHiddenOrVisibleFromAllSalesChannel ')}>
-                            <QuestionCircleOutlined className="createOrderLabelInfo" style={{ marginLeft: '6px' }} />
+                    <Col className="flex-height-center" style={{ marginBottom: '10px' }} span={24}>
+                        <span className="createCollectionLabel">{t('collectionStatus')}</span>
+                        <Tooltip title={t('theCollectionWillBeHiddenOrVisibleFromAllSalesChannel ')}>
+                            <QuestionCircleOutlined
+                                className="createCollectionLabelInfo"
+                                style={{ marginLeft: '6px' }}
+                            />
                         </Tooltip>
-                    </Col> */}
-                    {/* <Col span={8}>
+                    </Col>
+                    <Col span={8}>
                         <Form.Item
-                            className="create-order__item"
+                            className="create-collection__item"
                             label={t('status')}
                             name="status"
                             rules={[
@@ -151,28 +184,27 @@ function CreateOrder(props) {
                                 },
                             ]}
                         >
-                            <Select style={{ width: 160 }} size="middle">
-                                {ORDER_STATUS.map((orderStatus) => {
+                            <Select style={{ width: 160 }} onChange={onSelectStatusChange} size="middle">
+                                {COLLECTION_STATUS.map((collectionStatus) => {
                                     return (
-                                        <Option key={orderStatus.value} value={orderStatus.value}>
-                                            <span>{t(orderStatus.value)}</span>
-                                            <Badge style={{ marginLeft: '4px' }} color={orderStatus.color} />
+                                        <Option key={collectionStatus.value} value={collectionStatus.value}>
+                                            {t(collectionStatus.value)}
                                         </Option>
                                     );
                                 })}
                             </Select>
                         </Form.Item>
-                    </Col> */}
+                    </Col>
                     <Divider style={{ margin: '10px 0px' }} />
 
                     <Col span={24}>
-                        <div className="createOrderLabel">{t('orderInformation')}</div>
+                        <div className="createCollectionLabel">{t('collectionInformation')}</div>
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            className="create-order__item"
-                            label={t('userName')}
-                            name="userName"
+                            className="create-collection__item"
+                            label={t('collectionName')}
+                            name="title"
                             rules={[
                                 {
                                     required: true,
@@ -180,20 +212,20 @@ function CreateOrder(props) {
                                 },
                             ]}
                         >
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterUserName')} />
+                            <Input style={{ fontSize: '14px' }} placeholder={t('enterCollectionName')} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item className="create-order__item" label={t('userId')} name="userId">
-                            <Input style={{ fontSize: '14px' }} type="number" placeholder={t('enteruserId')} />
+                        <Form.Item className="create-collection__item" label={t('description')} name="description">
+                            <Input style={{ fontSize: '14px' }} placeholder={t('enterCollectionDescription')} />
                         </Form.Item>
                     </Col>
 
                     <Col span={8}>
                         <Form.Item
-                            className="create-order__item"
-                            label={t('phone')}
-                            name="phone"
+                            className="create-collection__item"
+                            label={t('price')}
+                            name="price"
                             rules={[
                                 {
                                     required: true,
@@ -201,14 +233,14 @@ function CreateOrder(props) {
                                 },
                             ]}
                         >
-                            <Input style={{ fontSize: '14px' }} type="number" placeholder={t('enterphone')} />
+                            <Input style={{ fontSize: '14px' }} type="number" placeholder={t('enterCollectionPrice')} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            className="create-order__item"
-                            label={t('customerAddress')}
-                            name="customerAddress"
+                            className="create-collection__item"
+                            label={t('comparePrice')}
+                            name="comparePrice"
                             rules={[
                                 {
                                     required: true,
@@ -216,37 +248,49 @@ function CreateOrder(props) {
                                 },
                             ]}
                         >
-                            <Input style={{ fontSize: '14px' }} placeholder={t('entercustomerAddress')} />
-                        </Form.Item>
-                    </Col>
-                    {/* <Col span={8}>
-                        <Form.Item className="create-order__item" label={t('orderUrl')} name="url">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterOrderURL')} />
-                        </Form.Item>
-                    </Col> */}
-                    <Col span={8}>
-                        <Form.Item className="create-order__item" label={t('email')} name="email">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enteremail')} />
+                            <Input
+                                style={{ fontSize: '14px' }}
+                                type="number"
+                                placeholder={t('enterCollectionComparePrice')}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item className="create-order__item" label={t('deliveryMethod')} name="deliveryMethod">
-                            <Input style={{ fontSize: '14px' }} placeholder={t('enterdeliveryMethod')} />
+                        <Form.Item className="create-collection__item" label={t('collectionUrl')} name="url">
+                            <Input style={{ fontSize: '14px' }} placeholder={t('enterCollectionURL')} />
                         </Form.Item>
                     </Col>
-                    {/* <Divider style={{ margin: '10px 0px' }} /> */}
-                    {/* <Col span={24}>
-                        <div className="createOrderLabel">{t('listOrderImages')}</div>
-                    </Col> */}
-                    {/* <Col span={24}>
+                    <Col span={8}>
+                        <Form.Item className="create-collection__item" label={t('vendorId')} name="vendorId">
+                            <Input style={{ fontSize: '14px' }} placeholder={t('enterCollectionVendor')} />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
                         <Form.Item
-                            className="create-order__item"
+                            className="create-collection__item"
+                            label={t('availableCollections')}
+                            name="availableNumber"
+                        >
+                            <Input
+                                type="number"
+                                style={{ fontSize: '14px' }}
+                                placeholder={t('enternumberOfAvailableCollections')}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Divider style={{ margin: '10px 0px' }} />
+                    <Col span={24}>
+                        <div className="createCollectionLabel">{t('listCollectionImages')}</div>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Item
+                            className="create-collection__item"
                             label={t('media')}
                             name="media"
                             rules={[
                                 ({ getFieldValue }) => ({
                                     validator(_, value) {
-                                        if (!value || orderImages.length === 0) {
+                                        if (!value || collectionImages.length === 0) {
                                             return Promise.reject(new Error(t('youMustUploadAtLeast1Image')));
                                         }
                                         return Promise.resolve();
@@ -256,10 +300,10 @@ function CreateOrder(props) {
                         >
                             <Upload
                                 accept="image/*"
-                                onPreview={handlePreviewOrderImage}
+                                onPreview={handlePreviewCollectionImage}
                                 listType="picture-card"
                                 customRequest={({ onSuccess }) => onSuccess('ok')}
-                                fileList={orderImages}
+                                fileList={collectionImages}
                                 onChange={handleChangeUploadImage}
                             >
                                 <div>
@@ -268,19 +312,31 @@ function CreateOrder(props) {
                                 </div>
                             </Upload>
                         </Form.Item>
-                    </Col> */}
-                    {/* <Divider style={{ margin: '10px 0px' }} /> */}
-                    {/* <Col span={24}>
-                        <div className="createOrderLabel">{t('options')}</div>
+                    </Col>
+                    <Divider style={{ margin: '10px 0px' }} />
+                    <Col span={24}>
+                        <div className="createCollectionLabel">{t('options')}</div>
                     </Col>
                     <Checkbox checked={hasOptions} onChange={handleChangeOptions}>
-                        <span>{t('thisOrderHasOptionsLikeSizeOrColor')}</span>
+                        <span>{t('thisCollectionHasOptionsLikeSizeOrColor')}</span>
                     </Checkbox>
-                    <Col span={24}></Col> */}
-                    {/* {hasOptions && (
+                    <Col span={24}></Col>
+                    {hasOptions && (
                         <>
-                            <Form.List name="options">
-                                {(fields, { add, remove }) => (
+                            <Form.List
+                                name="options"
+                                rules={[
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || value.length === 0) {
+                                                return Promise.reject(new Error(t('youMustAddAtLeast1Option')));
+                                            }
+                                            return Promise.resolve();
+                                        },
+                                    }),
+                                ]}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
                                     <Col span={24}>
                                         <Col span={24}>
                                             <Button
@@ -301,6 +357,7 @@ function CreateOrder(props) {
                                             >
                                                 {t('addOption')}
                                             </Button>
+                                            <Form.ErrorList errors={errors} />
                                         </Col>
                                         <Row>
                                             {fields.map((field, index) => {
@@ -309,7 +366,7 @@ function CreateOrder(props) {
                                                         <Col
                                                             span={7}
                                                             key={field.key}
-                                                            className="createOrderListOptions"
+                                                            className="createCollectionListOptions"
                                                             style={{
                                                                 marginTop: '6px',
                                                                 border: '1px solid rgba(0, 0, 0, 0.2)',
@@ -357,7 +414,7 @@ function CreateOrder(props) {
                                                                     span={2}
                                                                 >
                                                                     <DeleteOutlined
-                                                                        className="createOrderDeleteOption"
+                                                                        className="createCollectionDeleteOption"
                                                                         style={{ marginRight: '8px' }}
                                                                         onClick={() => remove(field.name)}
                                                                     />
@@ -443,7 +500,7 @@ function CreateOrder(props) {
                                                                                             span={2}
                                                                                         >
                                                                                             <DeleteOutlined
-                                                                                                className="createOrderDeleteOption"
+                                                                                                className="createCollectionDeleteOption"
                                                                                                 style={{
                                                                                                     marginRight: '8px',
                                                                                                 }}
@@ -485,9 +542,9 @@ function CreateOrder(props) {
                                 )}
                             </Form.List>
                         </>
-                    )} */}
+                    )}
 
-                    <div className="createOrderSubmit">
+                    <div className="createCollectionSubmit">
                         <Form.Item>
                             <Button size="middle" type="primary" htmlType="submit">
                                 {t('submit')}
@@ -496,16 +553,16 @@ function CreateOrder(props) {
                     </div>
                 </Form>
                 <Modal
-                    visible={previewOrderStatus.isShow}
-                    title={previewOrderStatus.title}
+                    visible={previewCollectionStatus.isShow}
+                    title={previewCollectionStatus.title}
                     footer={null}
                     onCancel={handleHidePreviewModal}
                 >
-                    <img alt="example" style={{ width: '100%' }} src={previewOrderStatus.image} />
+                    <img alt="example" style={{ width: '100%' }} src={previewCollectionStatus.image} />
                 </Modal>
             </div>
         </div>
     );
 }
 
-export default CreateOrder;
+export default EditCollection;

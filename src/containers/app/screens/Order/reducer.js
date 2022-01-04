@@ -54,58 +54,58 @@ export default combineReducers({
                     totalOrder: action.payload.total,
                 };
             }
-            case DELETE_ORDER().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.REQUEST,
-                };
-            }
-            case DELETE_ORDER_SUCCESS().type: {
-                let newState = { ...state };
-                newState.data = newState.data.filter((order) => order.id != action.payload.id);
-                return {
-                    ...newState,
-                    state: REQUEST_STATE.SUCCESS,
-                };
-            }
+            // case DELETE_ORDER().type: {
+            //     return {
+            //         ...state,
+            //         state: REQUEST_STATE.REQUEST,
+            //     };
+            // }
+            // case DELETE_ORDER_SUCCESS().type: {
+            //     let newState = { ...state };
+            //     newState.data = newState.data.filter((order) => order.id != action.payload.id);
+            //     return {
+            //         ...newState,
+            //         state: REQUEST_STATE.SUCCESS,
+            //     };
+            // }
             default:
                 return state;
         }
     },
-    update: (state = defaultState, action) => {
-        switch (action.type) {
-            case UPDATE_ORDER().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.REQUEST,
-                };
-            }
-            case UPDATE_ORDER_SUCCESS().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.SUCCESS,
-                };
-            }
-            case UPDATE_ORDER_SUCCESS_STATE().type: {
-                return {
-                    ...state,
-                    state: null,
-                };
-            }
-            case UPDATE_ORDER_FAIL().type: {
-                return {
-                    ...state,
-                    state: REQUEST_STATE.ERROR,
-                };
-            }
-            case GET_ORDER_BY_ID_SUCCESS().type: {
-                return {
-                    ...state,
-                    data: action.payload,
-                };
-            }
-            default:
-                return state;
-        }
-    },
+    // update: (state = defaultState, action) => {
+    //     switch (action.type) {
+    //         case UPDATE_ORDER().type: {
+    //             return {
+    //                 ...state,
+    //                 state: REQUEST_STATE.REQUEST,
+    //             };
+    //         }
+    //         case UPDATE_ORDER_SUCCESS().type: {
+    //             return {
+    //                 ...state,
+    //                 state: REQUEST_STATE.SUCCESS,
+    //             };
+    //         }
+    //         case UPDATE_ORDER_SUCCESS_STATE().type: {
+    //             return {
+    //                 ...state,
+    //                 state: null,
+    //             };
+    //         }
+    //         case UPDATE_ORDER_FAIL().type: {
+    //             return {
+    //                 ...state,
+    //                 state: REQUEST_STATE.ERROR,
+    //             };
+    //         }
+    //         case GET_ORDER_BY_ID_SUCCESS().type: {
+    //             return {
+    //                 ...state,
+    //                 data: action.payload,
+    //             };
+    //         }
+    //         default:
+    //             return state;
+    //     }
+    // },
 });

@@ -45,6 +45,10 @@ export const ORDER_STATUS = [
     { color: 'volcano', value: 'daft' },
     { color: 'green', value: 'active' },
 ];
+export const COLLECTION_STATUS = [
+    { color: 'volcano', value: 'daft' },
+    { color: 'green', value: 'active' },
+];
 export const VALID_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png'];
 // 1. UI flow: add router
 export const MODULES = {
@@ -66,6 +70,13 @@ export const MODULES = {
         key: 'product',
         path: 'Product',
         route: '/product',
+        icon: <ShopOutlined />,
+        displayOnSidebar: true,
+    },
+    collectionModule: {
+        key: 'collection',
+        path: 'Collection',
+        route: '/collection',
         icon: <ShopOutlined />,
         displayOnSidebar: true,
     },
