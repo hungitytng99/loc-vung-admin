@@ -81,6 +81,21 @@ function UpdateProfileDetail(props) {
                 <Col span={24}>
                     <Form.Item
                         className="updateProfileDetailItem"
+                        label={t('address')}
+                        name="address"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('thisFieldIsRequired'),
+                            },
+                        ]}
+                    >
+                        <Input style={{ fontSize: '14px' }} placeholder={t('enterYourAddress')} />
+                    </Form.Item>
+                </Col>
+                <Col span={24}>
+                    <Form.Item
+                        className="updateProfileDetailItem"
                         label={t('shipFee')}
                         name="shipFee"
                         rules={[
@@ -125,6 +140,16 @@ function UpdateProfileDetail(props) {
                 <Col span={24}>
                     <Form.Item className="updateProfileDetailItem" label={t('zalo')} name="zalo">
                         <Input style={{ fontSize: '14px' }} placeholder={t('enterLinkToZaloAccount')} />
+                    </Form.Item>
+                </Col>
+                <Col span={24}>
+                    <Form.Item className="updateProfileDetailItem" label={t('youtube')} name="youtube">
+                        <Input style={{ fontSize: '14px' }} placeholder={t('enterYourYoutubeChannel')} />
+                    </Form.Item>
+                </Col>
+                <Col span={24}>
+                    <Form.Item className="updateProfileDetailItem" label={t('instagram')} name="instagram">
+                        <Input style={{ fontSize: '14px' }} placeholder={t('enterYourInstagram')} />
                     </Form.Item>
                 </Col>
                 <div className="updateProfileDetailSubmit">

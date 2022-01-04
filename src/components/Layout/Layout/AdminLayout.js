@@ -9,6 +9,7 @@ import { I18LANGUAGE_KEY } from 'app-configs';
 import AdminHeader from 'components/Layout/Header/AdminHeader';
 import { MODULES } from 'app-configs';
 const { Sider, Content } = Layout;
+import logo from 'assets/images/logo.png';
 
 export const sliderWidth = {
     normal: 250,
@@ -51,7 +52,7 @@ function AdminLayout(props) {
                                 width="100%"
                                 src={
                                     collapseSider
-                                        ? 'https://image.similarpng.com/very-thumbnail/2020/04/Beautiful-Facebook-logo-icon-social-media-png.png'
+                                        ? logo
                                         : 'https://bizweb.dktcdn.net/100/367/937/themes/740363/assets/logo.png?1630998054887'
                                 }
                                 preview={false}

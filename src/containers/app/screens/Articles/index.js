@@ -10,8 +10,8 @@ import ListArticle from './components/ListArticle/ListArticle';
 import { childRoutes } from './route';
 const Article = (props) => {
     const notify = useSelector((state) => state.notify);
-    const articleDelete = useSelector((state) => state.articles.delete);
-    const articlesList = useSelector((state) => state.articles.list);
+    const articleDelete = useSelector((state) => state.articles?.delete);
+    const articlesList = useSelector((state) => state.articles?.list);
 
     return (
         <Suspense fallback={<Spin />}>

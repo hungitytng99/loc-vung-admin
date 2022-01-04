@@ -1,11 +1,20 @@
 {
     " Paste the URL into the content to embed faster": " Paste the URL into the content to embed faster.",
-    "content": "Content",
+    "anErrorOccurWhenCreateproduct": "anErrorOccurWhenCreateproduct",
+    "createPost": "createPost",
+    "createProduct": "createProduct",
+    "createProductSuccessfully": "createProductSuccessfully",
     "discount": "discount",
+    "imageSizeMustSmallerThan5MB": "imageSizeMustSmallerThan5MB",
+    "listPost": "listPost",
+    "listProjectImages": "listProjectImages",
     "newPrice": "newPrice",
     "ourServerIsStoppingForMaintenance": "Our server is stopping for maintenance",
+    "pleaseUploadAValidImageFormat": "pleaseUploadAValidImageFormat",
     "post": "Post",
     "product": "Product",
     "projectInformation": "projectInformation",
+    "setAsHotProduct": "setAsHotProduct",
+    "uploadError": "uploadError",
     "yourEmailOrPasswordIsWrong": "Tài khoản email hoặc mật khẩu không chính xác"
 }
