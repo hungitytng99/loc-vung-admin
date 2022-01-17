@@ -14,6 +14,7 @@ import 'react-medium-image-zoom/dist/styles.css';
 import { REQUEST_STATE } from 'app-configs';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
+import { ORDER_STATUS } from 'app-configs';
 
 function ListOrder({ hasOptions }) {
     const { t } = useTranslation();
@@ -81,21 +82,13 @@ function ListOrder({ hasOptions }) {
         setPagination({ ...pagination, total: orders.totalOrder });
     }, [orders.totalOrder]);
 
-    // test api
-    // useEffect(() => {
-    //     (async () => {
-    //         const response = await apiListOrder({});
-    //         console.log('test api:' + response);
-    //     })();
-    // }, []);
-
     return (
         <div className="list-order">
             <Table
                 columns={[
                     {
-                        title: t('id'),
-                        dataIndex: 'id',
+                        title: t('orderCode'),
+                        dataIndex: 'code',
                         width: '2%',
                     },
 
@@ -141,7 +134,23 @@ function ListOrder({ hasOptions }) {
                         },
                     },
                     {
-                        title: t('create at'),
+                        title: t('status'),
+                        dataIndex: 'status',
+                        width: '12%',
+                        render: (status, record) => {
+                            if (status.toUpperCase() === ORDER_STATUS.NEW) {
+                                return <Tag color="purple">{t('newOrder').toLocaleUpperCase()}</Tag>;
+                            } else if (status.toUpperCase() === ORDER_STATUS.COMMING) {
+                                return <Tag color="processing">{t('delivery').toLocaleUpperCase()}</Tag>;
+                            } else if (status.toUpperCase() === ORDER_STATUS.DONE) {
+                                return <Tag color="green">{t('done').toLocaleUpperCase()}</Tag>;
+                            } else {
+                                return <Tag color="red">{t('cancel').toLocaleUpperCase()}</Tag>;
+                            }
+                        },
+                    },
+                    {
+                        title: t('createdAt'),
                         dataIndex: 'createdAt',
                         width: '12%',
                         render: (createdAt) => {

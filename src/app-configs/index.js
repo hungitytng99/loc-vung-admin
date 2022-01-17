@@ -48,15 +48,19 @@ export const PRODUCT_STATUS = [
     { color: 'volcano', value: 'daft' },
     { color: 'green', value: 'active' },
 ];
-export const ORDER_STATUS = [
-    { color: 'volcano', value: 'daft' },
-    { color: 'green', value: 'active' },
-];
+
 export const COLLECTION_STATUS = [
     { color: 'volcano', value: 'daft' },
     { color: 'green', value: 'active' },
 ];
 export const VALID_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png'];
+
+export const ORDER_STATUS = {
+    NEW: 'NEW',
+    COMMING: 'COMMING',
+    DONE: 'DONE',
+    CANCEL: 'CANCEL',
+};
 
 // 1. UI flow: add router
 export const MODULES = {

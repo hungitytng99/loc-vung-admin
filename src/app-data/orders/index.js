@@ -23,6 +23,7 @@ export const apiListOrder = async (params) => {
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,
+            total: response.total,
         };
     } catch (error) {
         console.log('error', error);
