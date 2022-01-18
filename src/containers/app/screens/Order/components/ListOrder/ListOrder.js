@@ -1,20 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, Layout, Popconfirm, Space, Table, Tooltip, Tag, notification } from 'antd';
+import {
+    Avatar,
+    Badge,
+    Button,
+    Layout,
+    Popconfirm,
+    Space,
+    Table,
+    Tooltip,
+    Tag,
+    notification,
+    Select,
+    Modal,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
-import { DeleteOutlined, FormOutlined, SearchOutlined, LoadingOutlined, RiseOutlined } from '@ant-design/icons';
+import {
+    DeleteOutlined,
+    FormOutlined,
+    SearchOutlined,
+    LoadingOutlined,
+    RiseOutlined,
+    ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import 'containers/app/screens/Order/components/ListOrder/ListOrder.sass';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { DELETE_ORDER, GET_LIST_ORDER, SEARCH_ORDER } from '../../actions/action';
-import { getImageWithId } from 'helpers/media';
-import Zoom from 'react-medium-image-zoom';
+import { CHANGE_ORDER_STATUS, DELETE_ORDER, GET_LIST_ORDER, SEARCH_ORDER } from '../../actions/action';
 import 'react-medium-image-zoom/dist/styles.css';
 import { REQUEST_STATE } from 'app-configs';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { ORDER_STATUS } from 'app-configs';
+
+const { Option } = Select;
 
 function ListOrder({ hasOptions }) {
     const { t } = useTranslation();
@@ -28,8 +48,6 @@ function ListOrder({ hasOptions }) {
     const orders = useSelector((state) => state.order.list);
 
     function handleTableChange(pagina, filters, sorter) {
-        console.log('pagina, filters, sorter: ', pagina, filters, sorter);
-        console.log('searchParams: ', searchParams);
         setPagination({
             ...pagina,
             offset: pagina.current === 1 ? 0 : (pagina.current - 1) * pagina.pageSize,
@@ -57,12 +75,28 @@ function ListOrder({ hasOptions }) {
         );
     }
 
-    function handleDeleteOrder(order) {
-        dispatch(DELETE_ORDER(order));
+    function handleChangeOrderStatus(status, record, handleChangeStatus, defaultStatus) {
+        handleChangeStatus(status);
+        Modal.confirm({
+            title: t('areYouSureToChangeTo') + ' ' + t(`listOrder.${status}`),
+            icon: <ExclamationCircleOutlined />,
+            okText: t('confirm'),
+            cancelText: t('cancel'),
+            onOk: () => handleConfirmChangeOrderStatus(status, record),
+            onCancel: () => handleChangeStatus(defaultStatus),
+        });
+    }
+
+    function handleConfirmChangeOrderStatus(status, record) {
+        dispatch(
+            CHANGE_ORDER_STATUS({
+                id: record?.id,
+                status,
+            }),
+        );
     }
 
     function onSearch(e) {
-        console.log(' e.target.value: ', e.target.value);
         setSearchParams(e.target.value);
 
         dispatch(
@@ -114,7 +148,7 @@ function ListOrder({ hasOptions }) {
                     },
                     {
                         title: t('deliveryMethod'),
-                        dataIndex: 'deliveryMethod',
+                        dataIndex: 'paymentMethod',
                         width: '12%',
                     },
                     {
@@ -123,29 +157,38 @@ function ListOrder({ hasOptions }) {
                         width: '12%',
                         render: (orderItems) => {
                             return orderItems.map((orderItem, index) => (
-                                <ul>
-                                    <li>
-                                        <Link to={`/product/edit-product/${orderItem.variant.product.id}`}>
-                                            {orderItem.variant.product.title}
-                                        </Link>
-                                    </li>
-                                </ul>
+                                <div key={orderItem.variant.product.id}>
+                                    <Link
+                                        to={`/product/edit-product/${orderItem.variant.product.id}`}
+                                        style={{ color: '#000' }}
+                                    >
+                                        <span>{index + 1}. </span>
+                                        {orderItem.variant.product.title}
+                                    </Link>
+                                </div>
                             ));
                         },
                     },
                     {
+                        filters: [
+                            ...Object.keys(ORDER_STATUS).map((key) => ({
+                                value: ORDER_STATUS[key],
+                                text: ORDER_STATUS[key],
+                            })),
+                        ],
+                        filterMultiple: false,
                         title: t('status'),
                         dataIndex: 'status',
                         width: '12%',
                         render: (status, record) => {
                             if (status.toUpperCase() === ORDER_STATUS.NEW) {
-                                return <Tag color="purple">{t('newOrder').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="purple">{t('listOrder.NEW').toLocaleUpperCase()}</Tag>;
                             } else if (status.toUpperCase() === ORDER_STATUS.COMMING) {
-                                return <Tag color="processing">{t('delivery').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="processing">{t('listOrder.COMMING').toLocaleUpperCase()}</Tag>;
                             } else if (status.toUpperCase() === ORDER_STATUS.DONE) {
-                                return <Tag color="green">{t('done').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="green">{t('listOrder.DONE').toLocaleUpperCase()}</Tag>;
                             } else {
-                                return <Tag color="red">{t('cancel').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="red">{t('listOrder.CANCEL').toLocaleUpperCase()}</Tag>;
                             }
                         },
                     },
@@ -155,6 +198,57 @@ function ListOrder({ hasOptions }) {
                         width: '12%',
                         render: (createdAt) => {
                             return <Moment format="HH:mm:ss DD/MM/YYYY">{createdAt}</Moment>;
+                        },
+                    },
+                    {
+                        title: t('action'),
+                        dataIndex: 'status',
+                        width: '12%',
+                        render: (status, record) => {
+                            if (status.toUpperCase() === ORDER_STATUS.NEW) {
+                                const [status, setStatus] = useState(ORDER_STATUS.NEW);
+                                return (
+                                    <Select
+                                        value={status}
+                                        style={{ width: 150 }}
+                                        onChange={(values) =>
+                                            handleChangeOrderStatus(
+                                                values,
+                                                record,
+                                                (status) => setStatus(status),
+                                                ORDER_STATUS.NEW,
+                                            )
+                                        }
+                                    >
+                                        <Option value="NEW">{t('listOrder.NEW')}</Option>
+                                        <Option value="COMING">{t('listOrder.COMMING')}</Option>
+                                        <Option value="DONE">{t('listOrder.DONE')}</Option>
+                                        <Option value="CANCEL">{t('listOrder.CANCEL')}</Option>
+                                    </Select>
+                                );
+                            } else if (status.toUpperCase() === ORDER_STATUS.COMMING) {
+                                const [status, setStatus] = useState(ORDER_STATUS.COMMING);
+                                return (
+                                    <Select
+                                        value={status}
+                                        style={{ width: 150 }}
+                                        onChange={(values) =>
+                                            handleChangeOrderStatus(
+                                                values,
+                                                record,
+                                                (status) => setStatus(status),
+                                                ORDER_STATUS.COMMING,
+                                            )
+                                        }
+                                    >
+                                        <Option value="COMING">{t('listOrder.COMMING')}</Option>
+                                        <Option value="DONE">{t('listOrder.DONE')}</Option>
+                                        <Option value="CANCEL">{t('listOrder.CANCEL')}</Option>
+                                    </Select>
+                                );
+                            } else {
+                                return <div></div>;
+                            }
                         },
                     },
                 ]}

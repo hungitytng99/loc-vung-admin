@@ -57,7 +57,6 @@ function ListArticle(props) {
     }
 
     function handleDeleteArticle(articles) {
-        console.log('articles: ', articles);
         dispatch(
             DELETE_ARTICLE({
                 id: articles.id,

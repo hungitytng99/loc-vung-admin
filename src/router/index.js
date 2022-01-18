@@ -36,7 +36,6 @@ export const listAuthenticationRoutes = authenticationRoutes.map((item) => {
 export const initModules = async (modules = [], container = 'app') => {
     await Promise.all([
         modules.map(async (item) => {
-            console.log('item: ', item);
             const [reducer, saga] = await Promise.all([
                 import(`containers/${container}/screens/${item.path}/reducer`),
                 import(`containers/${container}/screens/${item.path}/saga`),

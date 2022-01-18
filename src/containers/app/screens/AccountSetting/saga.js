@@ -64,7 +64,6 @@ function* changePassword({ type, payload }) {
     const { password } = payload;
     try {
         const response = yield call(apiUpdatePassword, password);
-        console.log('response: ', response);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(NOTIFY_SUCCESS());
             yield put(CHANGE_PASSWORD_SUCCESS());

@@ -121,3 +121,23 @@ export function SEARCH_ORDER_FAIL(payload) {
         payload,
     };
 }
+
+export function CHANGE_ORDER_STATUS(payload) {
+    return {
+        type: 'CHANGE_ORDER_STATUS',
+        payload,
+    };
+}
+export function CHANGE_ORDER_STATUS_SUCCESS(payload) {
+    return {
+        type: 'CHANGE_ORDER_STATUS_SUCCESS',
+        payload,
+    };
+}
+
+export function CHANGE_ORDER_STATUS_FAIL(payload) {
+    return {
+        type: 'CHANGE_ORDER_STATUS_FAIL',
+        payload,
+    };
+}

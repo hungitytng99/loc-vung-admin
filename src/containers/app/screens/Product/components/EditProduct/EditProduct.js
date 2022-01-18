@@ -109,7 +109,6 @@ function EditProduct({ match }) {
     }, [history.location.pathname]);
 
     useEffect(() => {
-        console.log('product: ', product);
         if (product?.data && product.getDetailState === REQUEST_STATE.SUCCESS) {
             const mapStatus =
                 PRODUCT_STATUS.find((productStatus) => productStatus.value === product.data.status) ??

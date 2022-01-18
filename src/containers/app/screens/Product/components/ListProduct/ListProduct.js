@@ -62,7 +62,6 @@ function ListProduct(props) {
     }
 
     function onSearch(e) {
-        // console.log('e: ', e.target.value);
         setSearchParams(e.target.value);
         dispatch(
             SEARCH_PRODUCT({

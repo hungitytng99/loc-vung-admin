@@ -99,7 +99,6 @@ function* updateArticle({ type, payload }) {
             avatarId = originArticle?.avatar;
         } else {
             const responseUpload = yield call(apiUploadFile, article.media?.file?.originFileObj);
-            console.log('responseUpload: ', responseUpload);
             if (responseUpload.state === REQUEST_STATE.SUCCESS) {
                 avatarId = responseUpload?.data[0]?.id;
             } else if (responseUpload.state === REQUEST_STATE.ERROR) {

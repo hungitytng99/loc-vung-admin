@@ -32,7 +32,6 @@ function CreateArticle(props) {
     }
 
     function onFinish(values) {
-        console.log('values: ', values);
         dispatch(
             CREATE_ARTICLE({
                 article: values,

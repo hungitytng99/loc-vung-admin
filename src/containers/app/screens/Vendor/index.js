@@ -5,7 +5,6 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import VendorPage from './components/VendorPage/VendorPage';
 import { childRoutes } from './route';
 const Vendor = (props) => {
-    console.log('Vendor: ');
     return (
         <Suspense fallback={<Spin />}>
             <Switch>

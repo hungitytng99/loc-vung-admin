@@ -36,7 +36,39 @@ export const apiListOrder = async (params) => {
 
 export const apiGetOrderById = async (id) => {
     try {
-        const response = await GET('/orders/' + id, { isFullPath: false });
+        const response = await GET('/orders/' + id, {}, { isFullPath: false });
+        return {
+            state: REQUEST_STATE.SUCCESS,
+            data: response.result,
+        };
+    } catch (error) {
+        console.log('error', error);
+        return {
+            state: REQUEST_STATE.ERROR,
+            message: error.message,
+        };
+    }
+};
+
+export const apiChangeOrderToComming = async (id, status) => {
+    try {
+        const response = await PUT('/admin/orders/' + id, { status }, { isFullPath: false });
+        return {
+            state: REQUEST_STATE.SUCCESS,
+            data: response.result,
+        };
+    } catch (error) {
+        console.log('error', error);
+        return {
+            state: REQUEST_STATE.ERROR,
+            message: error.message,
+        };
+    }
+};
+
+export const apiChangeOrderToDoneOrCancel = async (id, status) => {
+    try {
+        const response = await PUT('/user/orders/' + id, { status }, { isFullPath: false });
         return {
             state: REQUEST_STATE.SUCCESS,
             data: response.result,

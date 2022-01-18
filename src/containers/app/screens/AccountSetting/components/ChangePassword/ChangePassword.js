@@ -14,7 +14,6 @@ function ChangePassword(props) {
     const { t } = useTranslation();
 
     const onUpdateProfileInformation = (values) => {
-        console.log('values: ', values);
         dispatch(
             CHANGE_PASSWORD({
                 password: values,

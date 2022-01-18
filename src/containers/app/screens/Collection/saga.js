@@ -39,11 +39,8 @@ function* getListCollection({ type, payload }) {
         if (title) {
             filterParams = { ...filterParams, title };
         }
-        console.log('filterParams: ', filterParams);
-
         const response = yield call(apiListCollection, filterParams);
 
-        console.log('response: ', response);
         if (response.state === REQUEST_STATE.SUCCESS) {
             yield put(
                 GET_LIST_COLLECTION_SUCCESS({

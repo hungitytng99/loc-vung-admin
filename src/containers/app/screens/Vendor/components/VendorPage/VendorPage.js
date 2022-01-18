@@ -112,10 +112,6 @@ function VendorPage(props) {
         }
     }, [isShowEditVendor]);
 
-    useEffect(() => {
-        console.log(vendorList);
-    }, [vendorList]);
-
     return (
         <div className="vendorPage">
             {(vendorCreate?.state === REQUEST_STATE.REQUEST ||

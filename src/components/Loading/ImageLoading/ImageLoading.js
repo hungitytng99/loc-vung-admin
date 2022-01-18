@@ -34,16 +34,7 @@ function ImageLoading(props) {
             isMounted = false;
         };
     }, []);
-    return (
-        <img
-            ref={image}
-            {...props}
-            src={srcImage}
-            onError={() => {
-                console.log('LOAD IMAGE ERROR');
-            }}
-        ></img>
-    );
+    return <img ref={image} {...props} src={srcImage} onError={() => {}}></img>;
 }
 
 export default React.memo(ImageLoading);

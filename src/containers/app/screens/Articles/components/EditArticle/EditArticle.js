@@ -38,7 +38,6 @@ function editArticle(props) {
     }
 
     function onFinish(values) {
-        console.log('values: ', values);
         dispatch(
             UPDATE_ARTICLE({
                 article: values,
