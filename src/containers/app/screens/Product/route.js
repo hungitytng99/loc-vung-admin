@@ -19,7 +19,7 @@ export const childRoutes = [
         exact: true,
         isPrivate: true,
         component: lazy(async () => {
-            await initModules([MODULES.productModule, MODULES.vendorModule], 'app');
+            await initModules([MODULES.productModule, MODULES.vendorModule, MODULES.collectionModule], 'app');
             return import('./components/CreateProduct/CreateProduct');
         }),
     },
@@ -37,7 +37,7 @@ export const childRoutes = [
         exact: true,
         isPrivate: true,
         component: lazy(async () => {
-            await initModules([MODULES.productModule, MODULES.vendorModule], 'app');
+            await initModules([MODULES.productModule, MODULES.vendorModule, MODULES.collectionModule], 'app');
             return import('./components/EditProduct/EditProduct');
         }),
     },

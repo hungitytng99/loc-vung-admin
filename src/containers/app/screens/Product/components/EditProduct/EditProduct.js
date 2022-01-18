@@ -22,6 +22,7 @@ import { isEmptyValue } from 'helpers/check';
 import { MODULES } from 'app-configs';
 import CKEditor from 'components/Editor/CKEditor';
 import './EditProduct.sass';
+import { GET_LIST_COLLECTION } from 'containers/app/screens/Collection/actions/action';
 
 const { Option } = Select;
 
@@ -35,6 +36,7 @@ function EditProduct({ match }) {
     const [isBestSelling, setIsBestSelling] = useState(false);
     const [content, setContent] = useState('');
     const [vendorId, setVendorId] = useState(null);
+    const collectionList = useSelector((state) => state?.collection?.list);
 
     const [productImages, setProductImages] = useState([]);
     const [previewProductStatus, setPreviewProductStatus] = useState({
@@ -43,10 +45,9 @@ function EditProduct({ match }) {
         isShow: false,
     });
     const vendorList = useSelector((state) => state?.vendor?.list);
-    const product = useSelector((state) => state.product.update);
+    const product = useSelector((state) => state?.product?.update);
 
     const onFinish = (values) => {
-        console.log('values: ', values);
         const params = {
             ...values,
             media: productImages,
@@ -61,8 +62,6 @@ function EditProduct({ match }) {
                   })
                 : values.options,
         };
-        console.log('params: ', params);
-
         dispatch(UPDATE_PRODUCT({ params, id: productId }));
     };
 
@@ -101,7 +100,6 @@ function EditProduct({ match }) {
     function handleSelectVendor(value) {
         setVendorId(value);
     }
-
     useEffect(() => {
         dispatch(
             GET_PRODUCT_BY_ID({
@@ -111,13 +109,15 @@ function EditProduct({ match }) {
     }, [history.location.pathname]);
 
     useEffect(() => {
-        if (product?.data) {
+        console.log('product: ', product);
+        if (product?.data && product.getDetailState === REQUEST_STATE.SUCCESS) {
             const mapStatus =
                 PRODUCT_STATUS.find((productStatus) => productStatus.value === product.data.status) ??
                 PRODUCT_STATUS[0];
             setHasOptions(!isEmptyValue(product.data.options));
             form.setFieldsValue({
                 ...product.data,
+                collections: product?.data?.collections.map((collection) => collection?.id),
                 status: mapStatus.value,
                 availableNumber: product.data?.availableNumber ?? 0,
                 options: product.data.options
@@ -129,6 +129,7 @@ function EditProduct({ match }) {
                       })
                     : [''],
             });
+
             setContent(product.data.description);
             setVendorId(product.data?.vendor?.id);
             setIsBestSelling(product.data?.bestSelling);
@@ -143,7 +144,7 @@ function EditProduct({ match }) {
                 setProductImages(listProductImages);
             }
         }
-    }, [product.data]);
+    }, [product.data, product.getDetailState]);
 
     useEffect(() => {
         if (product.state === REQUEST_STATE.SUCCESS) {
@@ -154,9 +155,9 @@ function EditProduct({ match }) {
 
     useEffect(() => {
         dispatch(GET_LIST_VENDOR({ pagination: {} }));
+        dispatch(GET_LIST_COLLECTION({ pagination: {} }));
     }, []);
 
-    console.log('product.data?.vendor?.id: ', product.data?.vendor?.id);
     return (
         <div className="editProduct">
             {(product?.state === REQUEST_STATE.REQUEST || product?.getDetailState === REQUEST_STATE.REQUEST) && (
@@ -276,6 +277,16 @@ function EditProduct({ match }) {
                     <Col span={8}>
                         <Form.Item className="editProduct__item" label={t('productUrl')} name="url">
                             <Input style={{ fontSize: '14px' }} placeholder={t('enterProductURL')} />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item className="create-product__item" label={t('collection')} name="collections">
+                            <Select mode="multiple" loading={collectionList?.state === REQUEST_STATE.REQUEST}>
+                                {collectionList?.data &&
+                                    collectionList?.data.map((collection) => {
+                                        return <Option value={collection?.id}>{collection?.title}</Option>;
+                                    })}
+                            </Select>
                         </Form.Item>
                     </Col>
                     <Col span={8}>

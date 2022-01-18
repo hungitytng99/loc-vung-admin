@@ -13,6 +13,7 @@ import FullPageLoading from 'components/Loading/FullPageLoading/FullPageLoading'
 import { getBase64 } from 'helpers/media';
 import { isEmptyValue } from 'helpers/check';
 import CKEditor from 'components/Editor/CKEditor';
+import { GET_LIST_COLLECTION } from 'containers/app/screens/Collection/actions/action';
 
 const { Option } = Select;
 
@@ -33,6 +34,7 @@ function CreateProduct(props) {
     const productCreate = useSelector((state) => state?.product?.create);
     const productUpdate = useSelector((state) => state?.product?.update);
     const vendorList = useSelector((state) => state?.vendor?.list);
+    const collectionList = useSelector((state) => state?.collection?.list);
 
     const onFinish = (values) => {
         const params = {
@@ -49,7 +51,6 @@ function CreateProduct(props) {
                   })
                 : null,
         };
-        console.log('params: ', params);
         dispatch(CREATE_PRODUCT(params));
     };
 
@@ -101,6 +102,7 @@ function CreateProduct(props) {
 
     useEffect(() => {
         dispatch(GET_LIST_VENDOR({ pagination: {} }));
+        dispatch(GET_LIST_COLLECTION({ pagination: {} }));
     }, []);
 
     return (
@@ -226,6 +228,16 @@ function CreateProduct(props) {
                                 type="number"
                                 placeholder={t('enterProductComparePrice')}
                             />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item className="create-product__item" label={t('collection')} name="collections">
+                            <Select mode="multiple" loading={collectionList?.state === REQUEST_STATE.REQUEST}>
+                                {collectionList?.data &&
+                                    collectionList?.data.map((collection) => {
+                                        return <Option value={collection?.id}>{collection?.title}</Option>;
+                                    })}
+                            </Select>
                         </Form.Item>
                     </Col>
                     <Col span={8}>
