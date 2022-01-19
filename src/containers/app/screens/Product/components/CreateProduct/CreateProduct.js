@@ -94,9 +94,9 @@ function CreateProduct(props) {
             form.resetFields();
             setProductImages([]);
             setContent('');
-            if (hasOptions && productUpdate?.data.id) {
-                history.push(`/product/edit-variant/${productUpdate?.data.id}`);
-            }
+            // if (hasOptions && productUpdate?.data.id) {
+            //     history.push(`/product/edit-variant/${productUpdate?.data.id}`);
+            // }
         }
     }, [productCreate?.state]);
 
@@ -538,7 +538,8 @@ function CreateProduct(props) {
 
                     <div className="createProductSubmit">
                         <Button size="middle" type="primary" htmlType="submit">
-                            {hasOptions ? t('createAndContinue') : t('submit')}
+                            {t('submit')}
+                            {/* {hasOptions ? t('createAndContinue') : t('submit')} */}
                         </Button>
                     </div>
                 </Form>

@@ -81,9 +81,7 @@ function* createProduct({ type, payload }) {
         };
         const responseCreate = yield call(apiCreateProduct, newParams);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
-            if (payload?.options && payload?.options?.length > 0) {
-                yield delay(payload?.media?.length * 300);
-            }
+            yield delay(2000);
             yield put(CREATE_PRODUCT_SUCCESS(responseCreate.data));
             yield put(NOTIFY_SUCCESS());
         } else {

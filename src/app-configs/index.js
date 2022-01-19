@@ -57,7 +57,7 @@ export const VALID_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png'];
 
 export const ORDER_STATUS = {
     NEW: 'NEW',
-    COMMING: 'COMING',
+    COMMING: 'INCOMING',
     DONE: 'DONE',
     CANCEL: 'CANCEL',
 };

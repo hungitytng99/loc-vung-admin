@@ -10,6 +10,7 @@ import AdminHeader from 'components/Layout/Header/AdminHeader';
 import { MODULES } from 'app-configs';
 const { Sider, Content } = Layout;
 import logo from 'assets/images/logo.png';
+import logo_ngang from 'assets/images/logo-ngang.png';
 
 export const sliderWidth = {
     normal: 250,
@@ -50,11 +51,7 @@ function AdminLayout(props) {
                             <Image
                                 className="icon-home-page"
                                 width="100%"
-                                src={
-                                    collapseSider
-                                        ? logo
-                                        : 'https://bizweb.dktcdn.net/100/367/937/themes/740363/assets/logo.png?1630998054887'
-                                }
+                                src={collapseSider ? logo : logo_ngang}
                                 preview={false}
                             />
                         </Link>

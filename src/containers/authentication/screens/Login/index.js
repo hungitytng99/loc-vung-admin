@@ -1,4 +1,5 @@
 import { Button, Checkbox, Form, Input, notification, Spin } from 'antd';
+import { TOKEN_KEY } from 'app-configs';
 import { REQUEST_STATE } from 'app-configs';
 import { isEmptyValue } from 'helpers/check';
 import Cookies from 'js-cookie';
@@ -20,7 +21,7 @@ export default function Login() {
     };
 
     useEffect(() => {
-        if (!isEmptyValue(user.profile?.token)) {
+        if (Cookies.get(TOKEN_KEY)) {
             history.push('/');
         }
     }, [user.profile, history]);
