@@ -5,6 +5,8 @@
     "addCategory": "Add category",
     "addHotCategory": "Add hot category",
     "anErrorOccurWhenCreateproduct": "An error occur when create product",
+    "articles": "Articles",
+    "contact": "Contact",
     "createAndContinue": "Create and continue",
     "createPost": "Create post",
     "createProduct": "Create product",
@@ -13,11 +15,13 @@
     "editCategory": "Edit category",
     "enterProductDescription": "Enter product description",
     "enterProductVendor": "Enter product vendor",
-    "imageSizeMustSmallerThan5MB": "Image Size Must Smaller Than 5MB ",
+    "imageSizeMustSmallerThan5MB": "Image size must smaller than 5MB",
     "listCategory": "List category",
+    "listOrder": "listOrder",
     "listPost": "List post",
     "listProjectImages": "list project images",
     "newPrice": "New price",
+    "order": "Order",
     "ourServerIsStoppingForMaintenance": "Our server is stopping for maintenance",
     "pleaseUploadAValidImageFormat": "Please upload avalid image format",
     "post": "Post",
@@ -25,7 +29,7 @@
     "searchcategory": "Search category",
     "setAsHotProduct": "Set as hot product",
     "slug": "Slug",
-    "uploadError": "Up load error",
+    "uploadError": "Upload error",
     "vendorId": "Vendor Id",
-    "yourEmailOrPasswordIsWrong": "Tài khoản email hoặc mật khẩu không chính xác"
+    "yourEmailOrPasswordIsWrong": "Your email or password is wrong"
 }

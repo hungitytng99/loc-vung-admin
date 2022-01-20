@@ -36,7 +36,7 @@ import { ORDER_STATUS } from 'app-configs';
 
 const { Option } = Select;
 
-function ListOrder({ hasOptions }) {
+function ListOrder() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [pagination, setPagination] = useState({
@@ -45,7 +45,7 @@ function ListOrder({ hasOptions }) {
     });
     const [currentFilter, setCurrentFilter] = useState({});
     const [searchParams, setSearchParams] = useState('');
-    const orders = useSelector((state) => state.order.list);
+    const orders = useSelector((state) => state?.order?.list);
 
     function handleTableChange(pagina, filters, sorter) {
         setPagination({
@@ -78,7 +78,7 @@ function ListOrder({ hasOptions }) {
     function handleChangeOrderStatus(status, record, handleChangeStatus, defaultStatus) {
         handleChangeStatus(status);
         Modal.confirm({
-            title: t('areYouSureToChangeTo') + ' ' + t(`listOrder.${status}`),
+            title: t('areYouSureToChangeTo') + ' ' + t(`listOrderPage.${status}`),
             icon: <ExclamationCircleOutlined />,
             okText: t('confirm'),
             cancelText: t('cancel'),
@@ -113,8 +113,8 @@ function ListOrder({ hasOptions }) {
     }, [dispatch]);
 
     useEffect(() => {
-        setPagination({ ...pagination, total: orders.totalOrder });
-    }, [orders.totalOrder]);
+        setPagination({ ...pagination, total: orders?.totalOrder });
+    }, [orders?.totalOrder]);
 
     return (
         <div className="list-order">
@@ -182,13 +182,13 @@ function ListOrder({ hasOptions }) {
                         width: '12%',
                         render: (status, record) => {
                             if (status.toUpperCase() === ORDER_STATUS.NEW) {
-                                return <Tag color="purple">{t('listOrder.NEW').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="purple">{t('newOrder').toLocaleUpperCase()}</Tag>;
                             } else if (status.toUpperCase() === ORDER_STATUS.COMMING) {
-                                return <Tag color="processing">{t('listOrder.COMMING').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="processing">{t('commingOrder').toLocaleUpperCase()}</Tag>;
                             } else if (status.toUpperCase() === ORDER_STATUS.DONE) {
-                                return <Tag color="green">{t('listOrder.DONE').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="green">{t('doneOrder').toLocaleUpperCase()}</Tag>;
                             } else {
-                                return <Tag color="red">{t('listOrder.CANCEL').toLocaleUpperCase()}</Tag>;
+                                return <Tag color="red">{t('cancelOrder').toLocaleUpperCase()}</Tag>;
                             }
                         },
                     },
@@ -220,10 +220,10 @@ function ListOrder({ hasOptions }) {
                                             )
                                         }
                                     >
-                                        <Option value="NEW">{t('listOrder.NEW')}</Option>
-                                        <Option value="INCOMING">{t('listOrder.INCOMING')}</Option>
-                                        <Option value="DONE">{t('listOrder.DONE')}</Option>
-                                        <Option value="CANCEL">{t('listOrder.CANCEL')}</Option>
+                                        <Option value="NEW">{t('newOrder')}</Option>
+                                        <Option value="INCOMING">{t('listOrderPage.INCOMING')}</Option>
+                                        <Option value="DONE">{t('doneOrder')}</Option>
+                                        <Option value="CANCEL">{t('cancelOrder')}</Option>
                                     </Select>
                                 );
                             } else if (status.toUpperCase() === ORDER_STATUS.COMMING) {
@@ -241,9 +241,9 @@ function ListOrder({ hasOptions }) {
                                             )
                                         }
                                     >
-                                        <Option value="INCOMING">{t('listOrder.INCOMING')}</Option>
-                                        <Option value="DONE">{t('listOrder.DONE')}</Option>
-                                        <Option value="CANCEL">{t('listOrder.CANCEL')}</Option>
+                                        <Option value="INCOMING">{t('listOrderPage.INCOMING')}</Option>
+                                        <Option value="DONE">{t('doneOrder')}</Option>
+                                        <Option value="CANCEL">{t('cancelOrder')}</Option>
                                     </Select>
                                 );
                             } else {
@@ -253,7 +253,7 @@ function ListOrder({ hasOptions }) {
                     },
                 ]}
                 title={() => (
-                    <ListHeader title={t('listOrder')}>
+                    <ListHeader title={t('listOrderPage')}>
                         <Space size="small">
                             <Input
                                 size="middle"
