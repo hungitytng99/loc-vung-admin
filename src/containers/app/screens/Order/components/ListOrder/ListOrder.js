@@ -14,14 +14,7 @@ import {
     Modal,
 } from 'antd';
 import { useTranslation } from 'react-i18next';
-import {
-    DeleteOutlined,
-    FormOutlined,
-    SearchOutlined,
-    LoadingOutlined,
-    RiseOutlined,
-    ExclamationCircleOutlined,
-} from '@ant-design/icons';
+import { SearchOutlined, LoadingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import 'containers/app/screens/Order/components/ListOrder/ListOrder.sass';
 import ListHeader from 'components/Layout/ListHeader/ListHeader';
 import { Input } from 'antd';
