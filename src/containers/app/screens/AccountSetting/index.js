@@ -4,7 +4,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import SettingPanel from './components/SettingPanel/SettingPanel';
 import { childRoutes } from './route';
 const Vendor = (props) => {
-    console.log('props: ', props);
     return (
         <Suspense fallback={<Spin />}>
             <Switch>
@@ -13,7 +12,7 @@ const Vendor = (props) => {
                 </Route>
                 {childRoutes.map((route) => (
                     <Route key={route.path} exact={route.exact} path={route.path}>
-                        {route.childComponent}
+                        {route.component}
                     </Route>
                 ))}
             </Switch>

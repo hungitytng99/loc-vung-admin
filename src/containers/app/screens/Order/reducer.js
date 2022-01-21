@@ -54,7 +54,6 @@ export default combineReducers({
             }
             case CHANGE_ORDER_STATUS_SUCCESS().type: {
                 const { newOrder } = action.payload;
-                console.log('state: ', state);
                 const orders = state.data.map((data) => {
                     if (newOrder.id === data.id) {
                         return newOrder;

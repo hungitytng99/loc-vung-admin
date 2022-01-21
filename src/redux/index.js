@@ -43,12 +43,6 @@ const store =
           );
 
 store.asyncReducers = {};
-const rootReducer = (state, action) => {
-    if (action.type === LOGOUT().type) {
-        return createReducer(store.asyncReducers)(undefined, action);
-    }
-    return createReducer(store.asyncReducers)(state, action);
-};
 store.injectReducer = (key, reducer) => {
     store.asyncReducers[key] = reducer;
     store.replaceReducer(createReducer(store.asyncReducers));

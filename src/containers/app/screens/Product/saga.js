@@ -66,7 +66,6 @@ function* getListProduct({ type, payload }) {
 }
 
 function* createProduct({ type, payload }) {
-    console.log('payload: ', payload);
     try {
         yield put(NOTIFY_LOADING());
         const listImagesIdUpload = [];
@@ -150,7 +149,6 @@ function* getProductById({ type, payload }) {
     try {
         yield put(NOTIFY_LOADING());
         const response = yield call(apiGetProductById, id);
-        console.log('response: ', response);
         if (response.state == REQUEST_STATE.SUCCESS) {
             yield put(GET_PRODUCT_BY_ID_SUCCESS(response.data));
         } else {

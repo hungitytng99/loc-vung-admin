@@ -25,7 +25,6 @@ function PrivateRoute({ component: Component, location, ...rest }) {
                         dispatch(LOGIN_SUCCESS(res.data));
                         setIsAuth(REQUEST_STATE.SUCCESS);
                     } else if (res.state === REQUEST_STATE.ERROR) {
-                        // dispatch(LOGOUT());
                         Cookies.remove(TOKEN_KEY);
                         history.push('/auth/login');
                         setIsAuth(REQUEST_STATE.ERROR);

@@ -58,7 +58,6 @@ function* getListCollection({ type, payload }) {
 
 function* createCollection({ type, payload }) {
     const { params } = payload;
-    console.log('params: ', params);
     try {
         yield put(NOTIFY_LOADING());
         let collectionImageId = null;
@@ -71,7 +70,6 @@ function* createCollection({ type, payload }) {
             ...params,
             thumbnailId: collectionImageId,
         });
-        console.log('responseCreate: ', responseCreate);
         if (responseCreate.state == REQUEST_STATE.SUCCESS) {
             yield put(CREATE_COLLECTION_SUCCESS(responseCreate.data));
             yield put(NOTIFY_SUCCESS());
@@ -118,7 +116,6 @@ function* deleteCollection({ type, payload }) {
     try {
         yield put(NOTIFY_LOADING());
         const response = yield call(apiDeleteCollection, id);
-        console.log('response: ', response);
         if (response.state == REQUEST_STATE.SUCCESS) {
             yield put(DELETE_COLLECTION_SUCCESS(response.data));
             yield put(NOTIFY_SUCCESS());

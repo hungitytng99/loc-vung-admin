@@ -4,7 +4,6 @@ import { GET, POST, DELETE, PUT } from 'app-data/fetch';
 // Data Flow: Step 1
 
 export const apiUploadFile = async (file) => {
-    console.log('file: ', file);
     try {
         const response = await UPLOAD('/media/', file, { isFullPath: false });
         return {

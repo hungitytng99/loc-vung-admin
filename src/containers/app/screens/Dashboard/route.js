@@ -12,3 +12,5 @@ export default {
         return import('.');
     }),
 };
+
+export const childRoutes = [];

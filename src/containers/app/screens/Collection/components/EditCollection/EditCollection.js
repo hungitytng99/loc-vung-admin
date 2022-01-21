@@ -19,7 +19,7 @@ function EditCollection({ match }) {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const history = useHistory();
-    const collectionId = history.location.pathname.replace('/collection/edit-collection/', '');
+    const collectionId = match?.params?.id;
     const [collectionImages, setCollectionImages] = useState([]);
     const [previewCollectionStatus, setPreviewCollectionStatus] = useState({
         image: '',

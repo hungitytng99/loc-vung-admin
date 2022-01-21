@@ -67,7 +67,6 @@ function* createOrder({ type, payload }) {
 
 function* getOrderById({ type, payload }) {
     const { id } = payload;
-    console.log('id: ', id);
     try {
         yield put(NOTIFY_LOADING());
         const response = yield call(apiGetOrderById, id);
@@ -84,11 +83,9 @@ function* getOrderById({ type, payload }) {
 
 function* searchOrder({ type, payload }) {
     const { search } = payload;
-    console.log('search: ', search);
     try {
         yield delay(400);
         const response = yield call(apiListOrder, { search });
-        console.log('response: ', response);
         if (response.state == REQUEST_STATE.SUCCESS) {
             yield put(SEARCH_ORDER_SUCCESS(response.data));
         } else {

@@ -25,7 +25,7 @@ const Article = (props) => {
                 </Route>
                 {childRoutes.map((route) => (
                     <Route key={route.path} exact={route.exact} path={route.path}>
-                        {route.childComponent}
+                        {route.component}
                     </Route>
                 ))}
             </Switch>

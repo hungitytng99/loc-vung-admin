@@ -55,7 +55,7 @@ function AdminLayout(props) {
                                 preview={false}
                             />
                         </Link>
-                        {Object.keys(MODULES).map((key) => {
+                        {Object.keys(MODULES).map((key, index) => {
                             if (MODULES[key].displayOnSidebar) {
                                 return (
                                     <Menu.Item key={MODULES[key].route} className="menu-hover" icon={MODULES[key].icon}>
@@ -65,7 +65,7 @@ function AdminLayout(props) {
                                     </Menu.Item>
                                 );
                             }
-                            return <></>;
+                            return <div key={index}></div>;
                         })}
                     </Menu>
                     <Menu
