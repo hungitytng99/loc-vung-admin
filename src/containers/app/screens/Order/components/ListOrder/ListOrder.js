@@ -214,7 +214,7 @@ function ListOrder() {
                                         }
                                     >
                                         <Option value="NEW">{t('newOrder')}</Option>
-                                        <Option value="INCOMING">{t('listOrderPage.INCOMING')}</Option>
+                                        <Option value="INCOMING">{t('COMING')}</Option>
                                         <Option value="DONE">{t('doneOrder')}</Option>
                                         <Option value="CANCEL">{t('cancelOrder')}</Option>
                                     </Select>
@@ -234,7 +234,7 @@ function ListOrder() {
                                             )
                                         }
                                     >
-                                        <Option value="INCOMING">{t('listOrderPage.INCOMING')}</Option>
+                                        <Option value="INCOMING">{t('COMING')}</Option>
                                         <Option value="DONE">{t('doneOrder')}</Option>
                                         <Option value="CANCEL">{t('cancelOrder')}</Option>
                                     </Select>
