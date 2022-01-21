@@ -37,11 +37,12 @@ function AdminHeader({ collapseSider, handleCollapse }) {
             className="header"
             style={collapseSider ? { left: `${sliderWidth.collapse}px` } : { left: `${sliderWidth.normal}px` }}
         >
-            <div className="header__bars" onClick={handleCollapse}>
+            <div className="headerBars" onClick={handleCollapse}>
                 <BarsOutlined />
             </div>
-            <div className="header__right">
-                <div className="header__right-notify">
+            <div className="headerLogoText">Loc vung admin</div>
+            <div className="headerRight">
+                <div className="headerRightNotify">
                     {/* <Badge dot={true}>
                         <BellOutlined className="notify__icon" style={{ fontSize: '20px', color: '#646464' }} />
                     </Badge> */}
@@ -69,7 +70,7 @@ function AdminHeader({ collapseSider, handleCollapse }) {
                     arrow
                     trigger={['click']}
                 >
-                    <Avatar size={40} className="header__right-avatar">
+                    <Avatar size={40} className="headerRightAvatar">
                         AD
                     </Avatar>
                 </Dropdown>
