@@ -104,7 +104,7 @@ export const MODULES = {
         path: 'Contact',
         route: '/contact',
         icon: <UserOutlined />,
-        displayOnSidebar: true,
+        displayOnSidebar: false,
     },
     vendorModule: {
         key: 'vendor',
